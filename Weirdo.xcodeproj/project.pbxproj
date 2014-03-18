@@ -1,0 +1,478 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		820F828318D7D8DF00D3C05D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828218D7D8DF00D3C05D /* Foundation.framework */; };
+		820F828518D7D8DF00D3C05D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828418D7D8DF00D3C05D /* CoreGraphics.framework */; };
+		820F828718D7D8DF00D3C05D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828618D7D8DF00D3C05D /* UIKit.framework */; };
+		820F828D18D7D8DF00D3C05D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 820F828B18D7D8DF00D3C05D /* InfoPlist.strings */; };
+		820F828F18D7D8DF00D3C05D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F828E18D7D8DF00D3C05D /* main.m */; };
+		820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829218D7D8DF00D3C05D /* FHAppDelegate.m */; };
+		820F829618D7D8DF00D3C05D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820F829418D7D8DF00D3C05D /* Main.storyboard */; };
+		820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829818D7D8DF00D3C05D /* FHFirstViewController.m */; };
+		820F829C18D7D8DF00D3C05D /* FHSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */; };
+		820F829E18D7D8DF00D3C05D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 820F829D18D7D8DF00D3C05D /* Images.xcassets */; };
+		820F82A518D7D8DF00D3C05D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F82A418D7D8DF00D3C05D /* XCTest.framework */; };
+		820F82A618D7D8DF00D3C05D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828218D7D8DF00D3C05D /* Foundation.framework */; };
+		820F82A718D7D8DF00D3C05D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828618D7D8DF00D3C05D /* UIKit.framework */; };
+		820F82AF18D7D8DF00D3C05D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 820F82AD18D7D8DF00D3C05D /* InfoPlist.strings */; };
+		820F82B118D7D8DF00D3C05D /* WeirdoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82B018D7D8DF00D3C05D /* WeirdoTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		820F82A818D7D8DF00D3C05D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 820F827718D7D8DF00D3C05D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 820F827E18D7D8DF00D3C05D;
+			remoteInfo = Weirdo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		820F827F18D7D8DF00D3C05D /* Weirdo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weirdo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		820F828218D7D8DF00D3C05D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		820F828418D7D8DF00D3C05D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		820F828618D7D8DF00D3C05D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		820F828A18D7D8DF00D3C05D /* Weirdo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Weirdo-Info.plist"; sourceTree = "<group>"; };
+		820F828C18D7D8DF00D3C05D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		820F828E18D7D8DF00D3C05D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		820F829018D7D8DF00D3C05D /* Weirdo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Weirdo-Prefix.pch"; sourceTree = "<group>"; };
+		820F829118D7D8DF00D3C05D /* FHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHAppDelegate.h; sourceTree = "<group>"; };
+		820F829218D7D8DF00D3C05D /* FHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHAppDelegate.m; sourceTree = "<group>"; };
+		820F829518D7D8DF00D3C05D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		820F829718D7D8DF00D3C05D /* FHFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHFirstViewController.h; sourceTree = "<group>"; };
+		820F829818D7D8DF00D3C05D /* FHFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHFirstViewController.m; sourceTree = "<group>"; };
+		820F829A18D7D8DF00D3C05D /* FHSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHSecondViewController.h; sourceTree = "<group>"; };
+		820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHSecondViewController.m; sourceTree = "<group>"; };
+		820F829D18D7D8DF00D3C05D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		820F82A318D7D8DF00D3C05D /* WeirdoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeirdoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		820F82A418D7D8DF00D3C05D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		820F82AC18D7D8DF00D3C05D /* WeirdoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WeirdoTests-Info.plist"; sourceTree = "<group>"; };
+		820F82AE18D7D8DF00D3C05D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		820F82B018D7D8DF00D3C05D /* WeirdoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeirdoTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		820F827C18D7D8DF00D3C05D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F828518D7D8DF00D3C05D /* CoreGraphics.framework in Frameworks */,
+				820F828718D7D8DF00D3C05D /* UIKit.framework in Frameworks */,
+				820F828318D7D8DF00D3C05D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		820F82A018D7D8DF00D3C05D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F82A518D7D8DF00D3C05D /* XCTest.framework in Frameworks */,
+				820F82A718D7D8DF00D3C05D /* UIKit.framework in Frameworks */,
+				820F82A618D7D8DF00D3C05D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		820F827618D7D8DF00D3C05D = {
+			isa = PBXGroup;
+			children = (
+				820F828818D7D8DF00D3C05D /* Weirdo */,
+				820F82AA18D7D8DF00D3C05D /* WeirdoTests */,
+				820F828118D7D8DF00D3C05D /* Frameworks */,
+				820F828018D7D8DF00D3C05D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		820F828018D7D8DF00D3C05D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				820F827F18D7D8DF00D3C05D /* Weirdo.app */,
+				820F82A318D7D8DF00D3C05D /* WeirdoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		820F828118D7D8DF00D3C05D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				820F828218D7D8DF00D3C05D /* Foundation.framework */,
+				820F828418D7D8DF00D3C05D /* CoreGraphics.framework */,
+				820F828618D7D8DF00D3C05D /* UIKit.framework */,
+				820F82A418D7D8DF00D3C05D /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		820F828818D7D8DF00D3C05D /* Weirdo */ = {
+			isa = PBXGroup;
+			children = (
+				820F829118D7D8DF00D3C05D /* FHAppDelegate.h */,
+				820F829218D7D8DF00D3C05D /* FHAppDelegate.m */,
+				820F829418D7D8DF00D3C05D /* Main.storyboard */,
+				820F829718D7D8DF00D3C05D /* FHFirstViewController.h */,
+				820F829818D7D8DF00D3C05D /* FHFirstViewController.m */,
+				820F829A18D7D8DF00D3C05D /* FHSecondViewController.h */,
+				820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */,
+				820F829D18D7D8DF00D3C05D /* Images.xcassets */,
+				820F828918D7D8DF00D3C05D /* Supporting Files */,
+			);
+			path = Weirdo;
+			sourceTree = "<group>";
+		};
+		820F828918D7D8DF00D3C05D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				820F828A18D7D8DF00D3C05D /* Weirdo-Info.plist */,
+				820F828B18D7D8DF00D3C05D /* InfoPlist.strings */,
+				820F828E18D7D8DF00D3C05D /* main.m */,
+				820F829018D7D8DF00D3C05D /* Weirdo-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		820F82AA18D7D8DF00D3C05D /* WeirdoTests */ = {
+			isa = PBXGroup;
+			children = (
+				820F82B018D7D8DF00D3C05D /* WeirdoTests.m */,
+				820F82AB18D7D8DF00D3C05D /* Supporting Files */,
+			);
+			path = WeirdoTests;
+			sourceTree = "<group>";
+		};
+		820F82AB18D7D8DF00D3C05D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				820F82AC18D7D8DF00D3C05D /* WeirdoTests-Info.plist */,
+				820F82AD18D7D8DF00D3C05D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		820F827E18D7D8DF00D3C05D /* Weirdo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 820F82B418D7D8DF00D3C05D /* Build configuration list for PBXNativeTarget "Weirdo" */;
+			buildPhases = (
+				820F827B18D7D8DF00D3C05D /* Sources */,
+				820F827C18D7D8DF00D3C05D /* Frameworks */,
+				820F827D18D7D8DF00D3C05D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Weirdo;
+			productName = Weirdo;
+			productReference = 820F827F18D7D8DF00D3C05D /* Weirdo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		820F82A218D7D8DF00D3C05D /* WeirdoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 820F82B718D7D8DF00D3C05D /* Build configuration list for PBXNativeTarget "WeirdoTests" */;
+			buildPhases = (
+				820F829F18D7D8DF00D3C05D /* Sources */,
+				820F82A018D7D8DF00D3C05D /* Frameworks */,
+				820F82A118D7D8DF00D3C05D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				820F82A918D7D8DF00D3C05D /* PBXTargetDependency */,
+			);
+			name = WeirdoTests;
+			productName = WeirdoTests;
+			productReference = 820F82A318D7D8DF00D3C05D /* WeirdoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		820F827718D7D8DF00D3C05D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = FH;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = FengHuan;
+				TargetAttributes = {
+					820F82A218D7D8DF00D3C05D = {
+						TestTargetID = 820F827E18D7D8DF00D3C05D;
+					};
+				};
+			};
+			buildConfigurationList = 820F827A18D7D8DF00D3C05D /* Build configuration list for PBXProject "Weirdo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 820F827618D7D8DF00D3C05D;
+			productRefGroup = 820F828018D7D8DF00D3C05D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				820F827E18D7D8DF00D3C05D /* Weirdo */,
+				820F82A218D7D8DF00D3C05D /* WeirdoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		820F827D18D7D8DF00D3C05D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F829E18D7D8DF00D3C05D /* Images.xcassets in Resources */,
+				820F828D18D7D8DF00D3C05D /* InfoPlist.strings in Resources */,
+				820F829618D7D8DF00D3C05D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		820F82A118D7D8DF00D3C05D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F82AF18D7D8DF00D3C05D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		820F827B18D7D8DF00D3C05D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F829C18D7D8DF00D3C05D /* FHSecondViewController.m in Sources */,
+				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
+				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
+				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		820F829F18D7D8DF00D3C05D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				820F82B118D7D8DF00D3C05D /* WeirdoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		820F82A918D7D8DF00D3C05D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 820F827E18D7D8DF00D3C05D /* Weirdo */;
+			targetProxy = 820F82A818D7D8DF00D3C05D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		820F828B18D7D8DF00D3C05D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				820F828C18D7D8DF00D3C05D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		820F829418D7D8DF00D3C05D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				820F829518D7D8DF00D3C05D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		820F82AD18D7D8DF00D3C05D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				820F82AE18D7D8DF00D3C05D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		820F82B218D7D8DF00D3C05D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		820F82B318D7D8DF00D3C05D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		820F82B518D7D8DF00D3C05D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
+				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		820F82B618D7D8DF00D3C05D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
+				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		820F82B818D7D8DF00D3C05D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Weirdo.app/Weirdo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "WeirdoTests/WeirdoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		820F82B918D7D8DF00D3C05D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Weirdo.app/Weirdo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
+				INFOPLIST_FILE = "WeirdoTests/WeirdoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		820F827A18D7D8DF00D3C05D /* Build configuration list for PBXProject "Weirdo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				820F82B218D7D8DF00D3C05D /* Debug */,
+				820F82B318D7D8DF00D3C05D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		820F82B418D7D8DF00D3C05D /* Build configuration list for PBXNativeTarget "Weirdo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				820F82B518D7D8DF00D3C05D /* Debug */,
+				820F82B618D7D8DF00D3C05D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		820F82B718D7D8DF00D3C05D /* Build configuration list for PBXNativeTarget "WeirdoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				820F82B818D7D8DF00D3C05D /* Debug */,
+				820F82B918D7D8DF00D3C05D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 820F827718D7D8DF00D3C05D /* Project object */;
+}
