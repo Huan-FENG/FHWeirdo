@@ -22,6 +22,8 @@
 		820F82A718D7D8DF00D3C05D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828618D7D8DF00D3C05D /* UIKit.framework */; };
 		820F82AF18D7D8DF00D3C05D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 820F82AD18D7D8DF00D3C05D /* InfoPlist.strings */; };
 		820F82B118D7D8DF00D3C05D /* WeirdoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82B018D7D8DF00D3C05D /* WeirdoTests.m */; };
+		820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */; };
+		820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82CA18D8069E00D3C05D /* FHConnectionInterationProperty.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,13 @@
 		820F82AC18D7D8DF00D3C05D /* WeirdoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WeirdoTests-Info.plist"; sourceTree = "<group>"; };
 		820F82AE18D7D8DF00D3C05D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		820F82B018D7D8DF00D3C05D /* WeirdoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeirdoTests.m; sourceTree = "<group>"; };
+		820F82C218D7DF1800D3C05D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		820F82C318D7DF1800D3C05D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		820F82C418D7DF1800D3C05D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		820F82C618D7F83900D3C05D /* FHWeiBoAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHWeiBoAPI.h; sourceTree = "<group>"; };
+		820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHWeiBoAPI.m; sourceTree = "<group>"; };
+		820F82C918D8069E00D3C05D /* FHConnectionInterationProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHConnectionInterationProperty.h; sourceTree = "<group>"; };
+		820F82CA18D8069E00D3C05D /* FHConnectionInterationProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHConnectionInterationProperty.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +131,10 @@
 				820F829818D7D8DF00D3C05D /* FHFirstViewController.m */,
 				820F829A18D7D8DF00D3C05D /* FHSecondViewController.h */,
 				820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */,
+				820F82C618D7F83900D3C05D /* FHWeiBoAPI.h */,
+				820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */,
+				820F82C918D8069E00D3C05D /* FHConnectionInterationProperty.h */,
+				820F82CA18D8069E00D3C05D /* FHConnectionInterationProperty.m */,
 				820F829D18D7D8DF00D3C05D /* Images.xcassets */,
 				820F828918D7D8DF00D3C05D /* Supporting Files */,
 			);
@@ -217,6 +230,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 820F827618D7D8DF00D3C05D;
 			productRefGroup = 820F828018D7D8DF00D3C05D /* Products */;
@@ -257,8 +271,10 @@
 			files = (
 				820F829C18D7D8DF00D3C05D /* FHSecondViewController.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
+				820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
+				820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +301,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				820F828C18D7D8DF00D3C05D /* en */,
+				820F82C318D7DF1800D3C05D /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -293,6 +310,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				820F829518D7D8DF00D3C05D /* Base */,
+				820F82C218D7DF1800D3C05D /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -301,6 +319,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				820F82AE18D7D8DF00D3C05D /* en */,
+				820F82C418D7DF1800D3C05D /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -386,6 +405,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -399,6 +419,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -463,6 +484,7 @@
 				820F82B618D7D8DF00D3C05D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		820F82B718D7D8DF00D3C05D /* Build configuration list for PBXNativeTarget "WeirdoTests" */ = {
 			isa = XCConfigurationList;
@@ -471,6 +493,7 @@
 				820F82B918D7D8DF00D3C05D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

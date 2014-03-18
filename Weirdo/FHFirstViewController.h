@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FHFirstViewController : UIViewController
+@interface FHFirstViewController : UIViewController <UIWebViewDelegate>
+{
+    UIWebView *loginWebView;
+}
 
 @end
