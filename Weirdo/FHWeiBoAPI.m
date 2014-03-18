@@ -74,10 +74,55 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         [connections setObject:properties forKey:connectionKey];
     }else{
         NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
-        return dic;
+        if (!*erro && response) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
+            *erro = [self isRespondError:dic];
+            if (!*erro)
+                return dic;
+        }
     }
     return nil;
+}
+
+- (NSDictionary *)getURL:(NSString *)URLString withConnectionInteractionProperty:(FHConnectionInterationProperty *)properties error:(NSError **)erro
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URLString]];
+    [request setHTTPMethod:@"GET"];
+    if (properties) {
+        NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+        NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
+        [connections setObject:properties forKey:connectionKey];
+    }else{
+        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
+        if (!*erro && response) {
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
+            *erro = [self isRespondError:dic];
+            if (!*erro)
+                return dic;
+        }
+    }
+    return nil;
+}
+
+- (NSError *)isRespondError:(NSDictionary *)response
+{
+    NSError *erro;
+    if ([response objectForKey:@"error_code"]) {
+        int errorCode = [[response objectForKey:@"error_code"] integerValue];
+        switch (errorCode) {
+            case 21314:
+            case 21315:
+            case 21316:
+            case 21317:
+            // token invalid
+                break;
+                
+            default:
+                break;
+        }
+        erro = [NSError errorWithDomain:@"WeiBoErrorDomain" code:errorCode userInfo:[response objectForKey:@"error"]];
+    }
+    return erro;
 }
 
 - (NSURL *)authorizeURL
@@ -89,15 +134,31 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (BOOL)isAuthorized:(NSURL *)redirectURL
 {
-    NSString *authorizeString = redirectURL.absoluteString;
-    NSRange codeRange = [authorizeString rangeOfString:@"code="];
-    if (codeRange.location != NSNotFound) {
-        NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
-        DLog(@"code: %@",code);
-        [self getAccountTokenWithCode:code];
-        return YES;
+    if (!redirectURL) {
+        return [self checkToken];
+    }else{
+        NSString *authorizeString = redirectURL.absoluteString;
+        NSRange codeRange = [authorizeString rangeOfString:@"code="];
+        if (codeRange.location != NSNotFound) {
+            NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
+            DLog(@"code: %@",code);
+            [self getAccountTokenWithCode:code];
+            return YES;
+        }
     }
     return NO;
+}
+
+- (BOOL)checkToken
+{
+    NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/account/get_uid.json?%@", APIServer, paramString];
+    NSError *error;
+    [self getURL:URLString withConnectionInteractionProperty:nil error:&error];
+    if (error) {
+        return NO;;
+    }
+    return YES;
 }
 
 - (void)getAccountTokenWithCode:(NSString *)code

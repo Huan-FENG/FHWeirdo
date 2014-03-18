@@ -7,6 +7,7 @@
 //
 
 #import "FHFirstViewController.h"
+#import "FHMainViewController.h"
 
 @interface FHFirstViewController ()
 
@@ -18,8 +19,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadLoginWebView];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:nil]) {
+        [self presentMainViewController];
+    }else
+        [self loadLoginWebView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,6 +47,12 @@
     [loginWebView loadRequest:loginRequest];
 }
 
+- (void)presentMainViewController
+{
+    FHMainViewController *mainVC = [[FHMainViewController alloc] init];
+    [self presentViewController:mainVC animated:YES completion:nil];
+}
+
 #pragma mark
 #pragma mark - webView delegete
 
@@ -48,6 +62,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:webView.request.URL];
+    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:webView.request.URL]) {
+        [self presentMainViewController];
+    }
 }
 @end
