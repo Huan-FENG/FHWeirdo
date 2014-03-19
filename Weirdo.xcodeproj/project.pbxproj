@@ -23,7 +23,6 @@
 		820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829218D7D8DF00D3C05D /* FHAppDelegate.m */; };
 		820F829618D7D8DF00D3C05D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820F829418D7D8DF00D3C05D /* Main.storyboard */; };
 		820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829818D7D8DF00D3C05D /* FHFirstViewController.m */; };
-		820F829C18D7D8DF00D3C05D /* FHSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */; };
 		820F829E18D7D8DF00D3C05D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 820F829D18D7D8DF00D3C05D /* Images.xcassets */; };
 		820F82A518D7D8DF00D3C05D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F82A418D7D8DF00D3C05D /* XCTest.framework */; };
 		820F82A618D7D8DF00D3C05D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828218D7D8DF00D3C05D /* Foundation.framework */; };
@@ -32,6 +31,10 @@
 		820F82B118D7D8DF00D3C05D /* WeirdoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82B018D7D8DF00D3C05D /* WeirdoTests.m */; };
 		820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */; };
 		820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82CA18D8069E00D3C05D /* FHConnectionInterationProperty.m */; };
+		820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82CD18D92FE100D3C05D /* FHHomeNavigationController.m */; };
+		820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82D418D934E400D3C05D /* FHHomePageViewController.m */; };
+		820F82DB18D968DE00D3C05D /* FHTimlineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82DA18D968DE00D3C05D /* FHTimlineTableViewController.m */; };
+		820F82DE18D96F7A00D3C05D /* FHPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 820F82DD18D96F7A00D3C05D /* FHPost.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,8 +70,6 @@
 		820F829518D7D8DF00D3C05D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		820F829718D7D8DF00D3C05D /* FHFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHFirstViewController.h; sourceTree = "<group>"; };
 		820F829818D7D8DF00D3C05D /* FHFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHFirstViewController.m; sourceTree = "<group>"; };
-		820F829A18D7D8DF00D3C05D /* FHSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FHSecondViewController.h; sourceTree = "<group>"; };
-		820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHSecondViewController.m; sourceTree = "<group>"; };
 		820F829D18D7D8DF00D3C05D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		820F82A318D7D8DF00D3C05D /* WeirdoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeirdoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		820F82A418D7D8DF00D3C05D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -82,6 +83,14 @@
 		820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHWeiBoAPI.m; sourceTree = "<group>"; };
 		820F82C918D8069E00D3C05D /* FHConnectionInterationProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHConnectionInterationProperty.h; sourceTree = "<group>"; };
 		820F82CA18D8069E00D3C05D /* FHConnectionInterationProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHConnectionInterationProperty.m; sourceTree = "<group>"; };
+		820F82CC18D92FE100D3C05D /* FHHomeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHHomeNavigationController.h; sourceTree = "<group>"; };
+		820F82CD18D92FE100D3C05D /* FHHomeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHHomeNavigationController.m; sourceTree = "<group>"; };
+		820F82D318D934E400D3C05D /* FHHomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHHomePageViewController.h; sourceTree = "<group>"; };
+		820F82D418D934E400D3C05D /* FHHomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHHomePageViewController.m; sourceTree = "<group>"; };
+		820F82D918D968DE00D3C05D /* FHTimlineTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTimlineTableViewController.h; sourceTree = "<group>"; };
+		820F82DA18D968DE00D3C05D /* FHTimlineTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTimlineTableViewController.m; sourceTree = "<group>"; };
+		820F82DC18D96F7A00D3C05D /* FHPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPost.h; sourceTree = "<group>"; };
+		820F82DD18D96F7A00D3C05D /* FHPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPost.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +164,7 @@
 		820F828818D7D8DF00D3C05D /* Weirdo */ = {
 			isa = PBXGroup;
 			children = (
+				820F82CF18D92FEC00D3C05D /* HomeView */,
 				820F829118D7D8DF00D3C05D /* FHAppDelegate.h */,
 				820F829218D7D8DF00D3C05D /* FHAppDelegate.m */,
 				820F829418D7D8DF00D3C05D /* Main.storyboard */,
@@ -162,8 +172,6 @@
 				820F829818D7D8DF00D3C05D /* FHFirstViewController.m */,
 				0F521D6F18D87CDA00250B3F /* FHMainViewController.h */,
 				0F521D7018D87CDA00250B3F /* FHMainViewController.m */,
-				820F829A18D7D8DF00D3C05D /* FHSecondViewController.h */,
-				820F829B18D7D8DF00D3C05D /* FHSecondViewController.m */,
 				820F82C618D7F83900D3C05D /* FHWeiBoAPI.h */,
 				820F82C718D7F83900D3C05D /* FHWeiBoAPI.m */,
 				820F82C918D8069E00D3C05D /* FHConnectionInterationProperty.h */,
@@ -202,6 +210,21 @@
 				820F82AD18D7D8DF00D3C05D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		820F82CF18D92FEC00D3C05D /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				820F82CC18D92FE100D3C05D /* FHHomeNavigationController.h */,
+				820F82CD18D92FE100D3C05D /* FHHomeNavigationController.m */,
+				820F82D318D934E400D3C05D /* FHHomePageViewController.h */,
+				820F82D418D934E400D3C05D /* FHHomePageViewController.m */,
+				820F82D918D968DE00D3C05D /* FHTimlineTableViewController.h */,
+				820F82DA18D968DE00D3C05D /* FHTimlineTableViewController.m */,
+				820F82DC18D96F7A00D3C05D /* FHPost.h */,
+				820F82DD18D96F7A00D3C05D /* FHPost.m */,
+			);
+			path = HomeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,13 +333,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				820F829C18D7D8DF00D3C05D /* FHSecondViewController.m in Sources */,
+				820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */,
+				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
 				820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
+				820F82DB18D968DE00D3C05D /* FHTimlineTableViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
 				0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */,
 				820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */,
+				820F82DE18D96F7A00D3C05D /* FHPost.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

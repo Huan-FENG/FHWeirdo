@@ -7,6 +7,7 @@
 //
 
 #import "FHMainViewController.h"
+#import "FHHomeNavigationController.h"
 
 @interface FHMainViewController ()
 {
@@ -29,8 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIViewController *VC1 = [[UIViewController alloc] init];
-    [VC1.view setBackgroundColor:[UIColor yellowColor]];
+    FHHomeNavigationController *VC1 = [[FHHomeNavigationController alloc] init];
+//    [VC1.view setBackgroundColor:[UIColor yellowColor]];
     UIViewController *VC2 = [[UIViewController alloc] init];
     [VC2.view setBackgroundColor:[UIColor redColor]];
     UIViewController *VC3 = [[UIViewController alloc] init];
@@ -78,6 +79,10 @@
         [button addTarget:self action:@selector(changeViewController:) forControlEvents:UIControlEventTouchDown];
         button.imageView.contentMode = UIViewContentModeCenter;
         [tabBar addSubview:button];
+        if (i == 0) {
+            button.enabled = NO;
+            previousSelectedButton = button;
+        }
     }
     [self.view addSubview:tabBar];
     
