@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F2A46FB18DAB46100BCEC71 /* navbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2A46FA18DAB46100BCEC71 /* navbar_bg@2x.png */; };
+		0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A46FD18DAE28A00BCEC71 /* FHUser.m */; };
+		0F2A470118DAEAD700BCEC71 /* FHUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A470018DAEAD700BCEC71 /* FHUsers.m */; };
 		0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F521D7018D87CDA00250B3F /* FHMainViewController.m */; };
 		0F521D7918D895A400250B3F /* profile_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F521D7318D895A400250B3F /* profile_selected@2x.png */; };
 		0F521D7A18D895A400250B3F /* profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F521D7418D895A400250B3F /* profile@2x.png */; };
@@ -48,6 +51,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F2A46FA18DAB46100BCEC71 /* navbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_bg@2x.png"; sourceTree = "<group>"; };
+		0F2A46FC18DAE28A00BCEC71 /* FHUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FHUser.h; path = ../FHUser.h; sourceTree = "<group>"; };
+		0F2A46FD18DAE28A00BCEC71 /* FHUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FHUser.m; path = ../FHUser.m; sourceTree = "<group>"; };
+		0F2A46FF18DAEAD700BCEC71 /* FHUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUsers.h; sourceTree = "<group>"; };
+		0F2A470018DAEAD700BCEC71 /* FHUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUsers.m; sourceTree = "<group>"; };
 		0F521D6F18D87CDA00250B3F /* FHMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHMainViewController.h; sourceTree = "<group>"; };
 		0F521D7018D87CDA00250B3F /* FHMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHMainViewController.m; sourceTree = "<group>"; };
 		0F521D7318D895A400250B3F /* profile_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile_selected@2x.png"; sourceTree = "<group>"; };
@@ -120,6 +128,7 @@
 		0F521D7218D8925F00250B3F /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				0F2A46FA18DAB46100BCEC71 /* navbar_bg@2x.png */,
 				0F521D8118D8A1D700250B3F /* tabbar_bg@2x.png */,
 				0F521D7318D895A400250B3F /* profile_selected@2x.png */,
 				0F521D7418D895A400250B3F /* profile@2x.png */,
@@ -223,6 +232,10 @@
 				820F82DA18D968DE00D3C05D /* FHTimlineTableViewController.m */,
 				820F82DC18D96F7A00D3C05D /* FHPost.h */,
 				820F82DD18D96F7A00D3C05D /* FHPost.m */,
+				0F2A46FC18DAE28A00BCEC71 /* FHUser.h */,
+				0F2A46FD18DAE28A00BCEC71 /* FHUser.m */,
+				0F2A46FF18DAEAD700BCEC71 /* FHUsers.h */,
+				0F2A470018DAEAD700BCEC71 /* FHUsers.m */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -305,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F2A46FB18DAB46100BCEC71 /* navbar_bg@2x.png in Resources */,
 				0F521D8218D8A1D700250B3F /* tabbar_bg@2x.png in Resources */,
 				0F521D7D18D895A400250B3F /* message_selected@2x.png in Resources */,
 				0F521D7C18D895A400250B3F /* home@2x.png in Resources */,
@@ -337,9 +351,11 @@
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
 				820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */,
+				0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
 				820F82DB18D968DE00D3C05D /* FHTimlineTableViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
+				0F2A470118DAEAD700BCEC71 /* FHUsers.m in Sources */,
 				0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */,
 				820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */,
 				820F82DE18D96F7A00D3C05D /* FHPost.m in Sources */,

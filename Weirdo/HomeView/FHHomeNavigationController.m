@@ -21,6 +21,7 @@
     if (self) {
         // Custom initialization
         [self.view setBackgroundColor:[UIColor yellowColor]];
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
 //        [self.navigationBar setBackgroundColor:[UIColor cyanColor]];
     }
     return self;

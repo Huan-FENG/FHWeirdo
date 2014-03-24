@@ -24,10 +24,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:nil]) {
+//    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:nil]) {
         [self presentMainViewController];
-    }else
-        [self loadLoginWebView];
+//    }else
+//        [self loadLoginWebView];
 }
 
 - (void)didReceiveMemoryWarning

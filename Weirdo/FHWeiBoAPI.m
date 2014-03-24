@@ -132,23 +132,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return [NSURL URLWithString:URLString];
 }
 
-- (BOOL)isAuthorized:(NSURL *)redirectURL
-{
-    if (!redirectURL) {
-        return [self checkToken];
-    }else{
-        NSString *authorizeString = redirectURL.absoluteString;
-        NSRange codeRange = [authorizeString rangeOfString:@"code="];
-        if (codeRange.location != NSNotFound) {
-            NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
-            DLog(@"code: %@",code);
-            [self getAccountTokenWithCode:code];
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (BOOL)checkToken
 {
     NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
@@ -172,6 +155,23 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         uid = [response objectForKey:@"uid"];
         [self synchronize];
     }
+}
+
+- (BOOL)isAuthorized:(NSURL *)redirectURL
+{
+    if (!redirectURL) {
+        return [self checkToken];
+    }else{
+        NSString *authorizeString = redirectURL.absoluteString;
+        NSRange codeRange = [authorizeString rangeOfString:@"code="];
+        if (codeRange.location != NSNotFound) {
+            NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
+            DLog(@"code: %@",code);
+            [self getAccountTokenWithCode:code];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark
