@@ -15,6 +15,8 @@ _Pragma("clang diagnostic pop") \
 } while (0)
 
 #import "FHWeiBoAPI.h"
+#import "FHConnectionInterationProperty.h"
+#import "FHPost.h"
 
 @implementation FHWeiBoAPI
 
@@ -155,6 +157,10 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         uid = [response objectForKey:@"uid"];
         [self synchronize];
     }
+}
+
+- (void)fetchFriendsPostsNewerThan:(FHPost *)post laterThan:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
+{
 }
 
 - (BOOL)isAuthorized:(NSURL *)redirectURL

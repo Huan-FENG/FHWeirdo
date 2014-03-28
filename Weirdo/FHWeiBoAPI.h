@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FHConnectionInterationProperty.h"
 
 @interface FHWeiBoAPI : NSObject
 {

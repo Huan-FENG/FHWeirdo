@@ -41,16 +41,17 @@
         
         UIView *customTitle = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 100, 45)];
         CGRect frame = customTitle.frame;
-        UIScrollView *titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 35)];
+        UIScrollView *titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 30)];
         [titleScroll setContentSize:CGSizeMake(titleScroll.frame.size.width*3, titleScroll.self.frame.size.height)];
         for (int i=0; i<3; i++) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 0, titleScroll.frame.size.width, titleScroll.frame.size.height)];
             [title setTextColor:[UIColor whiteColor]];
-            [title setFont:[UIFont systemFontOfSize:12.0]];
+            [title setFont:[UIFont boldSystemFontOfSize:15.0]];
             [title setShadowColor:[UIColor lightGrayColor]];
             [title setShadowOffset:CGSizeMake(0.5, 0.5)];
             [title setBackgroundColor: [UIColor clearColor]];
             [title setTextAlignment:NSTextAlignmentCenter];
+            [title setContentMode:UIViewContentModeBottom];
         
             switch (i) {
                 case 0:
@@ -67,10 +68,10 @@
             }
             [titleScroll addSubview:title];
         }
-        UIPageControl *pageIndicator = [[UIPageControl alloc] initWithFrame:CGRectMake(0, titleScroll.frame.size.height, titleScroll.frame.size.width, customTitle.frame.size.height-titleScroll.frame.size.height)];
+        UIPageControl *pageIndicator = [[UIPageControl alloc] initWithFrame:CGRectMake(titleScroll.center.x, titleScroll.frame.size.height, 0, 0)];
         CGRect theframe = pageIndicator.frame;
-        [pageIndicator setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
-        [pageIndicator setPageIndicatorTintColor:[UIColor lightGrayColor]];
+//        [pageIndicator setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
+//        [pageIndicator setPageIndicatorTintColor:[UIColor lightGrayColor]];
         [pageIndicator setNumberOfPages:3];
         [pageIndicator setCurrentPage:0];
         [customTitle addSubview:titleScroll];
@@ -92,6 +93,13 @@
 
 #pragma mark
 #pragma mark - pageViewController data source
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+{
+    if (finished) {
+        DLog(@"%d", pageViewController.presentingViewController.view.tag);
+    }
+}
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
@@ -129,7 +137,7 @@
     switch (viewController.view.tag) {
         case 1:{
             if (!VC1) {
-                VC1 = [[UIViewController alloc] init];
+                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
                 [VC1.view setBackgroundColor:[UIColor whiteColor]];
 //                [self.navigationItem setTitle:@"FIRST PAGE"];
                 [VC1.view setTag:0];
@@ -139,7 +147,7 @@
         }
         case 2:{
             if (!VC2) {
-                VC2 = [[UIViewController alloc] init];
+                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
                 [VC2.view setBackgroundColor:[UIColor blackColor]];
                 [VC2.view setTag:1];
             }

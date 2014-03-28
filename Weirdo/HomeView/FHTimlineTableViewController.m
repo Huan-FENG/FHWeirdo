@@ -46,6 +46,16 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+     DLog(@"category: %d", category);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
