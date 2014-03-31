@@ -7,21 +7,24 @@
 //
 
 #import "FHTimlineTableViewController.h"
+#import "FHTimelinePostCell.h"
 
 @interface FHTimlineTableViewController ()
 {
-    TimelineCategory category;
     NSMutableArray *posts;
 }
 @end
 
 @implementation FHTimlineTableViewController
 
+@synthesize category;
+
 - (id)initWithTimeline:(TimelineCategory)timelineCategory
 {
     if (self) {
         self = [self initWithStyle:UITableViewStylePlain];
         category = timelineCategory;
+        posts = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -48,13 +51,73 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-     DLog(@"category: %d", category);
+    [self pullDownToRefresh];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 }
 
+- (void)pullDownToRefresh
+{
+    FHConnectionInterationProperty *property = [[FHConnectionInterationProperty alloc ] init];
+    [property setAfterFailedTarget:self];
+    [property setAfterFailedSelector:@selector(fetchFailedWithNetworkError:)];
+    [property setAfterFinishedTarget:self];
+    [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    FHPost *post = (posts && posts.count > 0) ? [posts objectAtIndex:0] : nil;
+    switch (category) {
+        case TimelineCategoryHome:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchHomePostsNewer:YES thanPost:post interactionProperty:property];
+            break;
+        case TimelineCategoryFriends:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchBilateralPostsNewer:YES thanPost:post interactionProperty:property];
+            break;
+        case TimelineCategoryPublic:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchPublicPostsWithInteractionProperty:property];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)pullUpToRefresh
+{
+    FHConnectionInterationProperty *property = [[FHConnectionInterationProperty alloc ] init];
+    [property setAfterFailedTarget:self];
+    [property setAfterFailedSelector:@selector(fetchFailedWithNetworkError:)];
+    [property setAfterFinishedTarget:self];
+    [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    switch (category) {
+        case TimelineCategoryHome:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchHomePostsNewer:NO thanPost:[posts lastObject] interactionProperty:property];
+            break;
+        case TimelineCategoryFriends:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchBilateralPostsNewer:NO thanPost:[posts lastObject] interactionProperty:property];
+            break;
+        case TimelineCategoryPublic:
+            [[FHWeiBoAPI sharedWeiBoAPI] fetchPublicPostsWithInteractionProperty:property];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)fetchFinishedWithResponseDic:(NSDictionary *)responseDic
+{
+    NSArray *postsArray = [responseDic objectForKey:@"statuses"];
+    for (NSDictionary *postDic in postsArray) {
+        FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
+        [posts addObject:post];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)fetchFailedWithNetworkError:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -66,28 +129,33 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return posts ? posts.count : 0;;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    FHTimelinePostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+    if (cell == nil) {
+        cell = [[FHTimelinePostCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PostCell"];
+    }
     
-    // Configure the cell...
+    [cell updateCellWithPost:[posts objectAtIndex:indexPath.row]];
     
     return cell;
 }
-*/
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [FHTimelinePostCell cellHeightWithPost:[posts objectAtIndex:indexPath.row]];
+}
 
 /*
 // Override to support conditional editing of the table view.

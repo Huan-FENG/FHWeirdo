@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
+    TimelineCategoryHome,
     TimelineCategoryFriends,
     TimelineCategoryPublic,
-    TimelineCategoryOringal,
 } TimelineCategory;
 
 @interface FHTimlineTableViewController : UITableViewController
+
+@property (nonatomic) TimelineCategory category;
 
 - (id)initWithTimeline:(TimelineCategory)timelineCategory;
 

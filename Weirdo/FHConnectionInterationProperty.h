@@ -11,11 +11,11 @@
 @interface FHConnectionInterationProperty : NSObject
 
 @property (nonatomic, strong) id afterFailedTarget;
-@property (nonatomic, strong) NSString *afterFailedSelector;
+@property (nonatomic) SEL afterFailedSelector;
 @property (nonatomic, strong) id afterFinishedTarget;
-@property (nonatomic, strong) NSString *afterFinishedSelector;
+@property (nonatomic) SEL afterFinishedSelector;
 @property (nonatomic, strong) id progressTarget;
-@property (nonatomic, strong) NSString *progressSelector;
+@property (nonatomic) SEL progressSelector;
 @property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, strong) NSNumber *contentLength;
 

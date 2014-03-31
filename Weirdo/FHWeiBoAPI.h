@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FHConnectionInterationProperty.h"
+#import "FHPost.h"
 
 @interface FHWeiBoAPI : NSObject
 {
@@ -21,4 +23,8 @@
 
 - (NSURL *)authorizeURL;
 - (BOOL)isAuthorized:(NSURL *)redirectURL;
+
+- (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
+- (void)fetchBilateralPostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
+- (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property;
 @end

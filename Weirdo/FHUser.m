@@ -11,10 +11,10 @@
 
 @implementation FHUser
 
-@synthesize ID, name, location, description, profileImageURL;
+@synthesize ID, name, location, description, profileImageURL, profileImage;
 @synthesize followersCount, friendsCount, postsCount;
 
-- (id)initWithOriginalData:(NSDictionary *)original
+- (id)initWithUserDic:(NSDictionary *)original
 {
     if (self) {
         ID = [original objectForKey:@"idstr"]? : nil;

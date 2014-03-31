@@ -12,10 +12,10 @@
 @implementation FHPost
 
 @synthesize favorited, createdTime, ID, text, source, picURLs;
-@synthesize retweeted, userID, userImageURLString, username;
+@synthesize retweeted, userID, username;
 @synthesize reporstsCount, commentsCount, voteCounts;
 
-- (id)initWithOriginalData:(NSDictionary *)original
+- (id)initWithPostDic:(NSDictionary *)original
 {
     if (self) {
         favorited = [original objectForKey:@"favorited"]? [[original objectForKey:@"favorited"] boolValue]: NO;
@@ -29,15 +29,15 @@
         voteCounts = [original objectForKey:@"attitudes_count"]? : @"0";
         
         if ([original objectForKey:@"user"]) {
-            FHUser *user = [[FHUser alloc] initWithOriginalData:[original objectForKey:@"user"]];
+            FHUser *user = [[FHUser alloc] initWithUserDic:[original objectForKey:@"user"]];
             userID = user.ID;
             username = user.name;
-            userImageURLString = user.profileImageURL;
+//            userImageURLString = user.profileImageURL;
         }
         
         NSDictionary *originalRetweet = [original objectForKey:@"retweeted"];
         if (originalRetweet)
-            retweeted = [[FHPost alloc] initWithOriginalData:originalRetweet];
+            retweeted = [[FHPost alloc] initWithPostDic:originalRetweet];
     }
     
     return self;

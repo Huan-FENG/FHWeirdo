@@ -12,6 +12,7 @@
 @interface FHUsers : NSObject
 {
     NSMutableDictionary *users;
+    NSOperationQueue *fetchImageQueue;
 }
 
 + (FHUsers *)sharedUsers;

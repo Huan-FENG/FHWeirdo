@@ -15,8 +15,6 @@ _Pragma("clang diagnostic pop") \
 } while (0)
 
 #import "FHWeiBoAPI.h"
-#import "FHConnectionInterationProperty.h"
-#import "FHPost.h"
 
 @implementation FHWeiBoAPI
 
@@ -159,10 +157,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     }
 }
 
-- (void)fetchFriendsPostsNewerThan:(FHPost *)post laterThan:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
-{
-}
-
 - (BOOL)isAuthorized:(NSURL *)redirectURL
 {
     if (!redirectURL) {
@@ -178,6 +172,39 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         }
     }
     return NO;
+}
+
+- (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@", token];
+    if (post) {
+        if (newer) {
+            [paramString appendFormat:@"&since_id=%@", post.ID];
+        }else
+            [paramString appendFormat:@"&max_id=%@", post.ID];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/home_timeline.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+- (void)fetchBilateralPostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@", token];
+    if (post) {
+        if (newer) {
+            [paramString appendFormat:@"&since_id=%@", post.ID];
+        }else
+            [paramString appendFormat:@"&max_id=%@", post.ID];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/bilateral_timeline.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+- (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property
+{
+    NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/public_timeline.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }
 
 #pragma mark
@@ -210,8 +237,9 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     
     if (properties.progressTarget && properties.progressSelector)
     {
-        SEL action = NSSelectorFromString(properties.progressSelector);
-        SuppressPerformSelectorLeakWarning([properties.progressTarget performSelector:action withObject:[properties progressRate]]);
+        SuppressPerformSelectorLeakWarning([properties.progressTarget performSelector:properties.progressSelector withObject:[properties progressRate]]);
+//        SEL action = NSSelectorFromString(properties.progressSelector);
+//        SuppressPerformSelectorLeakWarning([properties.progressTarget performSelector:action withObject:[properties progressRate]]);
     }
 }
 
@@ -223,8 +251,9 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     
 	if (properties.afterFailedSelector && properties.afterFailedTarget)
 	{
-		SEL action = NSSelectorFromString(properties.afterFailedSelector);
-        SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:action withObject:error]);
+        SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:properties.afterFailedSelector withObject:error]);
+//		SEL action = NSSelectorFromString(properties.afterFailedSelector);
+//        SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:action withObject:error]);
 	}
 }
 
@@ -237,8 +266,11 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 	// perform necessary callbacks with the data.
 	if (properties.afterFinishedTarget && properties.afterFinishedSelector)
 	{
-		SEL action = NSSelectorFromString(properties.afterFinishedSelector);
-        SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:action withObject:properties.data]);
+        id theData = [NSJSONSerialization JSONObjectWithData:properties.data options:NSJSONReadingMutableContainers error:nil];
+        theData = theData ? theData : properties.data;
+        SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:properties.afterFinishedSelector withObject:theData]);
+//		SEL action = NSSelectorFromString(properties.afterFinishedSelector);
+//        SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:action withObject:theData]);
 	}
 	[connections removeObjectForKey:connectionKey];
 }

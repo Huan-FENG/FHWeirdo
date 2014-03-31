@@ -33,7 +33,7 @@
 {
     if (self) {
         self = [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
+        VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
 //        [self.navigationItem setTitle:@"FIRST PAGE"];
         [VC1.view setBackgroundColor:[UIColor whiteColor]];
         [VC1.view setTag:0];
@@ -58,10 +58,10 @@
                     [title setText:@"主页"];
                     break;
                 case 1:
-                    [title setText:@"发现"];
+                    [title setText:@"好友"];
                     break;
                 case 2:
-                    [title setText:@"原创"];
+                    [title setText:@"发现"];
                     break;
                 default:
                     break;
@@ -104,23 +104,24 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
     UIViewController *nextVC;
-    switch (viewController.view.tag) {
-        case 0:{
+    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
+    switch (timelineVC.category) {
+        case TimelineCategoryHome:{
             if (!VC2) {
-                VC2 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
+                VC2 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
 //                [self.navigationItem setTitle:@"SENCOND PAGE"];
                 [VC2.view setBackgroundColor:[UIColor blackColor]];
-                [VC2.view setTag:1];
+//                [VC2.view setTag:1];
             }
             nextVC = VC2;
             break;
         }
-        case 1:{
+        case TimelineCategoryFriends:{
             if (!VC3) {
-                VC3 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryOringal];
+                VC3 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
 //                [self.navigationItem setTitle:@"THIRD PAGE"];
                 [VC3.view setBackgroundColor:[UIColor brownColor]];
-                [VC3.view setTag:2];
+//                [VC3.view setTag:2];
             }
             nextVC = VC3;
             break;
@@ -134,22 +135,23 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     UIViewController *previousVC;
-    switch (viewController.view.tag) {
-        case 1:{
+    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
+    switch (timelineVC.category) {
+        case TimelineCategoryFriends:{
             if (!VC1) {
-                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
+                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
                 [VC1.view setBackgroundColor:[UIColor whiteColor]];
 //                [self.navigationItem setTitle:@"FIRST PAGE"];
-                [VC1.view setTag:0];
+//                [VC1.view setTag:0];
             }
             previousVC = VC1;
             break;
         }
-        case 2:{
+        case TimelineCategoryPublic:{
             if (!VC2) {
-                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
+                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
                 [VC2.view setBackgroundColor:[UIColor blackColor]];
-                [VC2.view setTag:1];
+//                [VC2.view setTag:1];
             }
             previousVC = VC2;
         }

@@ -18,6 +18,7 @@
 @property (nonatomic) NSString *followersCount;
 @property (nonatomic) NSString *friendsCount;
 @property (nonatomic) NSString *postsCount;
+@property (nonatomic) UIImage *profileImage;
 
-- (id)initWithOriginalData:(NSDictionary *)original;
+- (id)initWithUserDic:(NSDictionary *)original;
 @end
