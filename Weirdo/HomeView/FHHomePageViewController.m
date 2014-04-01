@@ -8,6 +8,7 @@
 
 #import "FHHomePageViewController.h"
 #import "FHTimlineTableViewController.h"
+#import "SMPageControl.h"
 
 @interface FHHomePageViewController ()
 {
@@ -40,38 +41,39 @@
         [self setViewControllers:@[VC1] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         
         UIView *customTitle = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 100, 45)];
-        CGRect frame = customTitle.frame;
+//        CGRect frame = customTitle.frame;
         UIScrollView *titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 30)];
         [titleScroll setContentSize:CGSizeMake(titleScroll.frame.size.width*3, titleScroll.self.frame.size.height)];
         for (int i=0; i<3; i++) {
-            UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 0, titleScroll.frame.size.width, titleScroll.frame.size.height)];
+            UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 10, titleScroll.frame.size.width, titleScroll.frame.size.height - 10)];
             [title setTextColor:[UIColor whiteColor]];
-            [title setFont:[UIFont boldSystemFontOfSize:15.0]];
+            [title setFont:[UIFont boldSystemFontOfSize:16.0]];
             [title setShadowColor:[UIColor lightGrayColor]];
             [title setShadowOffset:CGSizeMake(0.5, 0.5)];
             [title setBackgroundColor: [UIColor clearColor]];
             [title setTextAlignment:NSTextAlignmentCenter];
-            [title setContentMode:UIViewContentModeBottom];
-        
+
             switch (i) {
                 case 0:
-                    [title setText:@"主页"];
+                    [title setText:@"主 页"];
                     break;
                 case 1:
-                    [title setText:@"好友"];
+                    [title setText:@"好 友"];
                     break;
                 case 2:
-                    [title setText:@"发现"];
+                    [title setText:@"发 现"];
                     break;
                 default:
                     break;
             }
             [titleScroll addSubview:title];
         }
-        UIPageControl *pageIndicator = [[UIPageControl alloc] initWithFrame:CGRectMake(titleScroll.center.x, titleScroll.frame.size.height, 0, 0)];
-        CGRect theframe = pageIndicator.frame;
-//        [pageIndicator setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
-//        [pageIndicator setPageIndicatorTintColor:[UIColor lightGrayColor]];
+        SMPageControl *pageIndicator = [[SMPageControl alloc] initWithFrame:CGRectMake(titleScroll.frame.origin.x, titleScroll.frame.size.height, titleScroll.frame.size.width, 10)];
+        [pageIndicator setIndicatorDiameter:4.0];
+        [pageIndicator setIndicatorMargin:5.0];
+        [pageIndicator setAlignment:SMPageControlAlignmentCenter];
+        [pageIndicator setEnabled:NO];
+        
         [pageIndicator setNumberOfPages:3];
         [pageIndicator setCurrentPage:0];
         [customTitle addSubview:titleScroll];
@@ -97,7 +99,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
     if (finished) {
-        DLog(@"%d", pageViewController.presentingViewController.view.tag);
+        DLog(@"pageViewController %d", pageViewController.presentingViewController.view.tag);
     }
 }
 

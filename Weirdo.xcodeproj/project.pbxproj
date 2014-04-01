@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A46FD18DAE28A00BCEC71 /* FHUser.m */; };
+		0F2D157C18EAF66200FBD443 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D157A18EAF66200FBD443 /* SMPageControl.m */; };
+		0F2D158018EB037000FBD443 /* STTweetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D157F18EB037000FBD443 /* STTweetLabel.m */; };
 		0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F521D7018D87CDA00250B3F /* FHMainViewController.m */; };
 		820F828318D7D8DF00D3C05D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828218D7D8DF00D3C05D /* Foundation.framework */; };
 		820F828518D7D8DF00D3C05D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828418D7D8DF00D3C05D /* CoreGraphics.framework */; };
@@ -55,6 +57,10 @@
 /* Begin PBXFileReference section */
 		0F2A46FC18DAE28A00BCEC71 /* FHUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUser.h; sourceTree = "<group>"; };
 		0F2A46FD18DAE28A00BCEC71 /* FHUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUser.m; sourceTree = "<group>"; };
+		0F2D157A18EAF66200FBD443 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		0F2D157B18EAF66200FBD443 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
+		0F2D157E18EB037000FBD443 /* STTweetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTweetLabel.h; sourceTree = "<group>"; };
+		0F2D157F18EB037000FBD443 /* STTweetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTweetLabel.m; sourceTree = "<group>"; };
 		0F521D6F18D87CDA00250B3F /* FHMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHMainViewController.h; sourceTree = "<group>"; };
 		0F521D7018D87CDA00250B3F /* FHMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHMainViewController.m; sourceTree = "<group>"; };
 		820F827F18D7D8DF00D3C05D /* Weirdo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weirdo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,9 +137,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F2D157918EAF64F00FBD443 /* SMPageControl */ = {
+			isa = PBXGroup;
+			children = (
+				0F2D157A18EAF66200FBD443 /* SMPageControl.m */,
+				0F2D157B18EAF66200FBD443 /* SMPageControl.h */,
+			);
+			path = SMPageControl;
+			sourceTree = "<group>";
+		};
+		0F2D157D18EB037000FBD443 /* STTweetLabel */ = {
+			isa = PBXGroup;
+			children = (
+				0F2D157E18EB037000FBD443 /* STTweetLabel.h */,
+				0F2D157F18EB037000FBD443 /* STTweetLabel.m */,
+			);
+			path = STTweetLabel;
+			sourceTree = "<group>";
+		};
 		0F521D7218D8925F00250B3F /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				0F2D157D18EB037000FBD443 /* STTweetLabel */,
+				0F2D157918EAF64F00FBD443 /* SMPageControl */,
 				821651EA18E926D20072C65C /* images */,
 			);
 			path = resources;
@@ -377,11 +403,13 @@
 				8216521218E928C30072C65C /* FHUsers.m in Sources */,
 				8216521118E928C30072C65C /* FHPost.m in Sources */,
 				0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */,
+				0F2D158018EB037000FBD443 /* STTweetLabel.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
 				820F82DB18D968DE00D3C05D /* FHTimlineTableViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
 				0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */,
 				820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */,
+				0F2D157C18EAF66200FBD443 /* SMPageControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

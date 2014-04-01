@@ -62,6 +62,8 @@
         [fromLB setTextColor:[UIColor grayColor]];
         [fromLB setBackgroundColor:[UIColor clearColor]];
         
+//        content = [[STTweetLabel alloc] initWithFrame:CGRectZero];
+//        content.delegate = self;
         content = [[UILabel alloc] initWithFrame:CGRectZero];
         [content setNumberOfLines:0];
         [content setFont:[UIFont systemFontOfSize:FONT_SIZE]];
@@ -145,6 +147,21 @@
         height = height + 5 + [FHContentImageView getViewHeightForImageCount:post.picURLs.count];
     }
     return height;
+}
+
+-(void)twitterAccountClicked:(NSString *)link
+{
+    DLog(@"accountClicked:%@", link);
+}
+
+- (void)twitterHashtagClicked:(NSString *)link
+{
+    DLog(@"tagClicked:%@", link);
+}
+
+- (void)websiteClicked:(NSString *)link
+{
+    DLog(@"websiteClicked:%@", link);
 }
 
 @end

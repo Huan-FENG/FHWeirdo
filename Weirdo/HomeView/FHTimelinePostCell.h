@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "FHContentImageView.h"
+#import "STTweetLabel.h"
 
-@interface FHTimelinePostCell : UITableViewCell
+@interface FHTimelinePostCell : UITableViewCell <STLinkProtocol>
 
 @property (strong, nonatomic) UIImageView *userImage;
 @property (strong, nonatomic) UILabel *userNameLB;
 @property (strong, nonatomic) UILabel *timeLB;
 @property (strong, nonatomic) UILabel *fromLB;
+//@property (nonatomic, strong) STTweetLabel *content;
 @property (nonatomic, strong) UILabel *content;
 @property (nonatomic, strong) FHContentImageView *contentImageView;
 @property (strong, nonatomic) UILabel *voteCountLB;
