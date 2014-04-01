@@ -39,6 +39,7 @@
 		8216521118E928C30072C65C /* FHPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216520E18E928C30072C65C /* FHPost.m */; };
 		8216521218E928C30072C65C /* FHUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521018E928C30072C65C /* FHUsers.m */; };
 		8216521518E92ACD0072C65C /* FHTimelinePostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521418E92ACD0072C65C /* FHTimelinePostCell.m */; };
+		8216521818EA5D750072C65C /* FHContentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521718EA5D750072C65C /* FHContentImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,8 @@
 		8216521018E928C30072C65C /* FHUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUsers.m; sourceTree = "<group>"; };
 		8216521318E92ACD0072C65C /* FHTimelinePostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTimelinePostCell.h; sourceTree = "<group>"; };
 		8216521418E92ACD0072C65C /* FHTimelinePostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTimelinePostCell.m; sourceTree = "<group>"; };
+		8216521618EA5D750072C65C /* FHContentImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FHContentImageView.h; path = Weirdo/FHContentImageView.h; sourceTree = SOURCE_ROOT; };
+		8216521718EA5D750072C65C /* FHContentImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FHContentImageView.m; path = Weirdo/FHContentImageView.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +180,8 @@
 				820F829818D7D8DF00D3C05D /* FHFirstViewController.m */,
 				0F521D6F18D87CDA00250B3F /* FHMainViewController.h */,
 				0F521D7018D87CDA00250B3F /* FHMainViewController.m */,
+				8216521618EA5D750072C65C /* FHContentImageView.h */,
+				8216521718EA5D750072C65C /* FHContentImageView.m */,
 				8216520D18E928C30072C65C /* FHPost.h */,
 				8216520E18E928C30072C65C /* FHPost.m */,
 				8216520F18E928C30072C65C /* FHUsers.h */,
@@ -301,6 +306,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = FengHuan;
 				TargetAttributes = {
+					820F827E18D7D8DF00D3C05D = {
+						DevelopmentTeam = NHK64K2QB4;
+					};
 					820F82A218D7D8DF00D3C05D = {
 						TestTargetID = 820F827E18D7D8DF00D3C05D;
 					};
@@ -362,6 +370,7 @@
 			files = (
 				820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */,
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
+				8216521818EA5D750072C65C /* FHContentImageView.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
 				8216521518E92ACD0072C65C /* FHTimelinePostCell.m in Sources */,
 				820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */,
@@ -441,6 +450,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -457,7 +467,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -479,7 +489,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -489,7 +500,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -500,11 +511,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Huan Feng (5U5L5A3C74)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -514,11 +528,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Huan Feng (5U5L5A3C74)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

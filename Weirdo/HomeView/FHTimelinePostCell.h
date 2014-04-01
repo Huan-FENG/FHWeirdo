@@ -7,19 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#define IMAGE_VIEW_HEIGHT 80.0f
-#define PADDING_TOP 8.0
-#define PADDING_LEFT 8.0
-#define FONT_SIZE 15.0
+#import "FHContentImageView.h"
 
 @interface FHTimelinePostCell : UITableViewCell
 
 @property (strong, nonatomic) UIImageView *userImage;
 @property (strong, nonatomic) UILabel *userNameLB;
 @property (strong, nonatomic) UILabel *timeLB;
-@property (nonatomic, strong) UILabel *content;
 @property (strong, nonatomic) UILabel *fromLB;
+@property (nonatomic, strong) UILabel *content;
+@property (nonatomic, strong) FHContentImageView *contentImageView;
 @property (strong, nonatomic) UILabel *voteCountLB;
 @property (strong, nonatomic) UILabel *retweetCountLB;
 @property (strong, nonatomic) UILabel *commentCountLB;
