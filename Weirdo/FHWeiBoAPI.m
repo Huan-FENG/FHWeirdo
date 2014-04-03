@@ -183,7 +183,8 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         }else
             [paramString appendFormat:@"&max_id=%@", post.ID];
     }
-    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/home_timeline.json?%@", APIServer, paramString];
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/user_timeline.json?%@", APIServer, paramString];
+//    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/home_timeline.json?%@", APIServer, paramString];
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }
 
@@ -204,6 +205,11 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 {
     NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
     NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/public_timeline.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+- (void)fetchImagesForURL:(NSString *)URLString interactionProperty:(FHConnectionInterationProperty *)property
+{
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }
 

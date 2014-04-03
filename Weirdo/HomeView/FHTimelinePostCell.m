@@ -17,12 +17,13 @@
 
 #define PADDING_HORIZON 10.0
 #define PADDING_VERTICAL 10.0
+#define PADDING_RETWEET 15.0
+#define FONT [UIFont fontWithName:@"Heiti SC" size:15.0]
 #define FONT_SIZE 15.0
-#define CONTENT_IMAGE_VIEW_HEIGHT 80.0f
 #define USERIMAGE_WIDTH 30.0
 
 @synthesize userImage, userNameLB, timeLB;
-@synthesize content, contentImageView;
+@synthesize content, retweetContent, retweetStatusBackground, contentImageView;
 @synthesize fromLB, voteCountLB, retweetCountLB, commentCountLB;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -62,20 +63,27 @@
         [fromLB setTextColor:[UIColor grayColor]];
         [fromLB setBackgroundColor:[UIColor clearColor]];
         
-//        content = [[STTweetLabel alloc] initWithFrame:CGRectZero];
-//        content.delegate = self;
-        content = [[UILabel alloc] initWithFrame:CGRectZero];
+        content = [[FHTweetLabel alloc] initWithFrame:CGRectZero];
         [content setNumberOfLines:0];
-        [content setFont:[UIFont systemFontOfSize:FONT_SIZE]];
+        [content setFont:FONT];
         [content setBackgroundColor:[UIColor clearColor]];
         
         contentImageView = [[FHContentImageView alloc] initWithFrame:CGRectZero];
+        retweetStatusBackground = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [retweetStatusBackground setImage:[[UIImage imageNamed:@"timeline_rt_border.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:14]];
+        
+        retweetContent = [[FHTweetLabel alloc] initWithFrame:CGRectZero];
+        [retweetContent setNumberOfLines:0];
+        [retweetContent setFont:content.font];
+        [retweetContent setBackgroundColor:[UIColor clearColor]];
         
         [self.contentView addSubview:userImage];
         [self.contentView addSubview:userNameLB];
         [self.contentView addSubview:timeLB];
         [self.contentView addSubview:fromLB];
         [self.contentView addSubview:content];
+        [self.contentView addSubview:retweetStatusBackground];
+        [self.contentView addSubview:retweetContent];
         [self.contentView addSubview:contentImageView];
     }
     return self;
@@ -120,32 +128,63 @@
     timeLB.text = post.createdTime;
     fromLB.text = post.source;
     content.text = post.text;
-    [content setFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + 5, 320 - 2*PADDING_HORIZON, 80)];
+    
+    [content setFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON, 80)];
     [content sizeToFit];
     
     if (post.picURLs && post.picURLs.count > 0) {
         [contentImageView updateViewWithURLs:post.picURLs];
-        
-        DLog(@"contentImageViewFrame:(%f,%f,%f,%f)", contentImageView.frame.origin.x, contentImageView.frame.origin.y, contentImageView.frame.size.width, contentImageView.frame.size.height);
         contentImageView.center = self.contentView.center;
         CGRect frame = contentImageView.frame;
-        DLog(@"contentImageViewFrame:(%f,%f,%f,%f)", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-        frame.origin.y = content.frame.origin.y + content.frame.size.height + 5;
-        DLog(@"contentImageViewFrame:(%f,%f,%f,%f)", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+        frame.origin.y = content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL;
         [contentImageView setFrame:frame];
     }else{
         [contentImageView resetView];
+    }
+    
+    if (post.retweeted) {
+        FHPost *retweeted = post.retweeted;
+        retweetContent.text = [NSString stringWithFormat:@"@%@:%@", retweeted.username, retweeted.text];
+
+        [retweetContent setFrame:CGRectMake(PADDING_RETWEET, content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL, 320-2*PADDING_RETWEET, 80)];
+        [retweetContent sizeToFit];
+        
+        if (retweeted.picURLs && retweeted.picURLs.count > 0) {
+            [contentImageView updateViewWithURLs:retweeted.picURLs];
+            contentImageView.center = self.contentView.center;
+            CGRect frame = contentImageView.frame;
+            frame.origin.y = retweetContent.frame.origin.y + retweetContent.frame.size.height + PADDING_VERTICAL;
+            [contentImageView setFrame:frame];
+        }else{
+            [contentImageView resetView];
+        }
+        
+        [retweetStatusBackground setFrame:CGRectMake(0, retweetContent.frame.origin.y - PADDING_VERTICAL, 320, retweetContent.frame.size.height + contentImageView.frame.size.height + PADDING_VERTICAL*2 + (contentImageView.frame.size.height == 0?0:PADDING_VERTICAL))];
+    }else{
+        retweetContent.text = nil;
+        [retweetContent sizeToFit];
+        [retweetStatusBackground setFrame:CGRectZero];
     }
 }
 
 + (float)cellHeightWithPost:(FHPost *)post
 {
-    CGSize constraintSize = CGSizeMake(320 - 2*PADDING_HORIZON, MAXFLOAT);
-    CGSize contentSize = [post.text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-    float height = USERIMAGE_WIDTH + 5 + contentSize.height + 2*PADDING_VERTICAL;
-    if (post.picURLs && post.picURLs.count) {
-        height = height + 5 + [FHContentImageView getViewHeightForImageCount:post.picURLs.count];
+    CGSize contentSize = [FHTweetLabel sizeOfText:post.text withFont:FONT constarintToWidth:320-2*PADDING_HORIZON];
+    float height = PADDING_VERTICAL + USERIMAGE_WIDTH + PADDING_VERTICAL + contentSize.height;
+    if (post.picURLs && post.picURLs.count>0) {
+        height = height + PADDING_VERTICAL + [FHContentImageView getViewHeightForImageCount:post.picURLs.count];
     }
+    if (post.retweeted)
+    {
+        CGSize retweetedContentSize = [FHTweetLabel sizeOfText:[NSString stringWithFormat:@"@%@:%@", post.retweeted.username, post.retweeted.text] withFont:FONT constarintToWidth:320-2*PADDING_RETWEET];
+        height = height + PADDING_VERTICAL + retweetedContentSize.height;
+        
+        if (post.retweeted.picURLs && post.retweeted.picURLs.count>0) {
+            height = height + PADDING_VERTICAL + [FHContentImageView getViewHeightForImageCount:post.retweeted.picURLs.count];
+        }
+        height = height + PADDING_VERTICAL;
+    }
+    height = height + PADDING_VERTICAL;
     return height;
 }
 

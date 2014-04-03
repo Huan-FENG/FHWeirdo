@@ -35,7 +35,7 @@
 //            userImageURLString = user.profileImageURL;
         }
         
-        NSDictionary *originalRetweet = [original objectForKey:@"retweeted"];
+        NSDictionary *originalRetweet = [original objectForKey:@"retweeted_status"];
         if (originalRetweet)
             retweeted = [[FHPost alloc] initWithPostDic:originalRetweet];
     }
@@ -51,7 +51,7 @@
     NSDate *dateTime = [formatter dateFromString:originalCreatedTime];
 
     formatter.dateFormat = @"yyyy年M月d日 H点m分";
-    NSLog(@"%@", [formatter stringFromDate:dateTime]);
+//    NSLog(@"%@", [formatter stringFromDate:dateTime]);
     
     NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:dateTime];
 	

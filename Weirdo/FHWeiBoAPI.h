@@ -27,4 +27,5 @@
 - (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)fetchBilateralPostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property;
+- (void)fetchImagesForURL:(NSString *)URLString interactionProperty:(FHConnectionInterationProperty *)property;
 @end
