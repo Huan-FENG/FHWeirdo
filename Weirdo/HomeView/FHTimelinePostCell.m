@@ -13,6 +13,10 @@
 @implementation FHTimelinePostCell
 {
     NSTimer *updateImageTimer;
+    UIImageView *detailView;
+    UILabel *retweetCountLB;
+    UILabel *commentCountLB;
+    UILabel *voteCountLB;
 }
 
 #define PADDING_HORIZON 10.0
@@ -21,10 +25,12 @@
 #define FONT [UIFont fontWithName:@"Heiti SC" size:15.0]
 #define FONT_SIZE 15.0
 #define USERIMAGE_WIDTH 30.0
+#define DETAIL_VIEW_HIEIGHT 30
 
 @synthesize userImage, userNameLB, timeLB;
 @synthesize content, retweetContent, retweetStatusBackground, contentImageView;
 @synthesize fromLB, voteCountLB, retweetCountLB, commentCountLB;
+@synthesize indexPath, delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -69,6 +75,8 @@
         [content setBackgroundColor:[UIColor clearColor]];
         
         contentImageView = [[FHContentImageView alloc] initWithFrame:CGRectZero];
+        [contentImageView setDelegate:self];
+        
         retweetStatusBackground = [[UIImageView alloc] initWithFrame:CGRectZero];
         [retweetStatusBackground setImage:[[UIImage imageNamed:@"timeline_rt_border.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:14]];
         
@@ -76,6 +84,45 @@
         [retweetContent setNumberOfLines:0];
         [retweetContent setFont:content.font];
         [retweetContent setBackgroundColor:[UIColor clearColor]];
+        
+        detailView = [[UIImageView alloc] initWithFrame:CGRectMake(PADDING_HORIZON, 0, 320-2*PADDING_HORIZON, DETAIL_VIEW_HIEIGHT)];
+        [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5]];
+        [detailView setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *detailViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(detailViewClicked:)];
+        [detailView addGestureRecognizer:detailViewTap];
+        
+        UIImageView *retweetCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, detailView.frame.size.width/3/2-5, detailView.frame.size.height)];
+        [retweetCountIcon setImage:[UIImage imageNamed:@"timeline_retweet_count_icon.png"]];
+        [retweetCountIcon setContentMode:UIViewContentModeRight];
+        [retweetCountIcon setUserInteractionEnabled:YES];
+        [detailView addSubview:retweetCountIcon];
+        retweetCountLB = [[UILabel alloc] initWithFrame:CGRectMake(retweetCountIcon.frame.size.width+5, 0, retweetCountIcon.frame.size.width, retweetCountIcon.frame.size.height)];
+        [retweetCountLB setUserInteractionEnabled:YES];
+        [retweetCountLB setBackgroundColor:[UIColor clearColor]];
+        [retweetCountLB setFont:[UIFont systemFontOfSize:10]];
+        [retweetCountLB setTextColor:[UIColor colorWithRed:105.0/255.0 green:150.0/255.0 blue:180.0/255.0 alpha:1.0]];
+        [detailView addSubview:retweetCountLB];
+        
+        UIImageView *commentCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(retweetCountLB.frame.origin.x+retweetCountLB.frame.size.width, 0, retweetCountIcon.frame.size.width, detailView.frame.size.height)];
+        [commentCountIcon setImage:[UIImage imageNamed:@"timeline_comment_count_icon.png"]];
+        [commentCountIcon setContentMode:UIViewContentModeRight];
+        [detailView addSubview:commentCountIcon];
+        commentCountLB = [[UILabel alloc] initWithFrame:CGRectMake(commentCountIcon.frame.origin.x+commentCountIcon.frame.size.width+5, 0, retweetCountLB.frame.size.width, commentCountIcon.frame.size.height)];
+        [commentCountLB setBackgroundColor:[UIColor clearColor]];
+        [commentCountLB setFont:retweetCountLB.font];
+        [commentCountLB setTextColor:retweetCountLB.textColor];
+        [detailView addSubview:commentCountLB];
+        [commentCountLB setUserInteractionEnabled:YES];
+        
+        UIImageView *voteCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(commentCountLB.frame.origin.x+commentCountLB.frame.size.width, 0, commentCountIcon.frame.size.width, detailView.frame.size.height)];
+        [voteCountIcon setImage:[UIImage imageNamed:@"timeline_comment_count_icon.png"]];
+        [voteCountIcon setContentMode:UIViewContentModeRight];
+        [detailView addSubview:voteCountIcon];
+        voteCountLB = [[UILabel alloc] initWithFrame:CGRectMake(voteCountIcon.frame.origin.x+voteCountIcon.frame.size.width+5, 0, commentCountLB.frame.size.width, voteCountIcon.frame.size.height)];
+        [voteCountLB setBackgroundColor:[UIColor clearColor]];
+        [voteCountLB setFont:commentCountLB.font];
+        [voteCountLB setTextColor:commentCountLB.textColor];
+        [detailView addSubview:voteCountLB];
         
         [self.contentView addSubview:userImage];
         [self.contentView addSubview:userNameLB];
@@ -85,6 +132,7 @@
         [self.contentView addSubview:retweetStatusBackground];
         [self.contentView addSubview:retweetContent];
         [self.contentView addSubview:contentImageView];
+        [self.contentView addSubview:detailView];
     }
     return self;
 }
@@ -132,12 +180,16 @@
     [content setFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON, 80)];
     [content sizeToFit];
     
+    CGRect detailViewFrame = detailView.frame;
+    detailViewFrame.origin.y = content.frame.origin.y + content.frame.size.height +PADDING_VERTICAL/2;
     if (post.picURLs && post.picURLs.count > 0) {
         [contentImageView updateViewWithURLs:post.picURLs];
         contentImageView.center = self.contentView.center;
         CGRect frame = contentImageView.frame;
         frame.origin.y = content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL;
         [contentImageView setFrame:frame];
+        detailViewFrame.origin.y = contentImageView.frame.origin.y + contentImageView.frame.size.height + PADDING_VERTICAL/2;
+        
     }else{
         [contentImageView resetView];
     }
@@ -160,11 +212,16 @@
         }
         
         [retweetStatusBackground setFrame:CGRectMake(0, retweetContent.frame.origin.y - PADDING_VERTICAL, 320, retweetContent.frame.size.height + contentImageView.frame.size.height + PADDING_VERTICAL*2 + (contentImageView.frame.size.height == 0?0:PADDING_VERTICAL))];
+        detailViewFrame.origin.y = retweetStatusBackground.frame.origin.y + retweetStatusBackground.frame.size.height + PADDING_VERTICAL/2;
     }else{
         retweetContent.text = nil;
         [retweetContent sizeToFit];
         [retweetStatusBackground setFrame:CGRectZero];
     }
+    [detailView setFrame:detailViewFrame];
+    retweetCountLB.text = post.reporstsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.reporstsCount.intValue]: @"转发";
+    commentCountLB.text = post.commentsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.commentsCount.intValue]: @"评论";
+    voteCountLB.text = post.voteCounts.intValue != 0?[NSString stringWithFormat:@"(%d)",post.voteCounts.intValue]: @"赞";
 }
 
 + (float)cellHeightWithPost:(FHPost *)post
@@ -184,7 +241,7 @@
         }
         height = height + PADDING_VERTICAL;
     }
-    height = height + PADDING_VERTICAL;
+    height = height + PADDING_VERTICAL/2 + DETAIL_VIEW_HIEIGHT + PADDING_VERTICAL;
     return height;
 }
 
@@ -201,6 +258,33 @@
 - (void)websiteClicked:(NSString *)link
 {
     DLog(@"websiteClicked:%@", link);
+}
+
+- (void)detailViewClicked:(UITapGestureRecognizer *)sender
+{
+    CellClickedType clickedType;
+    CGPoint touchLocation = [sender locationInView:detailView];
+    if (touchLocation.x < 320/3) {
+        clickedType = CellClickedTypeRetweet;
+    }else if(touchLocation.x <320/3*2){
+        clickedType = CellClickedTypeComment;
+    }else{
+        clickedType = CellClickedTypeVote;
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
+        [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:clickedType contentIndex:0];
+    }
+}
+
+#pragma mark
+#pragma mark - contentImageView delegate
+
+- (void)contentImageView:(FHContentImageView *)contentImageView didSelectAtIndex:(NSUInteger)index
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
+        [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:CellClickedTypePictures contentIndex:index];
+    }
 }
 
 @end

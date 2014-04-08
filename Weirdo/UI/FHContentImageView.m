@@ -19,11 +19,15 @@
     NSArray *contentImageURLs;
 }
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         [self setBackgroundColor:[UIColor clearColor]];
+        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTaped:)];
+        [self addGestureRecognizer:tapGR];
     }
     return self;
 }
@@ -81,7 +85,20 @@
             break;
     }
     return height;
+}
 
+- (void)didTaped:(UITapGestureRecognizer *)sender
+{
+    NSUInteger index = 0;
+    CGPoint tapLocation = [sender locationInView:self];
+    if (self.frame.size.height != CONTENT_SINGLE_IMAGE_HIGHT) {
+        index = floor(tapLocation.y/(CONTENT_MULTI_IMAGE_VIEW_HIGHT+5))*3 + floor(tapLocation.x/(CONTENT_MULTI_IMAGE_VIEW_HIGHT+5));
+    }
+    DLog(@"index: %d", index);
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(contentImageView:didSelectAtIndex:)]) {
+        [self.delegate contentImageView:self didSelectAtIndex:index];
+    }
 }
 
 @end

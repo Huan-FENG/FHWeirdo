@@ -78,7 +78,7 @@
         case 2:
             formatCreatedTime = @"前天";
         default:
-            formatter.dateFormat = @"M月d日 H点m分";
+            formatter.dateFormat = @"M月d日";
             formatCreatedTime = [formatter stringFromDate:dateTime];
             break;
     }

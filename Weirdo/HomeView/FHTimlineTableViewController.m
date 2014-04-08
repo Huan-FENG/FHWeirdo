@@ -7,7 +7,7 @@
 //
 
 #import "FHTimlineTableViewController.h"
-#import "FHTimelinePostCell.h"
+#import "FHOPViewController.h"
 
 @interface FHTimlineTableViewController ()
 {
@@ -145,13 +145,44 @@
     }
     
     [cell updateCellWithPost:[posts objectAtIndex:indexPath.row]];
-    
+    [cell setIndexPath:indexPath];
+    [cell setDelegate:self];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [FHTimelinePostCell cellHeightWithPost:[posts objectAtIndex:indexPath.row]];
+}
+
+#pragma mark
+#pragma mark - timelinePostCell delegate
+
+- (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectAtIndexPath:(NSIndexPath *)indexPath withClickedType:(CellClickedType)clickedType contentIndex:(NSUInteger)index
+{
+    if (clickedType == CellClickedTypePictures) {
+        return;
+    }
+    FHOPViewController *opVC = [[FHOPViewController alloc] init];
+    switch (clickedType) {
+        case CellClickedTypeRetweet:
+            [opVC setupWithPost:[posts objectAtIndex:indexPath.row] operation:StatusOperationRetweet];
+            NSLog(@"index: %d, retweet", indexPath.row);
+            break;
+        case CellClickedTypeComment:
+            [opVC setupWithPost:[posts objectAtIndex:indexPath.row] operation:StatusOperationComment];
+            NSLog(@"index: %d, retcomment", indexPath.row);
+            break;
+        case CellClickedTypeVote:
+            NSLog(@"index: %d, vote", indexPath.row);
+            break;
+        case CellClickedTypePictures:
+            NSLog(@"index: %d, pictures", indexPath.row);
+            break;
+        default:
+            break;
+    }
+    [self presentViewController:opVC animated:YES completion:NULL];
 }
 
 /*

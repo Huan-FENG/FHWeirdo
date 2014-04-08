@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FHTimelinePostCell.h"
 
 typedef enum : NSUInteger {
     TimelineCategoryHome,
@@ -14,7 +15,7 @@ typedef enum : NSUInteger {
     TimelineCategoryPublic,
 } TimelineCategory;
 
-@interface FHTimlineTableViewController : UITableViewController
+@interface FHTimlineTableViewController : UITableViewController <FHTimelinPostCellDelegate>
 
 @property (nonatomic) TimelineCategory category;
 
