@@ -64,20 +64,35 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     }
 }
 
-- (NSDictionary *)postURL:(NSString *)URLString withConnectionInteractionProperty:(FHConnectionInterationProperty *)properties error:(NSError **)erro
+- (NSString *)URLEncodString:(NSString *)string
+{
+    NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(nil,
+                                                                                                    (CFStringRef)string, nil,
+                                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                    kCFStringEncodingUTF8));
+    return encodedString;
+}
+
+- (NSDictionary *)postURL:(NSString *)URLString bodyString:(NSString *)bodyString withConnectionInteractionProperty:(FHConnectionInterationProperty *)properties error:(NSError **)erro
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URLString]];
     [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
+    
     if (properties) {
         NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
         NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
         [connections setObject:properties forKey:connectionKey];
     }else{
         NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
-        if (!*erro && response) {
+        if (response) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
-            *erro = [self isRespondError:dic];
-            if (!*erro)
+            NSError *error = [self isRespondError:dic];
+            if (error) {
+                if (erro) {
+                    *erro = error;
+                }
+            }else
                 return dic;
         }
     }
@@ -94,10 +109,14 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         [connections setObject:properties forKey:connectionKey];
     }else{
         NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
-        if (!*erro && response) {
+        if (response) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
-            *erro = [self isRespondError:dic];
-            if (!*erro)
+            NSError *error = [self isRespondError:dic];
+            if (error) {
+                if (erro) {
+                    *erro = error;
+                }
+            }else
                 return dic;
         }
     }
@@ -149,7 +168,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     NSString *paramString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=authorization_code&code=%@&redirect_uri=%@", appKey, appSecretKey, code, APIRedirectURI];
     NSString *URLString = [NSString stringWithFormat:@"%@/oauth2/access_token?%@", APIServer, paramString];
     NSError *error;
-    NSDictionary *response = [self postURL:URLString withConnectionInteractionProperty:nil error:&error];
+    NSDictionary *response = [self postURL:URLString bodyString:nil withConnectionInteractionProperty:nil error:&error];
     if (response) {
         token = [response objectForKey:@"access_token"];
         uid = [response objectForKey:@"uid"];
@@ -211,6 +230,57 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 - (void)fetchImagesForURL:(NSString *)URLString interactionProperty:(FHConnectionInterationProperty *)property
 {
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+- (void)fetchCommentForStatus:(NSNumber *)statusID laterThanComment:(NSNumber *)commentID interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&id=%@", token, statusID];
+    if (commentID) {
+        [paramString appendFormat:@"&max_id=%@", commentID];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/comments/show.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+- (void)retweetStatus:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"id=%@&access_token=%@", statusID, token];
+    if (content) {
+        content = content.length > 140? [content substringToIndex:139]:content;
+        content = [self URLEncodString:content];
+        [paramString appendFormat:@"&status=%@", content];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/repost.json", APIServer];
+    NSError *error;
+    [self postURL:URLString bodyString:paramString withConnectionInteractionProperty:property error:&error];
+}
+
+- (void)commentStatus:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"id=%@&access_token=%@", statusID, token];
+    if (content) {
+        content = content.length > 140? [content substringToIndex:139]:content;
+        content = [self URLEncodString:content];
+        [paramString appendFormat:@"&comment=%@", content];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/comments/create.json", APIServer];
+    NSError *error;
+    [self postURL:URLString bodyString:paramString withConnectionInteractionProperty:property error:&error];
+    DLog(@"comment error:%d", error.code);
+}
+
+- (void)replyComment:(NSNumber *)commentID Status:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"cid%@&id=%@&access_token=%@", commentID, statusID, token];
+    if (content) {
+        content = content.length > 140? [content substringToIndex:139]:content;
+        content = [self URLEncodString:content];
+        [paramString appendFormat:@"&comment=%@", content];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/comments/reply.json", APIServer];
+    NSError *error;
+    [self postURL:URLString bodyString:paramString withConnectionInteractionProperty:property error:&error];
+    DLog(@"comment error:%d", error.code);
 }
 
 #pragma mark

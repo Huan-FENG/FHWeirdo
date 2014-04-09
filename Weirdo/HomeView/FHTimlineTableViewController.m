@@ -8,6 +8,7 @@
 
 #import "FHTimlineTableViewController.h"
 #import "FHOPViewController.h"
+#import "FHPostViewController.h"
 
 @interface FHTimlineTableViewController ()
 {
@@ -125,7 +126,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark
+#pragma mark - Table view data source & delagate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -144,7 +146,7 @@
         cell = [[FHTimelinePostCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PostCell"];
     }
     
-    [cell updateCellWithPost:[posts objectAtIndex:indexPath.row]];
+    [cell updateCellWithPost:[posts objectAtIndex:indexPath.row] isPostOnly:NO];
     [cell setIndexPath:indexPath];
     [cell setDelegate:self];
     return cell;
@@ -152,7 +154,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [FHTimelinePostCell cellHeightWithPost:[posts objectAtIndex:indexPath.row]];
+    return [FHTimelinePostCell cellHeightWithPost:[posts objectAtIndex:indexPath.row] isPostOnly:NO];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FHPostViewController *postVC = [[FHPostViewController alloc] init];
+    [postVC setPost:[posts objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:postVC animated:YES];
 }
 
 #pragma mark

@@ -54,20 +54,23 @@
         [userNameLB setFont:[UIFont boldSystemFontOfSize:12]];
         [userNameLB setTextColor:[UIColor brownColor]];
         [userNameLB setContentMode:UIViewContentModeBottom];
-        [userNameLB setBackgroundColor:[UIColor clearColor]];
+        [userNameLB setBackgroundColor: [UIColor clearColor]];
+        
         timeLB = [[UILabel alloc] initWithFrame:CGRectMake(userNameLB.frame.origin.x, userNameLB.frame.origin.y + userNameLB.frame.size.height, 50, userImage.frame.size.height - userNameLB.frame.size.height)];
         [timeLB setContentMode:UIViewContentModeBottom];
         [timeLB setTextAlignment:NSTextAlignmentLeft];
         [timeLB setFont:[UIFont systemFontOfSize:9]];
         [timeLB setTextColor:[UIColor grayColor]];
-        [timeLB setBackgroundColor:[UIColor clearColor]];
+        [timeLB setBackgroundColor: [UIColor clearColor]];
+        [timeLB setShadowColor:[UIColor clearColor]];
         
         fromLB = [[UILabel alloc] initWithFrame:CGRectMake(timeLB.frame.origin.x + timeLB.frame.size.width, timeLB.frame.origin.y, userNameLB.frame.size.width - timeLB.frame.size.width, timeLB.frame.size.height)];
         [fromLB setContentMode:UIViewContentModeBottom];
         [fromLB setTextAlignment:NSTextAlignmentLeft];
         [fromLB setFont:timeLB.font];
         [fromLB setTextColor:[UIColor grayColor]];
-        [fromLB setBackgroundColor:[UIColor clearColor]];
+        [fromLB setBackgroundColor: [UIColor clearColor]];
+        [fromLB setShadowColor:[UIColor clearColor]];
         
         content = [[FHTweetLabel alloc] initWithFrame:CGRectZero];
         [content setNumberOfLines:0];
@@ -98,9 +101,10 @@
         [detailView addSubview:retweetCountIcon];
         retweetCountLB = [[UILabel alloc] initWithFrame:CGRectMake(retweetCountIcon.frame.size.width+5, 0, retweetCountIcon.frame.size.width, retweetCountIcon.frame.size.height)];
         [retweetCountLB setUserInteractionEnabled:YES];
-        [retweetCountLB setBackgroundColor:[UIColor clearColor]];
+        [retweetCountLB setTextAlignment:NSTextAlignmentLeft];
         [retweetCountLB setFont:[UIFont systemFontOfSize:10]];
         [retweetCountLB setTextColor:[UIColor colorWithRed:105.0/255.0 green:150.0/255.0 blue:180.0/255.0 alpha:1.0]];
+        [retweetCountLB setBackgroundColor:[UIColor clearColor]];
         [detailView addSubview:retweetCountLB];
         
         UIImageView *commentCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(retweetCountLB.frame.origin.x+retweetCountLB.frame.size.width, 0, retweetCountIcon.frame.size.width, detailView.frame.size.height)];
@@ -108,20 +112,22 @@
         [commentCountIcon setContentMode:UIViewContentModeRight];
         [detailView addSubview:commentCountIcon];
         commentCountLB = [[UILabel alloc] initWithFrame:CGRectMake(commentCountIcon.frame.origin.x+commentCountIcon.frame.size.width+5, 0, retweetCountLB.frame.size.width, commentCountIcon.frame.size.height)];
-        [commentCountLB setBackgroundColor:[UIColor clearColor]];
         [commentCountLB setFont:retweetCountLB.font];
         [commentCountLB setTextColor:retweetCountLB.textColor];
-        [detailView addSubview:commentCountLB];
+        [commentCountLB setTextAlignment:NSTextAlignmentLeft];
         [commentCountLB setUserInteractionEnabled:YES];
+        [commentCountLB setBackgroundColor: [UIColor clearColor]];
+        [detailView addSubview:commentCountLB];
         
         UIImageView *voteCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(commentCountLB.frame.origin.x+commentCountLB.frame.size.width, 0, commentCountIcon.frame.size.width, detailView.frame.size.height)];
         [voteCountIcon setImage:[UIImage imageNamed:@"timeline_comment_count_icon.png"]];
         [voteCountIcon setContentMode:UIViewContentModeRight];
         [detailView addSubview:voteCountIcon];
         voteCountLB = [[UILabel alloc] initWithFrame:CGRectMake(voteCountIcon.frame.origin.x+voteCountIcon.frame.size.width+5, 0, commentCountLB.frame.size.width, voteCountIcon.frame.size.height)];
-        [voteCountLB setBackgroundColor:[UIColor clearColor]];
+        [voteCountLB setTextAlignment:NSTextAlignmentLeft];
         [voteCountLB setFont:commentCountLB.font];
         [voteCountLB setTextColor:commentCountLB.textColor];
+        [voteCountLB setBackgroundColor:[UIColor clearColor]];
         [detailView addSubview:voteCountLB];
         
         [self.contentView addSubview:userImage];
@@ -164,7 +170,7 @@
     }
 }
 
-- (void)updateCellWithPost:(FHPost *)post
+- (void)updateCellWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly
 {
     FHUser *user = [[FHUsers sharedUsers] getUserForID:post.userID];
     userImage.image = user.profileImage;
@@ -218,13 +224,18 @@
         [retweetContent sizeToFit];
         [retweetStatusBackground setFrame:CGRectZero];
     }
-    [detailView setFrame:detailViewFrame];
-    retweetCountLB.text = post.reporstsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.reporstsCount.intValue]: @"转发";
-    commentCountLB.text = post.commentsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.commentsCount.intValue]: @"评论";
-    voteCountLB.text = post.voteCounts.intValue != 0?[NSString stringWithFormat:@"(%d)",post.voteCounts.intValue]: @"赞";
+    
+    if (!postOnly) {
+        [detailView setFrame:detailViewFrame];
+        retweetCountLB.text = post.reporstsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.reporstsCount.intValue]: @"转发";
+        commentCountLB.text = post.commentsCount.intValue != 0?[NSString stringWithFormat:@"(%d)",post.commentsCount.intValue]: @"评论";
+        voteCountLB.text = post.voteCounts.intValue != 0?[NSString stringWithFormat:@"(%d)",post.voteCounts.intValue]: @"赞";
+    }else{
+        [detailView removeFromSuperview];
+    }
 }
 
-+ (float)cellHeightWithPost:(FHPost *)post
++ (float)cellHeightWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly
 {
     CGSize contentSize = [FHTweetLabel sizeOfText:post.text withFont:FONT constarintToWidth:320-2*PADDING_HORIZON];
     float height = PADDING_VERTICAL + USERIMAGE_WIDTH + PADDING_VERTICAL + contentSize.height;
@@ -241,7 +252,12 @@
         }
         height = height + PADDING_VERTICAL;
     }
-    height = height + PADDING_VERTICAL/2 + DETAIL_VIEW_HIEIGHT + PADDING_VERTICAL;
+    
+    if (!postOnly) {
+        height = height + PADDING_VERTICAL/2 + DETAIL_VIEW_HIEIGHT;
+    }
+    
+    height = height + PADDING_VERTICAL;
     return height;
 }
 

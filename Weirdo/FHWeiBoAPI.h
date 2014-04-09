@@ -28,4 +28,5 @@
 - (void)fetchBilateralPostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property;
 - (void)fetchImagesForURL:(NSString *)URLString interactionProperty:(FHConnectionInterationProperty *)property;
+- (void)retweetStatus:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property;
 @end

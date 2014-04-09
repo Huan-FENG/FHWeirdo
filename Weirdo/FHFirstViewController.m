@@ -8,6 +8,7 @@
 
 #import "FHFirstViewController.h"
 #import "FHMainViewController.h"
+#import "FHHomeNavigationController.h"
 
 @interface FHFirstViewController ()
 
@@ -49,7 +50,8 @@
 
 - (void)presentMainViewController
 {
-    FHMainViewController *mainVC = [[FHMainViewController alloc] init];
+    FHHomeNavigationController *mainVC = [[FHHomeNavigationController alloc] init];
+//    FHMainViewController *mainVC = [[FHMainViewController alloc] init];
     [self presentViewController:mainVC animated:YES completion:nil];
 }
 

@@ -47,11 +47,7 @@
         for (int i=0; i<3; i++) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 10, titleScroll.frame.size.width, titleScroll.frame.size.height - 10)];
             [title setTextColor:[UIColor whiteColor]];
-            [title setFont:[UIFont boldSystemFontOfSize:16.0]];
-            [title setShadowColor:[UIColor lightGrayColor]];
-            [title setShadowOffset:CGSizeMake(0.5, 0.5)];
             [title setBackgroundColor: [UIColor clearColor]];
-            [title setTextAlignment:NSTextAlignmentCenter];
 
             switch (i) {
                 case 0:

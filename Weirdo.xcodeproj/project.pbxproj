@@ -53,6 +53,8 @@
 		82C5946518F38C760027E2A3 /* timeline_retweet_count_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5945F18F38C760027E2A3 /* timeline_retweet_count_icon.png */; };
 		82C5946618F38C760027E2A3 /* timeline_retweet_count_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5946018F38C760027E2A3 /* timeline_retweet_count_icon@2x.png */; };
 		82C5946F18F3D7F10027E2A3 /* FHOPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5946E18F3D7F10027E2A3 /* FHOPViewController.m */; };
+		82C5947218F51DEA0027E2A3 /* FHPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947118F51DEA0027E2A3 /* FHPostViewController.m */; };
+		82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947418F534F60027E2A3 /* FHCommentCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,10 @@
 		82C5946018F38C760027E2A3 /* timeline_retweet_count_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timeline_retweet_count_icon@2x.png"; sourceTree = "<group>"; };
 		82C5946D18F3D7F10027E2A3 /* FHOPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHOPViewController.h; sourceTree = "<group>"; };
 		82C5946E18F3D7F10027E2A3 /* FHOPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHOPViewController.m; sourceTree = "<group>"; };
+		82C5947018F51DEA0027E2A3 /* FHPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHPostViewController.h; sourceTree = "<group>"; };
+		82C5947118F51DEA0027E2A3 /* FHPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPostViewController.m; sourceTree = "<group>"; };
+		82C5947318F534F60027E2A3 /* FHCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FHCommentCell.h; path = Weirdo/UI/FHCommentCell.h; sourceTree = SOURCE_ROOT; };
+		82C5947418F534F60027E2A3 /* FHCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FHCommentCell.m; path = Weirdo/UI/FHCommentCell.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +289,8 @@
 				8216521418E92ACD0072C65C /* FHTimelinePostCell.m */,
 				82C5946D18F3D7F10027E2A3 /* FHOPViewController.h */,
 				82C5946E18F3D7F10027E2A3 /* FHOPViewController.m */,
+				82C5947018F51DEA0027E2A3 /* FHPostViewController.h */,
+				82C5947118F51DEA0027E2A3 /* FHPostViewController.m */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -321,6 +329,8 @@
 		82C5945118ED7B680027E2A3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				82C5947318F534F60027E2A3 /* FHCommentCell.h */,
+				82C5947418F534F60027E2A3 /* FHCommentCell.m */,
 				82C5945218ED7B680027E2A3 /* FHContentImageView.h */,
 				82C5945318ED7B680027E2A3 /* FHContentImageView.m */,
 				82C5945418ED7B680027E2A3 /* FHImageView.h */,
@@ -452,6 +462,7 @@
 				820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */,
 				82C5945918ED7B680027E2A3 /* FHImageView.m in Sources */,
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
+				82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */,
 				82C5944518EBA04E0027E2A3 /* FHImageCache.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
 				8216521518E92ACD0072C65C /* FHTimelinePostCell.m in Sources */,
@@ -461,6 +472,7 @@
 				8216521118E928C30072C65C /* FHPost.m in Sources */,
 				0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
+				82C5947218F51DEA0027E2A3 /* FHPostViewController.m in Sources */,
 				820F82DB18D968DE00D3C05D /* FHTimlineTableViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
 				0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */,

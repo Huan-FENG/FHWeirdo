@@ -41,7 +41,7 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (strong, nonatomic) id<FHTimelinPostCellDelegate> delegate;
 
-- (void)updateCellWithPost:(FHPost *)post;
-+ (float)cellHeightWithPost:(FHPost *)post;
+- (void)updateCellWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly;
++ (float)cellHeightWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly;
 
 @end

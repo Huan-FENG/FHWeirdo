@@ -20,7 +20,10 @@
     if (self) {
         favorited = [original objectForKey:@"favorited"]? [[original objectForKey:@"favorited"] boolValue]: NO;
         createdTime = [original objectForKey:@"created_at"]? [self formatCreatedTime:[original objectForKey:@"created_at"]] : @"从前";
-        ID = [original objectForKey:@"idstr"]? : nil;
+        if ([original objectForKey:@"id"]) {
+            ID =  [NSNumber numberWithLongLong:[[original objectForKey:@"idstr"] longLongValue]];
+        }
+        
         text = [original objectForKey:@"text"]? : nil;
         source = [original objectForKey:@"source"]? [self formatSource:[original objectForKey:@"source"]]: @"地球";
         picURLs = [original objectForKey:@"pic_urls"]? [self formatThumbnails:[original objectForKey:@"pic_urls"]]: nil;

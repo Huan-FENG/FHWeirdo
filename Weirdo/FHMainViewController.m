@@ -94,7 +94,7 @@
 
 - (void)changeViewController:(UIButton *)sender
 {
-    self.selectedIndex = sender.tag; //切换不同控制器的界面
+    self.selectedIndex = sender.tag;
     sender.enabled = NO;
     if (previousSelectedButton != sender) {
         previousSelectedButton.enabled = YES;

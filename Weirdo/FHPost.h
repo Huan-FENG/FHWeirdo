@@ -13,7 +13,7 @@
 
 @property (nonatomic) BOOL favorited;
 @property (nonatomic) NSString *createdTime;
-@property (nonatomic) NSString *ID;
+@property (nonatomic) NSNumber *ID;
 @property (nonatomic) NSString *text;
 @property (nonatomic) NSString *source;
 @property (nonatomic) NSArray *picURLs;
