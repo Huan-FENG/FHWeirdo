@@ -83,7 +83,7 @@
     }
 
     usernameLB.text = comment.username;
-    timeLB.text = comment.createdTime;
+    timeLB.text = [FHPost formatCreatedTime:comment.createdTime showHours:YES];
     
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:comment.text];
     commentLB.componentsAndPlainText = componentsDS;

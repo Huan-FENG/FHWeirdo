@@ -19,7 +19,7 @@
 {
     if (self) {
         favorited = [original objectForKey:@"favorited"]? [[original objectForKey:@"favorited"] boolValue]: NO;
-        createdTime = [original objectForKey:@"created_at"]? [self formatCreatedTime:[original objectForKey:@"created_at"]] : @"从前";
+        createdTime = [original objectForKey:@"created_at"]? [NSString stringWithFormat:@"%@", [original objectForKey:@"created_at"]] : @"从前";
         if ([original objectForKey:@"id"]) {
             ID =  [NSNumber numberWithLongLong:[[original objectForKey:@"idstr"] longLongValue]];
         }
@@ -46,7 +46,7 @@
     return self;
 }
 
-- (NSString *)formatCreatedTime:(NSString *)originalCreatedTime
++ (NSString *)formatCreatedTime:(NSString *)originalCreatedTime showHours:(BOOL)showHours
 {
     NSString *formatCreatedTime;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
@@ -81,7 +81,10 @@
         case 2:
             formatCreatedTime = @"前天";
         default:
-            formatter.dateFormat = @"M月d日";
+            if (showHours) {
+                formatter.dateFormat = @"M月d日 H:mm";
+            }else
+                formatter.dateFormat = @"M月d日";
             formatCreatedTime = [formatter stringFromDate:dateTime];
             break;
     }

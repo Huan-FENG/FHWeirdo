@@ -27,4 +27,5 @@
 
 - (id)initWithPostDic:(NSDictionary *)original;
 
++ (NSString *)formatCreatedTime:(NSString *)originalCreatedTime showHours:(BOOL)showHours;
 @end

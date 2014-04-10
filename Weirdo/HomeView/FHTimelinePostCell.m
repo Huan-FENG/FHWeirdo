@@ -165,7 +165,7 @@
     }
     
     userNameLB.text = post.username;
-    timeLB.text = post.createdTime;
+    timeLB.text = [FHPost formatCreatedTime:post.createdTime showHours:NO];
     fromLB.text = post.source;
     
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];

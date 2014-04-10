@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FHHomePageViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface FHHomePageViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate>
 
 @end

@@ -8,13 +8,21 @@
 
 #import "FHHomePageViewController.h"
 #import "FHTimlineTableViewController.h"
+#import "FHTimelineViewController.h"
 #import "SMPageControl.h"
 
 @interface FHHomePageViewController ()
 {
-    FHTimlineTableViewController *VC1;
-    FHTimlineTableViewController *VC2;
-    FHTimlineTableViewController *VC3;
+//    FHTimlineTableViewController *VC1;
+//    FHTimlineTableViewController *VC2;
+//    FHTimlineTableViewController *VC3;
+    
+    FHTimelineViewController *VC1;
+    FHTimelineViewController *VC2;
+    FHTimelineViewController *VC3;
+    UIScrollView *titleScroll;
+    SMPageControl *pageIndicator;
+    TimelineCategory willToVCCategory;
 }
 
 @end
@@ -34,15 +42,16 @@
 {
     if (self) {
         self = [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
-//        [self.navigationItem setTitle:@"FIRST PAGE"];
+        VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
+//        VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
         [VC1.view setBackgroundColor:[UIColor whiteColor]];
         [VC1.view setTag:0];
         [self setViewControllers:@[VC1] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         
         UIView *customTitle = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 100, 45)];
-//        CGRect frame = customTitle.frame;
-        UIScrollView *titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 30)];
+        titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 30)];
+        [titleScroll setShowsHorizontalScrollIndicator:NO];
+        [titleScroll setShowsVerticalScrollIndicator:NO];
         [titleScroll setContentSize:CGSizeMake(titleScroll.frame.size.width*3, titleScroll.self.frame.size.height)];
         for (int i=0; i<3; i++) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 10, titleScroll.frame.size.width, titleScroll.frame.size.height - 10)];
@@ -64,7 +73,7 @@
             }
             [titleScroll addSubview:title];
         }
-        SMPageControl *pageIndicator = [[SMPageControl alloc] initWithFrame:CGRectMake(titleScroll.frame.origin.x, titleScroll.frame.size.height, titleScroll.frame.size.width, 10)];
+        pageIndicator = [[SMPageControl alloc] initWithFrame:CGRectMake(titleScroll.frame.origin.x, titleScroll.frame.size.height, titleScroll.frame.size.width, 10)];
         [pageIndicator setIndicatorDiameter:4.0];
         [pageIndicator setIndicatorMargin:5.0];
         [pageIndicator setAlignment:SMPageControlAlignmentCenter];
@@ -85,41 +94,72 @@
     
     [self setDataSource:self];
     [self setDelegate:self];
-    
-    // Do any additional setup after loading the view.
+    for (UIView *view in self.view.subviews) {
+        if ([view isKindOfClass:[UIScrollView class]]) {
+            [(UIScrollView *)view setDelegate:self];
+        }
+    }
+}
+
+#pragma mark
+#pragma mark - scrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.x == self.view.frame.size.width) {
+        return;
+    }
+
+    CGPoint scrollToPoint;
+    if (scrollView.contentOffset.x > self.view.frame.size.width) {
+        CGFloat percentage = (scrollView.contentOffset.x - self.view.frame.size.width) / self.view.frame.size.width;
+        scrollToPoint = CGPointMake(pageIndicator.currentPage*titleScroll.frame.size.width + percentage*titleScroll.frame.size.width, 0);
+    }else{
+        CGFloat percentage = (self.view.frame.size.width - scrollView.contentOffset.x) / self.view.frame.size.width;
+        scrollToPoint = CGPointMake(pageIndicator.currentPage*titleScroll.frame.size.width - percentage*titleScroll.frame.size.width, 0);
+    }
+    [titleScroll setContentOffset:scrollToPoint animated:YES];
+}
+
+#pragma mark
+#pragma mark - pageView delegate
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+{
+    if (completed) {
+        [pageIndicator setCurrentPage:willToVCCategory];
+    }
+}
+
+-(void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
+{
+    willToVCCategory = [(FHTimelineViewController *)[pendingViewControllers lastObject] category];
+//    willToVCCategory = [(FHTimlineTableViewController *)[pendingViewControllers lastObject] category];
 }
 
 #pragma mark
 #pragma mark - pageViewController data source
 
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-    if (finished) {
-        DLog(@"pageViewController %d", pageViewController.presentingViewController.view.tag);
-    }
-}
-
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
     UIViewController *nextVC;
-    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
+    FHTimelineViewController *timelineVC = (FHTimelineViewController *)viewController;
+//    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
     switch (timelineVC.category) {
         case TimelineCategoryHome:{
             if (!VC2) {
-                VC2 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
-//                [self.navigationItem setTitle:@"SENCOND PAGE"];
-                [VC2.view setBackgroundColor:[UIColor blackColor]];
-//                [VC2.view setTag:1];
+                VC2 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryFriends];
+//                VC2 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
+                [VC2.view setBackgroundColor:[UIColor whiteColor]];
             }
             nextVC = VC2;
             break;
         }
         case TimelineCategoryFriends:{
             if (!VC3) {
-                VC3 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
-//                [self.navigationItem setTitle:@"THIRD PAGE"];
-                [VC3.view setBackgroundColor:[UIColor brownColor]];
-//                [VC3.view setTag:2];
+                VC3 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryPublic];
+//                VC3 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
+                [VC3.view setBackgroundColor:[UIColor whiteColor]];
             }
             nextVC = VC3;
             break;
@@ -133,23 +173,23 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     UIViewController *previousVC;
-    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
+    FHTimelineViewController *timelineVC = (FHTimelineViewController *)viewController;
+//    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
     switch (timelineVC.category) {
         case TimelineCategoryFriends:{
             if (!VC1) {
-                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
+                VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
+//                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
                 [VC1.view setBackgroundColor:[UIColor whiteColor]];
-//                [self.navigationItem setTitle:@"FIRST PAGE"];
-//                [VC1.view setTag:0];
             }
             previousVC = VC1;
             break;
         }
         case TimelineCategoryPublic:{
             if (!VC2) {
-                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
-                [VC2.view setBackgroundColor:[UIColor blackColor]];
-//                [VC2.view setTag:1];
+                VC2 =  [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryFriends];
+//                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
+                [VC2.view setBackgroundColor:[UIColor whiteColor]];
             }
             previousVC = VC2;
         }
@@ -159,31 +199,9 @@
     return previousVC;
 }
 
-#pragma mark
-#pragma mark - pageView delegate
-
-//- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-//{
-//    if (completed) {
-//        currentPageNumber = currentPageNumber + 1;
-//    }
-//}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
