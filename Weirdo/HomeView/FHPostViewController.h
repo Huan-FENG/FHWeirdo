@@ -12,4 +12,5 @@
 
 @property (nonatomic) UIView *postView;
 @property (nonatomic) FHPost *post;
+
 @end

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "FHContentImageView.h"
-#import "FHTweetLabel.h"
+//#import "FHTweetLabel.h"
+#import "RCLabel.h"
 
 @class FHTimelinePostCell;
 
@@ -31,9 +32,11 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) UILabel *userNameLB;
 @property (strong, nonatomic) UILabel *timeLB;
 @property (strong, nonatomic) UILabel *fromLB;
-@property (nonatomic, strong) FHTweetLabel *content;
+//@property (nonatomic, strong) FHTweetLabel *content;
+@property (nonatomic, strong) RCLabel *content;
 @property (nonatomic, strong) UIImageView *retweetStatusBackground;
-@property (nonatomic, strong) FHTweetLabel *retweetContent;
+//@property (nonatomic, strong) FHTweetLabel *retweetContent;
+@property (nonatomic, strong) RCLabel *retweetContent;
 @property (nonatomic, strong) FHContentImageView *contentImageView;
 @property (strong, nonatomic) UILabel *voteCountLB;
 @property (strong, nonatomic) UILabel *retweetCountLB;

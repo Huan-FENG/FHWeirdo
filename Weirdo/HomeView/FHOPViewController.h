@@ -16,6 +16,8 @@ typedef enum : NSUInteger {
 
 @interface FHOPViewController : UIViewController <UITextViewDelegate>
 
+@property (nonatomic) NSString *replyTo;
+
 - (void)setupWithPost:(FHPost *)post operation:(StatusOperation)statusOperation;
 
 @end

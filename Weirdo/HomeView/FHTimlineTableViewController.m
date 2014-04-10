@@ -13,6 +13,7 @@
 @interface FHTimlineTableViewController ()
 {
     NSMutableArray *posts;
+    BOOL needRefresh;
 }
 @end
 
@@ -42,6 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    needRefresh = YES;
     DLog(@"category: %d", category);
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -52,11 +54,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self pullDownToRefresh];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    if (needRefresh) {
+        [self pullDownToRefresh];
+    }
 }
 
 - (void)pullDownToRefresh
@@ -192,6 +197,7 @@
             break;
     }
     [self presentViewController:opVC animated:YES completion:NULL];
+    needRefresh = NO;
 }
 
 /*

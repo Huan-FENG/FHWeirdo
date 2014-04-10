@@ -72,8 +72,7 @@
         [fromLB setBackgroundColor: [UIColor clearColor]];
         [fromLB setShadowColor:[UIColor clearColor]];
         
-        content = [[FHTweetLabel alloc] initWithFrame:CGRectZero];
-        [content setNumberOfLines:0];
+        content = [[RCLabel alloc] initWithFrame:CGRectZero];
         [content setFont:FONT];
         [content setBackgroundColor:[UIColor clearColor]];
         
@@ -83,8 +82,7 @@
         retweetStatusBackground = [[UIImageView alloc] initWithFrame:CGRectZero];
         [retweetStatusBackground setImage:[[UIImage imageNamed:@"timeline_rt_border.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:14]];
         
-        retweetContent = [[FHTweetLabel alloc] initWithFrame:CGRectZero];
-        [retweetContent setNumberOfLines:0];
+        retweetContent = [[RCLabel alloc] initWithFrame:CGRectZero];
         [retweetContent setFont:content.font];
         [retweetContent setBackgroundColor:[UIColor clearColor]];
         
@@ -143,18 +141,6 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 - (void)updateUserImage:(NSTimer *)timer
 {
     NSString *userID = timer.userInfo;
@@ -181,10 +167,19 @@
     userNameLB.text = post.username;
     timeLB.text = post.createdTime;
     fromLB.text = post.source;
-    content.text = post.text;
     
-    [content setFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON, 80)];
-    [content sizeToFit];
+    RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];
+//    cell.RCLabel.delegate=self;
+    content.componentsAndPlainText = componentsDS;
+    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON, 80)];
+    [tempLabel setFont:FONT];
+    tempLabel.componentsAndPlainText = componentsDS;
+    CGSize optimalSize = [tempLabel optimumSize:YES];
+    CGRect frame = tempLabel.frame;
+    frame.size.height = optimalSize.height+1;
+    [content optimumSize:YES];
+    [content setFrame:frame];
+//    [content setBackgroundColor:[UIColor yellowColor]];
     
     CGRect detailViewFrame = detailView.frame;
     detailViewFrame.origin.y = content.frame.origin.y + content.frame.size.height +PADDING_VERTICAL/2;
@@ -202,10 +197,18 @@
     
     if (post.retweeted) {
         FHPost *retweeted = post.retweeted;
-        retweetContent.text = [NSString stringWithFormat:@"@%@:%@", retweeted.username, retweeted.text];
-
-        [retweetContent setFrame:CGRectMake(PADDING_RETWEET, content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL, 320-2*PADDING_RETWEET, 80)];
-        [retweetContent sizeToFit];
+        NSString *retweetContentText = [NSString stringWithFormat:@"@%@:%@", retweeted.username, retweeted.text];
+        RCLabelComponentsStructure *retweetComponentsDS = [RCLabel extractTextStyle:retweetContentText];
+        retweetContent.componentsAndPlainText = retweetComponentsDS;
+        RCLabel *retweetTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(PADDING_RETWEET, content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL, 320-2*PADDING_RETWEET, 80)];
+        [retweetTempLabel setFont:FONT];
+        retweetTempLabel.componentsAndPlainText = retweetComponentsDS;
+        CGSize retweetOptimalSize = [retweetTempLabel optimumSize:YES];
+        CGRect retweetFrame = retweetTempLabel.frame;
+        retweetFrame.size.height = retweetOptimalSize.height+1;
+        [retweetContent optimumSize:YES];
+        [retweetContent setFrame:retweetFrame];
+//        [retweetContent setBackgroundColor:[UIColor clearColor]];
         
         if (retweeted.picURLs && retweeted.picURLs.count > 0) {
             [contentImageView updateViewWithURLs:retweeted.picURLs];
@@ -220,8 +223,8 @@
         [retweetStatusBackground setFrame:CGRectMake(0, retweetContent.frame.origin.y - PADDING_VERTICAL, 320, retweetContent.frame.size.height + contentImageView.frame.size.height + PADDING_VERTICAL*2 + (contentImageView.frame.size.height == 0?0:PADDING_VERTICAL))];
         detailViewFrame.origin.y = retweetStatusBackground.frame.origin.y + retweetStatusBackground.frame.size.height + PADDING_VERTICAL/2;
     }else{
-        retweetContent.text = nil;
-        [retweetContent sizeToFit];
+        retweetContent.componentsAndPlainText = nil;
+        [retweetContent setFrame:CGRectZero];
         [retweetStatusBackground setFrame:CGRectZero];
     }
     
@@ -237,14 +240,26 @@
 
 + (float)cellHeightWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly
 {
-    CGSize contentSize = [FHTweetLabel sizeOfText:post.text withFont:FONT constarintToWidth:320-2*PADDING_HORIZON];
+    RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];
+    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_HORIZON, 80)];
+    [tempLabel setFont:FONT];
+    tempLabel.componentsAndPlainText = componentsDS;
+    CGSize optimalSize = [tempLabel optimumSize:YES];
+    CGSize contentSize = CGSizeMake(0, optimalSize.height+1);
+
     float height = PADDING_VERTICAL + USERIMAGE_WIDTH + PADDING_VERTICAL + contentSize.height;
     if (post.picURLs && post.picURLs.count>0) {
         height = height + PADDING_VERTICAL + [FHContentImageView getViewHeightForImageCount:post.picURLs.count];
     }
     if (post.retweeted)
     {
-        CGSize retweetedContentSize = [FHTweetLabel sizeOfText:[NSString stringWithFormat:@"@%@:%@", post.retweeted.username, post.retweeted.text] withFont:FONT constarintToWidth:320-2*PADDING_RETWEET];
+        RCLabelComponentsStructure *rComponentsDS = [RCLabel extractTextStyle:[NSString stringWithFormat:@"@%@:%@", post.retweeted.username, post.retweeted.text]];
+        RCLabel *rTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_HORIZON, 80)];
+        [rTempLabel setFont:FONT];
+        rTempLabel.componentsAndPlainText = rComponentsDS;
+        CGSize rOptimalSize = [rTempLabel optimumSize:YES];
+        CGSize retweetedContentSize = CGSizeMake(0, rOptimalSize.height+1);
+        
         height = height + PADDING_VERTICAL + retweetedContentSize.height;
         
         if (post.retweeted.picURLs && post.retweeted.picURLs.count>0) {

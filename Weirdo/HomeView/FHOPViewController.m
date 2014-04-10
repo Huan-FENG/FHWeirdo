@@ -24,15 +24,24 @@
 
 @implementation FHOPViewController
 
+@synthesize replyTo;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        float statusbarheight = 0;
+        if ([[UIDevice currentDevice].systemVersion doubleValue] < 7.0) {
+            statusbarheight = 0;
+        }else
+            statusbarheight = 20;
+        
+        UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44 + statusbarheight)];
         [barView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navbar_bg.png"]]];
         [self.view addSubview:barView];
         
-        title = [[UILabel alloc] initWithFrame:CGRectMake(barView.center.x-50, 0, 100, 35)];
+        title = [[UILabel alloc] initWithFrame:CGRectMake(barView.center.x-50, statusbarheight, 100, 35)];
         [title setTextColor:[UIColor whiteColor]];
         [title setFont:[UIFont boldSystemFontOfSize:16.0]];
         [title setShadowColor:[UIColor lightGrayColor]];
@@ -48,21 +57,22 @@
         [barView addSubview:charCountLB];
         
         UIButton *closeBT = [UIButton buttonWithType:UIButtonTypeCustom];
-        [closeBT setFrame:CGRectMake(10, 10, 30, 30)];
-        [closeBT setImage:[UIImage imageNamed:@"timeline_comment_count_icon"] forState:UIControlStateNormal];
+        [closeBT setTitle:@"取消" forState:UIControlStateNormal];
+        [closeBT.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
+        [closeBT setFrame:CGRectMake(10, 10+statusbarheight, 30, 30)];
         [closeBT setContentMode:UIViewContentModeCenter];
         [closeBT addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
         [barView addSubview:closeBT];
         
         UIButton *doneBT = [UIButton buttonWithType:UIButtonTypeCustom];
-        [doneBT setFrame:CGRectMake(290, closeBT.frame.origin.y, closeBT.frame.size.width, closeBT.frame.size.height)];
-        [doneBT setImage:[UIImage imageNamed:@"timeline_retweet_count_icon"] forState:UIControlStateNormal];
+        [doneBT setFrame:CGRectMake(280, closeBT.frame.origin.y, closeBT.frame.size.width, closeBT.frame.size.height)];
+        [doneBT.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        [doneBT setTitle:@"发送" forState:UIControlStateNormal];
         [doneBT setContentMode:UIViewContentModeCenter];
         [doneBT addTarget:self action:@selector(didFinishEditing) forControlEvents:UIControlEventTouchUpInside];
         [barView addSubview:doneBT];
         
         statusView = [[UIView alloc] initWithFrame:CGRectMake(0, barView.frame.size.height, 320, 70)];
-//        [statusView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"timeline_detail_border"]]];
         [statusView setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1.0]];
         [self.view addSubview:statusView];
         
@@ -84,40 +94,38 @@
     operation = statusOperation;
     opStatus = post;
     
-    if (operation == StatusOperationRetweet) {
-        UIImageView *postThumb = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 60, 60)];
-        [postThumb setContentMode:UIViewContentModeScaleAspectFit];
-        NSString *thumbURLString;
-        if (post.picURLs && post.picURLs.count > 0) {
-            thumbURLString = [post.picURLs objectAtIndex:0];
-        }else if (post.retweeted.picURLs && post.retweeted.picURLs.count>0)
-            thumbURLString = [post.retweeted.picURLs objectAtIndex:0];
-        if (thumbURLString) {
-            postThumb.image = [[FHImageCache sharedImage] getImageForURL:thumbURLString];
-        }else{
-            //defaultImage
-        }
-        
-        UILabel *usernameLB = [[UILabel alloc] initWithFrame:CGRectMake(postThumb.frame.size.width+postThumb.frame.origin.x + 10, 5, statusView.frame.size.width-10*2-postThumb.frame.size.width - 5, 15)];
-        [usernameLB setBackgroundColor:[UIColor clearColor]];
-        [usernameLB setFont:[UIFont systemFontOfSize:12.0]];
-        [usernameLB setTextAlignment:NSTextAlignmentLeft];
-        usernameLB.text = [NSString stringWithFormat:@"@%@", post.retweeted.username? :post.username];
-        
-        UILabel *contentLB = [[UILabel alloc] initWithFrame:CGRectMake(usernameLB.frame.origin.x, usernameLB.frame.origin.y+usernameLB.frame.size.height, usernameLB.frame.size.width, statusView.frame.size.height - usernameLB.frame.size.height - usernameLB.frame.origin.y*2)];
-        [contentLB setTextAlignment:NSTextAlignmentLeft];
-        [contentLB setBackgroundColor:[UIColor clearColor]];
-        [contentLB setFont:[UIFont systemFontOfSize:11.0]];
-        [contentLB setTextColor:[UIColor lightGrayColor]];
-        [contentLB setShadowColor:[UIColor clearColor]];
-        [contentLB setNumberOfLines:4];
-        [contentLB setLineBreakMode:NSLineBreakByTruncatingTail];
-        contentLB.text = post.retweeted.text? :post.text;
-        
-        [statusView addSubview:postThumb];
-        [statusView addSubview:usernameLB];
-        [statusView addSubview:contentLB];
+    UIImageView *postThumb = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 60, 60)];
+    [postThumb setContentMode:UIViewContentModeScaleAspectFit];
+    NSString *thumbURLString;
+    if (post.picURLs && post.picURLs.count > 0) {
+        thumbURLString = [post.picURLs objectAtIndex:0];
+    }else if (post.retweeted.picURLs && post.retweeted.picURLs.count>0)
+        thumbURLString = [post.retweeted.picURLs objectAtIndex:0];
+    if (thumbURLString) {
+        postThumb.image = [[FHImageCache sharedImage] getImageForURL:thumbURLString];
+    }else{
+        //defaultImage
     }
+        
+    UILabel *usernameLB = [[UILabel alloc] initWithFrame:CGRectMake(postThumb.frame.size.width+postThumb.frame.origin.x + 10, 5, statusView.frame.size.width-10*2-postThumb.frame.size.width - 5, 15)];
+    [usernameLB setBackgroundColor:[UIColor clearColor]];
+    [usernameLB setFont:[UIFont systemFontOfSize:12.0]];
+    [usernameLB setTextAlignment:NSTextAlignmentLeft];
+    usernameLB.text = [NSString stringWithFormat:@"@%@", post.retweeted.username? :post.username];
+        
+    UILabel *contentLB = [[UILabel alloc] initWithFrame:CGRectMake(usernameLB.frame.origin.x, usernameLB.frame.origin.y+usernameLB.frame.size.height, usernameLB.frame.size.width, statusView.frame.size.height - usernameLB.frame.size.height - usernameLB.frame.origin.y*2)];
+    [contentLB setTextAlignment:NSTextAlignmentLeft];
+    [contentLB setBackgroundColor:[UIColor clearColor]];
+    [contentLB setFont:[UIFont systemFontOfSize:11.0]];
+    [contentLB setTextColor:[UIColor lightGrayColor]];
+    [contentLB setShadowColor:[UIColor clearColor]];
+    [contentLB setNumberOfLines:4];
+    [contentLB setLineBreakMode:NSLineBreakByTruncatingTail];
+    contentLB.text = post.retweeted.text? :post.text;
+        
+    [statusView addSubview:postThumb];
+    [statusView addSubview:usernameLB];
+    [statusView addSubview:contentLB];
 }
 
 - (void)viewDidLoad
@@ -167,21 +175,26 @@
 - (void)showTextViewPlaceholder
 {
     if (!statusTextViewPlaceholder) {
-        statusTextViewPlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 150, 15)];
+        statusTextViewPlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 15)];
         [statusTextViewPlaceholder setFont:statusTextView.font];
         [statusTextViewPlaceholder setBackgroundColor:[UIColor clearColor]];
         [statusTextView addSubview:statusTextViewPlaceholder];
         [statusTextViewPlaceholder setTextColor:[UIColor lightGrayColor]];
         [statusTextViewPlaceholder setEnabled:NO];
+        [statusTextViewPlaceholder setTextAlignment:NSTextAlignmentLeft];
+        [statusTextViewPlaceholder setShadowColor:[UIColor clearColor]];
     }
     [statusTextViewPlaceholder setHidden:NO];
 
     switch (operation) {
+        case StatusOperationRetweet:
+            statusTextViewPlaceholder.text = @"说点儿什么呢";
+            break;
         case StatusOperationComment:
             statusTextViewPlaceholder.text = @"待我评论一番";
             break;
         case StatusOperationReply:
-            statusTextViewPlaceholder.text = @"回复";
+            statusTextViewPlaceholder.text = [NSString stringWithFormat:@"回复@%@:", replyTo];
             break;
         default:
             break;
@@ -242,5 +255,14 @@
     statusTextView.scrollIndicatorInsets = contentInsets;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
 
 @end
