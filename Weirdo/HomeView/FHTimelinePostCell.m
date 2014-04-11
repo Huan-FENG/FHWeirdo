@@ -171,7 +171,7 @@
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];
 //    cell.RCLabel.delegate=self;
     content.componentsAndPlainText = componentsDS;
-    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(userImage.frame.origin.x, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON, 80)];
+    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(userImage.frame.origin.x-5, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON+5, 80)];
     [tempLabel setFont:FONT];
     tempLabel.componentsAndPlainText = componentsDS;
     CGSize optimalSize = [tempLabel optimumSize:YES];
@@ -179,7 +179,6 @@
     frame.size.height = optimalSize.height+1;
     [content optimumSize:YES];
     [content setFrame:frame];
-//    [content setBackgroundColor:[UIColor yellowColor]];
     
     CGRect detailViewFrame = detailView.frame;
     detailViewFrame.origin.y = content.frame.origin.y + content.frame.size.height +PADDING_VERTICAL/2;
@@ -208,7 +207,6 @@
         retweetFrame.size.height = retweetOptimalSize.height+1;
         [retweetContent optimumSize:YES];
         [retweetContent setFrame:retweetFrame];
-//        [retweetContent setBackgroundColor:[UIColor clearColor]];
         
         if (retweeted.picURLs && retweeted.picURLs.count > 0) {
             [contentImageView updateViewWithURLs:retweeted.picURLs];
@@ -241,7 +239,7 @@
 + (float)cellHeightWithPost:(FHPost *)post isPostOnly:(BOOL)postOnly
 {
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];
-    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_HORIZON, 80)];
+    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_HORIZON+5, 80)];
     [tempLabel setFont:FONT];
     tempLabel.componentsAndPlainText = componentsDS;
     CGSize optimalSize = [tempLabel optimumSize:YES];
@@ -254,7 +252,7 @@
     if (post.retweeted)
     {
         RCLabelComponentsStructure *rComponentsDS = [RCLabel extractTextStyle:[NSString stringWithFormat:@"@%@:%@", post.retweeted.username, post.retweeted.text]];
-        RCLabel *rTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_HORIZON, 80)];
+        RCLabel *rTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_RETWEET, 80)];
         [rTempLabel setFont:FONT];
         rTempLabel.componentsAndPlainText = rComponentsDS;
         CGSize rOptimalSize = [rTempLabel optimumSize:YES];

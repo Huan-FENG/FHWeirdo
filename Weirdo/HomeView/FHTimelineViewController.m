@@ -10,6 +10,8 @@
 #import "FHOPViewController.h"
 #import "FHPostViewController.h"
 
+#define REFRESH_TIMEINTERVAL 15*60
+
 @interface FHTimelineViewController ()
 {
     NSMutableArray *posts;
@@ -41,7 +43,7 @@
     [pullTableView setDataSource:self];
     [pullTableView setPullDelegate:self];
     self.pullTableView.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
-    self.pullTableView.pullBackgroundColor = [UIColor yellowColor];
+    self.pullTableView.pullBackgroundColor = [UIColor whiteColor];
     self.pullTableView.pullTextColor = [UIColor blackColor];
 }
 
@@ -49,9 +51,8 @@
 {
     
     [super viewWillAppear:animated];
-    if(!self.pullTableView.pullTableIsRefreshing) {
+    if(!self.pullTableView.pullTableIsRefreshing && needRefresh) {
         self.pullTableView.pullTableIsRefreshing = YES;
-        [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
     }
 }
 
@@ -60,6 +61,11 @@
     if (needRefresh) {
         [self pullDownToRefresh];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    needRefresh = NO;
 }
 
 - (void)viewDidUnload
@@ -76,26 +82,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) refreshTable
-{
-    /*
-     
-     Code to actually refresh goes here.
-     
-     */
-    self.pullTableView.pullLastRefreshDate = [NSDate date];
-    self.pullTableView.pullTableIsRefreshing = NO;
-    [self.pullTableView reloadData];
-}
-
 - (void) loadMoreDataToTable
 {
-    /*
-     
-     Code to actually load more data goes here.
-     
-     */
-    self.pullTableView.pullTableIsLoadingMore = NO;
+    if (!pullTableView.pullTableIsLoadingMore) {
+        [self pullUpToRefresh];
+    }
 }
 
 - (void)pullDownToRefresh
@@ -104,8 +95,16 @@
     [property setAfterFailedTarget:self];
     [property setAfterFailedSelector:@selector(fetchFailedWithNetworkError:)];
     [property setAfterFinishedTarget:self];
-    [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    [property setAfterFinishedSelector:@selector(fetchNewerFinishedWithResponseDic:)];
+    
     FHPost *post = (posts && posts.count > 0) ? [posts objectAtIndex:0] : nil;
+    if (pullTableView.pullLastRefreshDate) {
+        NSTimeInterval interval = [[NSDate new] timeIntervalSinceDate:pullTableView.pullLastRefreshDate];
+        if (interval > REFRESH_TIMEINTERVAL) {
+            post = nil;
+        }
+    }
+    
     switch (category) {
         case TimelineCategoryHome:
             [[FHWeiBoAPI sharedWeiBoAPI] fetchHomePostsNewer:YES thanPost:post interactionProperty:property];
@@ -127,7 +126,7 @@
     [property setAfterFailedTarget:self];
     [property setAfterFailedSelector:@selector(fetchFailedWithNetworkError:)];
     [property setAfterFinishedTarget:self];
-    [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    [property setAfterFinishedSelector:@selector(fetchLaterFinishedWithResponseDic:)];
     switch (category) {
         case TimelineCategoryHome:
             [[FHWeiBoAPI sharedWeiBoAPI] fetchHomePostsNewer:NO thanPost:[posts lastObject] interactionProperty:property];
@@ -143,18 +142,56 @@
     }
 }
 
-- (void)fetchFinishedWithResponseDic:(NSDictionary *)responseDic
+- (void)fetchNewerFinishedWithResponseDic:(NSDictionary *)responseDic
+{
+    
+    NSArray *postsArray = [responseDic objectForKey:@"statuses"];
+    
+    NSTimeInterval interval = MAXFLOAT;
+    if (pullTableView.pullLastRefreshDate) {
+        interval = [[NSDate new] timeIntervalSinceDate:pullTableView.pullLastRefreshDate];
+    }
+    
+    NSMutableArray *freshPosts;
+    if (interval > REFRESH_TIMEINTERVAL) {
+        freshPosts = [[NSMutableArray alloc] init];
+    }else{
+        freshPosts = [NSMutableArray arrayWithArray:posts];
+    }
+    if (postsArray && postsArray.count > 0)
+    {
+        for (int i = postsArray.count; i>0; i--) {
+            NSDictionary *postDic = [postsArray objectAtIndex:i-1];
+            FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
+            [freshPosts insertObject:post atIndex:0];
+        }
+        posts = freshPosts;
+        [pullTableView reloadData];
+    }
+    self.pullTableView.pullLastRefreshDate = [NSDate date];
+    self.pullTableView.pullTableIsRefreshing = NO;
+}
+
+- (void)fetchLaterFinishedWithResponseDic:(NSDictionary *)responseDic
 {
     NSArray *postsArray = [responseDic objectForKey:@"statuses"];
-    for (NSDictionary *postDic in postsArray) {
-        FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
-        [posts addObject:post];
+    if (postsArray && postsArray.count > 0) {
+        NSMutableArray *freshPosts = [NSMutableArray arrayWithArray:posts];
+        for (NSDictionary *postDic in postsArray) {
+            FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
+            [freshPosts addObject:post];
+        }
+        posts = freshPosts;
+        [pullTableView reloadData];
     }
-    [pullTableView reloadData];
+    self.pullTableView.pullTableIsLoadingMore = NO;
 }
 
 - (void)fetchFailedWithNetworkError:(NSError *)error
 {
+    self.pullTableView.pullTableIsLoadingMore = NO;
+    self.pullTableView.pullTableIsRefreshing = NO;
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
@@ -232,12 +269,12 @@
 
 - (void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView
 {
-    [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
+    [self pullDownToRefresh];
 }
 
 - (void)pullTableViewDidTriggerLoadMore:(PullTableView *)pullTableView
 {
-    [self performSelector:@selector(loadMoreDataToTable) withObject:nil afterDelay:3.0f];
+    [self pullUpToRefresh];
 }
 
 

@@ -47,7 +47,7 @@
         [timeLB setBackgroundColor:[UIColor clearColor]];
         [timeLB setShadowColor:[UIColor clearColor]];
         
-        commentLB = [[RCLabel alloc] initWithFrame:CGRectMake(usernameLB.frame.origin.x, usernameLB.frame.origin.y+usernameLB.frame.size.height+5, 320-3*PADDING_HORIZON-userImage.frame.size.width, 0)];
+        commentLB = [[RCLabel alloc] initWithFrame:CGRectMake(usernameLB.frame.origin.x-5, usernameLB.frame.origin.y+usernameLB.frame.size.height+5, 320-3*PADDING_HORIZON-userImage.frame.size.width+5, 0)];
         [commentLB setFont:COMMENT_FONT];
         [commentLB setBackgroundColor:[UIColor clearColor]];
         
@@ -101,7 +101,7 @@
 + (float)cellHeightWithComment:(FHPost *)comment
 {
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:comment.text];
-    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320-3*PADDING_HORIZON-30, 0)];
+    RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320-3*PADDING_HORIZON-30+5, 0)];
     [tempLabel setFont:COMMENT_FONT];
     tempLabel.componentsAndPlainText = componentsDS;
     CGSize commentSize = [tempLabel optimumSize:YES];

@@ -51,21 +51,21 @@
 		label.font = [UIFont boldSystemFontOfSize:13.0f];
 		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		label.backgroundColor = [UIColor clearColor];
-		label.textAlignment = UITextAlignmentCenter;
+		label.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:label];
 		_statusLabel=label;
 		
         /* Config Arrow Image */
-		CALayer *layer = [[CALayer alloc] init];
-		layer.frame = CGRectMake(25.0f,midY - 20, 30.0f, 55.0f);
-		layer.contentsGravity = kCAGravityResizeAspect;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-			layer.contentsScale = [[UIScreen mainScreen] scale];
-		}
-#endif
-		[[self layer] addSublayer:layer];
-		_arrowImage=layer;
+//		CALayer *layer = [[CALayer alloc] init];
+//		layer.frame = CGRectMake(25.0f,midY - 20, 30.0f, 55.0f);
+//		layer.contentsGravity = kCAGravityResizeAspect;
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+//		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+//			layer.contentsScale = [[UIScreen mainScreen] scale];
+//		}
+//#endif
+//		[[self layer] addSublayer:layer];
+//		_arrowImage=layer;
 		
         /* Config activity indicator */
 		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:DEFAULT_ACTIVITY_INDICATOR_STYLE];
@@ -113,7 +113,8 @@
 	switch (aState) {
 		case EGOOPullPulling:
 			
-			_statusLabel.text = NSLocalizedStringFromTable(@"Release to load more...",@"PullTableViewLan", @"Release to load more status");
+            _statusLabel.text = @"上拉加载更多";
+//			_statusLabel.text = NSLocalizedStringFromTable(@"Release to load more...",@"PullTableViewLan", @"Release to load more status");
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];
 			_arrowImage.transform = CATransform3DIdentity;
@@ -128,8 +129,8 @@
 				_arrowImage.transform = CATransform3DMakeRotation((M_PI / 180.0) * 180.0f, 0.0f, 0.0f, 1.0f);
 				[CATransaction commit];
 			}
-			
-			_statusLabel.text = NSLocalizedStringFromTable(@"Pull up to load more...", @"PullTableViewLan",@"Pull down to load more status");
+			_statusLabel.text = @"释放加载更多";
+//			_statusLabel.text = NSLocalizedStringFromTable(@"Pull up to load more...", @"PullTableViewLan",@"Pull down to load more status");
 			[_activityView stopAnimating];
 			[CATransaction begin];
 			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 
@@ -140,7 +141,8 @@
 			break;
 		case EGOOPullLoading:
 			
-			_statusLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PullTableViewLan",@"Loading Status");
+            _statusLabel.text = @"加载中...";
+//			_statusLabel.text = NSLocalizedStringFromTable(@"Loading...", @"PullTableViewLan",@"Loading Status");
 			[_activityView startAnimating];
 			[CATransaction begin];
 			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 

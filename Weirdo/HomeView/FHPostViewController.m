@@ -17,6 +17,9 @@
     UIView *mainTitleView;
     NSMutableArray *comments;
     BOOL needRefresh;
+    
+    UILabel *loadMoreLB;
+    UIActivityIndicatorView *loadMoreActivity;
 }
 
 @end
@@ -44,11 +47,6 @@
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = YES;
     needRefresh = YES;
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -92,6 +90,13 @@
         FHPost *comment = [[FHPost alloc] initWithPostDic:commentDic];
         [comments addObject:comment];
     }
+    if (commentsArray.count == 0) {
+        loadMoreLB.text = @"已无更多评论";
+    }
+    if (comments) {
+        loadMoreLB.text = @"暂无评论";
+    }
+    [loadMoreActivity stopAnimating];
     needRefresh = YES;
     [self.tableView reloadData];
 }
@@ -148,6 +153,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0) {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        return;
+    }
     FHOPViewController *opVC = [[FHOPViewController alloc] init];
     [opVC setReplyTo:[[comments objectAtIndex:indexPath.row] username]];
     [opVC setupWithPost:post operation:StatusOperationReply];
@@ -155,53 +164,37 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     needRefresh = NO;
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    if ((comments.count == 0 && indexPath.section == 0) || (indexPath.section == 1 && indexPath.row == comments.count-1)) {
+        
+        if (tableView.tableFooterView) {
+            return;
+        }
+        
+        UIView *footerView = [[UIView alloc] init];
+        [footerView setFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+        [footerView setBackgroundColor:[UIColor clearColor]];
+        
+        loadMoreLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, footerView.frame.size.height)];
+        loadMoreLB.center = footerView.center;
+        [loadMoreLB setFont:[UIFont systemFontOfSize:10]];
+        [loadMoreLB setTextColor:[UIColor lightGrayColor]];
+        [loadMoreLB setBackgroundColor:[UIColor clearColor]];
+        [loadMoreLB setShadowColor:[UIColor clearColor]];
+        loadMoreLB.text = @"获取更多评论";
+        [footerView addSubview:loadMoreLB];
+        
+        loadMoreActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        loadMoreActivity.center = footerView.center;
+        CGRect frame = loadMoreActivity.frame;
+        frame.origin.x = loadMoreLB.frame.origin.x - 30;
+        [loadMoreActivity setFrame:frame];
+        [loadMoreActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        [footerView addSubview:loadMoreActivity];
+        self.tableView.tableFooterView = footerView;
+    }
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

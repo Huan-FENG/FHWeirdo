@@ -99,9 +99,6 @@
     loadMoreFrame.origin.y = self.contentSize.height + visibleTableDiffBoundsHeight;
     loadMoreView.frame = loadMoreFrame;
     
-    
-    
-    
 }
 
 #pragma mark - Preserving the original behaviour

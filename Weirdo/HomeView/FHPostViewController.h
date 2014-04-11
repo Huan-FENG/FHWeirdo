@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FHPostViewController : UITableViewController
+@interface FHPostViewController : UITableViewController <UIScrollViewDelegate>
 
 @property (nonatomic) UIView *postView;
 @property (nonatomic) FHPost *post;

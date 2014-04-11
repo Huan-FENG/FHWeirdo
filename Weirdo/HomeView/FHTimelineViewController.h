@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "PullTableView.h"
 #import "FHTimelinePostCell.h"
-#import "FHTimlineTableViewController.h"
 
-//typedef enum : NSUInteger {
-//    TimelineCategoryHome,
-//    TimelineCategoryFriends,
-//    TimelineCategoryPublic,
-//} TimelineCategory;
+typedef enum : NSUInteger {
+    TimelineCategoryHome,
+    TimelineCategoryFriends,
+    TimelineCategoryPublic,
+} TimelineCategory;
 
 @interface FHTimelineViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, PullTableViewDelegate, FHTimelinPostCellDelegate>
 

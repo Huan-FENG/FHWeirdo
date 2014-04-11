@@ -7,7 +7,6 @@
 //
 
 #import "FHHomePageViewController.h"
-#import "FHTimlineTableViewController.h"
 #import "FHTimelineViewController.h"
 #import "SMPageControl.h"
 
