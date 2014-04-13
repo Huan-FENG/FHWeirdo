@@ -177,8 +177,11 @@
     NSArray *postsArray = [responseDic objectForKey:@"statuses"];
     if (postsArray && postsArray.count > 0) {
         NSMutableArray *freshPosts = [NSMutableArray arrayWithArray:posts];
-        for (NSDictionary *postDic in postsArray) {
-            FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
+        for (int i=0; i<postsArray.count; i++) {
+            if (i == 0) {
+                continue;
+            }
+            FHPost *post = [[FHPost alloc] initWithPostDic:[postsArray objectAtIndex:i]];
             [freshPosts addObject:post];
         }
         posts = freshPosts;

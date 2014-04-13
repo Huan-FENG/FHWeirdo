@@ -85,20 +85,33 @@
 
 - (void)fetchFinishedWithResponseDic:(NSDictionary *)responseDic
 {
-    NSArray *commentsArray = [responseDic objectForKey:@"comments"];
-    for (NSDictionary *commentDic in commentsArray) {
-        FHPost *comment = [[FHPost alloc] initWithPostDic:commentDic];
-        [comments addObject:comment];
-    }
-    if (commentsArray.count == 0) {
-        loadMoreLB.text = @"已无更多评论";
-    }
-    if (comments) {
-        loadMoreLB.text = @"暂无评论";
-    }
     [loadMoreActivity stopAnimating];
-    needRefresh = YES;
-    [self.tableView reloadData];
+    NSArray *commentsArray = [responseDic objectForKey:@"comments"];
+    
+    if (commentsArray.count == 0) {
+        loadMoreLB.text = @"暂无评论";
+    }else{
+        if (commentsArray.count == 1 && comments.count > 0) {
+            if (comments.count > 0) {
+                loadMoreLB.text = @"已无更多评论";
+            }else{
+                comments = [NSMutableArray arrayWithObject:[[FHPost alloc] initWithPostDic:[commentsArray objectAtIndex:0]]];
+                [self.tableView reloadData];
+            }
+        }else{
+            NSMutableArray *refreshComments = [NSMutableArray arrayWithArray:comments];
+            for (int i =0; i<commentsArray.count; i++) {
+                if (i == 0) {
+                    continue;
+                }
+                FHPost *comment = [[FHPost alloc] initWithPostDic:[commentsArray objectAtIndex:i]];
+                [refreshComments addObject:comment];
+            }
+            comments = refreshComments;
+            [self.tableView reloadData];
+            loadMoreLB.text = @"获取更多评论";
+        }
+    }
 }
 
 - (void)fetchFailedWithNetworkError:(NSError *)error
@@ -174,7 +187,7 @@
         }
         
         UIView *footerView = [[UIView alloc] init];
-        [footerView setFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+        [footerView setFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
         [footerView setBackgroundColor:[UIColor clearColor]];
         
         loadMoreLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, footerView.frame.size.height)];
@@ -183,7 +196,11 @@
         [loadMoreLB setTextColor:[UIColor lightGrayColor]];
         [loadMoreLB setBackgroundColor:[UIColor clearColor]];
         [loadMoreLB setShadowColor:[UIColor clearColor]];
-        loadMoreLB.text = @"获取更多评论";
+        
+        if (comments.count == 0 && indexPath.section == 0) {
+            loadMoreLB.text = @"正在获取评论...";
+        }else
+            loadMoreLB.text = @"获取更多评论";
         [footerView addSubview:loadMoreLB];
         
         loadMoreActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
@@ -194,6 +211,16 @@
         [loadMoreActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         [footerView addSubview:loadMoreActivity];
         self.tableView.tableFooterView = footerView;
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!loadMoreActivity.isAnimating && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
+        DLog(@"start loading more")
+        [loadMoreActivity startAnimating];
+        loadMoreLB.text = @"获取中...";
+        [self pullDownToRefresh];
     }
 }
 

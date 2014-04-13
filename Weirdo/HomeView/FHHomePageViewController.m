@@ -11,11 +11,7 @@
 #import "SMPageControl.h"
 
 @interface FHHomePageViewController ()
-{
-//    FHTimlineTableViewController *VC1;
-//    FHTimlineTableViewController *VC2;
-//    FHTimlineTableViewController *VC3;
-    
+{ 
     FHTimelineViewController *VC1;
     FHTimelineViewController *VC2;
     FHTimelineViewController *VC3;
@@ -42,7 +38,6 @@
     if (self) {
         self = [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
-//        VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
         [VC1.view setBackgroundColor:[UIColor whiteColor]];
         [VC1.view setTag:0];
         [self setViewControllers:@[VC1] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
