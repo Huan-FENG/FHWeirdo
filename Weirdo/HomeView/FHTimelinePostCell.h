@@ -18,15 +18,18 @@ typedef enum : NSUInteger {
     CellClickedTypeRetweet,
     CellClickedTypeComment,
     CellClickedTypeVote,
+    CellClickedTypeUserImage,
 } CellClickedType;
 
 @protocol FHTimelinPostCellDelegate <NSObject>
 
+@optional
 - (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectAtIndexPath:(NSIndexPath *)indexPath withClickedType:(CellClickedType)clickedType contentIndex:(NSUInteger)index;
+- (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectLink:(NSString *)link;
 
 @end
 
-@interface FHTimelinePostCell : UITableViewCell <FHContentImageViewDelegate>
+@interface FHTimelinePostCell : UITableViewCell <FHContentImageViewDelegate, RCLabelDelegate>
 
 @property (strong, nonatomic) UIImageView *userImage;
 @property (strong, nonatomic) UILabel *userNameLB;

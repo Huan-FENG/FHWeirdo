@@ -10,6 +10,7 @@
 #import "FHTimelinePostCell.h"
 #import "FHCommentCell.h"
 #import "FHOPViewController.h"
+#import "FHWebViewController.h"
 
 @interface FHPostViewController ()
 {

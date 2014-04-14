@@ -32,13 +32,14 @@
     if (self) {
         
         float statusbarheight = 0;
-        if ([[UIDevice currentDevice].systemVersion doubleValue] < 7.0) {
-            statusbarheight = 0;
-        }else
+        NSString *bgname = @"navigationbar_bg.png";
+        if (![[UIDevice currentDevice].systemVersion doubleValue] < 7.0) {
             statusbarheight = 20;
+            bgname = @"navigationbar_bg-568h.png";
+        }
         
         UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44 + statusbarheight)];
-        [barView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navbar_bg.png"]]];
+        [barView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:bgname]]];
         [self.view addSubview:barView];
         
         title = [[UILabel alloc] initWithFrame:CGRectMake(barView.center.x-50, statusbarheight, 100, 35)];

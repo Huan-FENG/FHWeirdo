@@ -48,6 +48,11 @@
         userImage.layer.shadowOpacity = 1.0;
         userImage.layer.shadowRadius = 2.0;
         userImage.layer.shadowOffset = CGSizeMake(0, 0.5);
+        [userImage setUserInteractionEnabled:YES];
+        
+        UITapGestureRecognizer *userImageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userImageViewClicked:)];
+        [userImage addGestureRecognizer:userImageTap];
+        
         
         userNameLB = [[UILabel alloc] initWithFrame:CGRectMake(2*PADDING_HORIZON + userImage.frame.size.width, userImage.frame.origin.y, 320 - 3*PADDING_HORIZON - userImage.frame.size.width, 20)];
         [userNameLB setTextAlignment:NSTextAlignmentLeft];
@@ -73,6 +78,7 @@
         [fromLB setShadowColor:[UIColor clearColor]];
         
         content = [[RCLabel alloc] initWithFrame:CGRectZero];
+        [content setDelegate:self];
         [content setFont:FONT];
         [content setBackgroundColor:[UIColor clearColor]];
         
@@ -83,11 +89,12 @@
         [retweetStatusBackground setImage:[[UIImage imageNamed:@"timeline_rt_border.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:14]];
         
         retweetContent = [[RCLabel alloc] initWithFrame:CGRectZero];
+        [retweetContent setDelegate:self];
         [retweetContent setFont:content.font];
         [retweetContent setBackgroundColor:[UIColor clearColor]];
         
-        detailView = [[UIImageView alloc] initWithFrame:CGRectMake(PADDING_HORIZON, 0, 320-2*PADDING_HORIZON, DETAIL_VIEW_HIEIGHT)];
-        [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5]];
+        detailView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, DETAIL_VIEW_HIEIGHT)];
+        [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:4]];
         [detailView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *detailViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(detailViewClicked:)];
         [detailView addGestureRecognizer:detailViewTap];
@@ -101,7 +108,8 @@
         [retweetCountLB setUserInteractionEnabled:YES];
         [retweetCountLB setTextAlignment:NSTextAlignmentLeft];
         [retweetCountLB setFont:[UIFont systemFontOfSize:10]];
-        [retweetCountLB setTextColor:[UIColor colorWithRed:105.0/255.0 green:150.0/255.0 blue:180.0/255.0 alpha:1.0]];
+        [retweetCountLB setTextColor:DEFAULT_TEXTCOLOR];
+        [retweetCountLB setShadowColor:[UIColor clearColor]];
         [retweetCountLB setBackgroundColor:[UIColor clearColor]];
         [detailView addSubview:retweetCountLB];
         
@@ -114,17 +122,19 @@
         [commentCountLB setTextColor:retweetCountLB.textColor];
         [commentCountLB setTextAlignment:NSTextAlignmentLeft];
         [commentCountLB setUserInteractionEnabled:YES];
+        [commentCountLB setShadowColor:[UIColor clearColor]];
         [commentCountLB setBackgroundColor: [UIColor clearColor]];
         [detailView addSubview:commentCountLB];
         
         UIImageView *voteCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(commentCountLB.frame.origin.x+commentCountLB.frame.size.width, 0, commentCountIcon.frame.size.width, detailView.frame.size.height)];
-        [voteCountIcon setImage:[UIImage imageNamed:@"timeline_comment_count_icon.png"]];
+        [voteCountIcon setImage:[UIImage imageNamed:@"timeline_vote_count_icon.png"]];
         [voteCountIcon setContentMode:UIViewContentModeRight];
         [detailView addSubview:voteCountIcon];
         voteCountLB = [[UILabel alloc] initWithFrame:CGRectMake(voteCountIcon.frame.origin.x+voteCountIcon.frame.size.width+5, 0, commentCountLB.frame.size.width, voteCountIcon.frame.size.height)];
         [voteCountLB setTextAlignment:NSTextAlignmentLeft];
         [voteCountLB setFont:commentCountLB.font];
         [voteCountLB setTextColor:commentCountLB.textColor];
+        [voteCountLB setShadowColor:[UIColor clearColor]];
         [voteCountLB setBackgroundColor:[UIColor clearColor]];
         [detailView addSubview:voteCountLB];
         
@@ -289,6 +299,13 @@
     DLog(@"websiteClicked:%@", link);
 }
 
+- (void)RCLabel:(id)RCLabel didSelectLinkWithURL:(NSString *)url
+{
+    if ([url hasPrefix:@"http"] && self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectLink:)]) {
+        [self.delegate timelinePostCell:self didSelectLink:url];
+    }
+}
+
 - (void)detailViewClicked:(UITapGestureRecognizer *)sender
 {
     CellClickedType clickedType;
@@ -303,6 +320,13 @@
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
         [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:clickedType contentIndex:0];
+    }
+}
+
+- (void)userImageViewClicked:(UITapGestureRecognizer *)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
+        [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:CellClickedTypeUserImage contentIndex:0];
     }
 }
 

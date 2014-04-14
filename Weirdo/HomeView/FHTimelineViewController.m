@@ -9,6 +9,7 @@
 #import "FHTimelineViewController.h"
 #import "FHOPViewController.h"
 #import "FHPostViewController.h"
+#import "FHWebViewController.h"
 
 #define REFRESH_TIMEINTERVAL 15*60
 
@@ -16,6 +17,7 @@
 {
     NSMutableArray *posts;
     BOOL needRefresh;
+    FHWebViewController *webVC;
 }
 
 @end
@@ -261,6 +263,9 @@
         case CellClickedTypePictures:
             NSLog(@"index: %d, pictures", indexPath.row);
             break;
+        case CellClickedTypeUserImage:
+            NSLog(@"index: %d, userimage", indexPath.row);
+            break;
         default:
             break;
     }
@@ -268,6 +273,17 @@
     needRefresh = NO;
 }
 
+- (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectLink:(NSString *)link
+{
+    DLog(@"link: %@", link);
+    if (!webVC) {
+        webVC = [[FHWebViewController alloc] initWithLink:link];
+    }else
+        [webVC setLink:link];
+    [self.navigationController pushViewController:webVC animated:YES];
+}
+
+#pragma mark
 #pragma mark - PullTableViewDelegate
 
 - (void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView

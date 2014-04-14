@@ -20,9 +20,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        [self.view setBackgroundColor:[UIColor yellowColor]];
-        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
-//        [self.navigationBar setBackgroundColor:[UIColor cyanColor]];
+        [self.view setBackgroundColor:DEFAULT_COLOR];
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg"] forBarMetrics:UIBarMetricsDefault];
     }
     return self;
 }
