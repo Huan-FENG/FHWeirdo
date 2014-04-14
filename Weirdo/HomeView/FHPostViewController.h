@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FHTimelinePostCell.h"
 
-@interface FHPostViewController : UITableViewController <UIScrollViewDelegate>
+@interface FHPostViewController : UITableViewController <UIScrollViewDelegate, FHTimelinPostCellDelegate>
 
 @property (nonatomic) UIView *postView;
 @property (nonatomic) FHPost *post;

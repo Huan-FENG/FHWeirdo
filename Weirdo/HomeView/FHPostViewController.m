@@ -7,7 +7,6 @@
 //
 
 #import "FHPostViewController.h"
-#import "FHTimelinePostCell.h"
 #import "FHCommentCell.h"
 #import "FHOPViewController.h"
 #import "FHWebViewController.h"
@@ -21,6 +20,8 @@
     
     UILabel *loadMoreLB;
     UIActivityIndicatorView *loadMoreActivity;
+    
+    FHWebViewController *webVC;
 }
 
 @end
@@ -223,6 +224,18 @@
         loadMoreLB.text = @"获取中...";
         [self pullDownToRefresh];
     }
+}
+
+#pragma mark
+#pragma mark - timelinepostcell delegate
+
+- (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectLink:(NSString *)link
+{
+    if (!webVC) {
+        webVC = [[FHWebViewController alloc] initWithLink:link];
+    }else
+        [webVC setLink:link];
+    [self.navigationController pushViewController:webVC animated:YES];
 }
 
 @end

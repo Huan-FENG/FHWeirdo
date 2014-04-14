@@ -13,6 +13,7 @@
     UIWebView *linkView;
     UIActivityIndicatorView *activity;
     UILabel *loadingTipLB;
+    NSString *lastLink;
 }
 
 @end
@@ -58,9 +59,15 @@
     [linkView addSubview:loadingTipLB];
 }
 
+- (void)setLink:(NSString *)newlink
+{
+    lastLink = link;
+    link = newlink;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    if (![linkView.request.URL.absoluteString isEqualToString:link]) {
+    if (![lastLink isEqualToString:link]) {
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:link]];
         [linkView loadRequest:request];
     }
