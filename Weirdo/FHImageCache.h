@@ -16,5 +16,7 @@
 + (FHImageCache *)sharedImage;
 
 - (UIImage *)getImageForURL:(NSString *)URLString;
+- (UIImage *)getHighestPxImageForURL:(NSString *)URLString;
 - (void)cacheImage:(UIImage *)image forURL:(NSString *)URLString;
+
 @end

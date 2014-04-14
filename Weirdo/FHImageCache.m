@@ -23,7 +23,7 @@
 - (id)init
 {
     if (self) {
-        images = [[NSMutableDictionary alloc] initWithCapacity:2];
+        images = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -33,9 +33,18 @@
     return [images objectForKey:URLString];
 }
 
+- (UIImage *)getHighestPxImageForURL:(NSString *)URLString
+{
+    NSString *highestPxImageURL = [URLString stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/large/"];
+    return [self getImageForURL:highestPxImageURL];
+}
+
 - (void)cacheImage:(UIImage *)image forURL:(NSString *)URLString
 {
     [images setObject:image forKey:URLString];
+    if (images.count > 20) {
+        [images removeObjectsForKeys:[[images allKeys] subarrayWithRange:NSMakeRange(0, 5)]];
+    }
 }
 
 @end

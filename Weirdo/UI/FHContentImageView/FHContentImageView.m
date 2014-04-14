@@ -94,7 +94,6 @@
     if (self.frame.size.height != CONTENT_SINGLE_IMAGE_HIGHT) {
         index = floor(tapLocation.y/(CONTENT_MULTI_IMAGE_VIEW_HIGHT+5))*3 + floor(tapLocation.x/(CONTENT_MULTI_IMAGE_VIEW_HIGHT+5));
     }
-    DLog(@"index: %d", index);
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(contentImageView:didSelectAtIndex:)]) {
         [self.delegate contentImageView:self didSelectAtIndex:index];

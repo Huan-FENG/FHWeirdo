@@ -10,6 +10,7 @@
 #import "FHCommentCell.h"
 #import "FHOPViewController.h"
 #import "FHWebViewController.h"
+#import "FHImageScrollView.h"
 
 @interface FHPostViewController ()
 {
@@ -145,6 +146,7 @@
         if (postcell == nil) {
             postcell = [[FHTimelinePostCell alloc] init];
         }
+        [postcell setDelegate:self];
         [postcell updateCellWithPost:post isPostOnly:YES];
         cell = postcell;
     }else{
@@ -236,6 +238,22 @@
     }else
         [webVC setLink:link];
     [self.navigationController pushViewController:webVC animated:YES];
+}
+
+- (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectAtIndexPath:(NSIndexPath *)indexPath withClickedType:(CellClickedType)clickedType contentIndex:(NSUInteger)index
+{
+    if (clickedType == CellClickedTypePictures) {
+        NSArray *imageURLs;
+        if (post.picURLs.count > 0) {
+            imageURLs = post.picURLs;
+        }else
+            imageURLs = post.retweeted.picURLs;
+        if (index < imageURLs.count) {
+            FHImageScrollView *imageScrollView = [[FHImageScrollView alloc] initWithImageURLs:imageURLs currentIndex:index];
+            [self.navigationController.view addSubview:imageScrollView];
+            [imageScrollView show];
+        }
+    }
 }
 
 @end

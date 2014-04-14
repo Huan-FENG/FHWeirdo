@@ -21,15 +21,6 @@
 @implementation FHWebViewController
 @synthesize link;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (id)initWithLink:(NSString *)linkString
 {
     self = [super init];
@@ -54,8 +45,10 @@
     
     loadingTipLB = [[UILabel alloc] initWithFrame:CGRectMake(self.view.center.x - 50, activity.frame.origin.y + activity.frame.size.height, 100, 30)];
     loadingTipLB.text = @"正在加载";
+    [loadingTipLB setFont:[UIFont systemFontOfSize:12]];
+    [loadingTipLB setShadowColor:[UIColor clearColor]];
     [loadingTipLB setBackgroundColor:[UIColor clearColor]];
-    [loadingTipLB setTextColor:[UIColor grayColor]];
+    [loadingTipLB setTextColor:[UIColor lightGrayColor]];
     [linkView addSubview:loadingTipLB];
 }
 
@@ -78,9 +71,21 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)hideLoadingTip
+{
+    [loadingTipLB setHidden:YES];
+}
+
+#pragma mark
+#pragma mark - webView delegate
+
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    loadingTipLB.text = @"加载失败！";
+    [activity stopAnimating];
+    [loadingTipLB setHidden:NO];
+    loadingTipLB.text = @"加载失败";
+    link = nil;
+    [loadingTipLB performSelector:@selector(hideLoadingTip) withObject:nil afterDelay:2.0];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -94,16 +99,5 @@
     [loadingTipLB setHidden:NO];
     [activity startAnimating];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

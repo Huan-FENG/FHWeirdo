@@ -10,6 +10,7 @@
 #import "FHOPViewController.h"
 #import "FHPostViewController.h"
 #import "FHWebViewController.h"
+#import "FHImageScrollView.h"
 
 #define REFRESH_TIMEINTERVAL 15*60
 
@@ -244,32 +245,45 @@
 
 - (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectAtIndexPath:(NSIndexPath *)indexPath withClickedType:(CellClickedType)clickedType contentIndex:(NSUInteger)index
 {
-    if (clickedType == CellClickedTypePictures) {
-        return;
-    }
-    FHOPViewController *opVC = [[FHOPViewController alloc] init];
+
     switch (clickedType) {
-        case CellClickedTypeRetweet:
+        case CellClickedTypeRetweet:{
+            FHOPViewController *opVC = [[FHOPViewController alloc] init];
             [opVC setupWithPost:[posts objectAtIndex:indexPath.row] operation:StatusOperationRetweet];
-            NSLog(@"index: %d, retweet", indexPath.row);
+            [self presentViewController:opVC animated:YES completion:NULL];
             break;
-        case CellClickedTypeComment:
+        }
+        case CellClickedTypeComment:{
+            FHOPViewController *opVC = [[FHOPViewController alloc] init];
             [opVC setupWithPost:[posts objectAtIndex:indexPath.row] operation:StatusOperationComment];
-            NSLog(@"index: %d, retcomment", indexPath.row);
+            [self presentViewController:opVC animated:YES completion:NULL];
             break;
+        }
         case CellClickedTypeVote:
             NSLog(@"index: %d, vote", indexPath.row);
             break;
         case CellClickedTypePictures:
+        {
             NSLog(@"index: %d, pictures", indexPath.row);
+            NSArray *imageURLs;
+            FHPost *post = [posts objectAtIndex:indexPath.row];
+            if (post.picURLs.count > 0) {
+                imageURLs = post.picURLs;
+            }else
+                imageURLs = post.retweeted.picURLs;
+            if (index < imageURLs.count) {
+                FHImageScrollView *imageScrollView = [[FHImageScrollView alloc] initWithImageURLs:imageURLs currentIndex:index];
+                [self.navigationController.view addSubview:imageScrollView];
+                [imageScrollView show];
+            }
             break;
+        }
         case CellClickedTypeUserImage:
             NSLog(@"index: %d, userimage", indexPath.row);
             break;
         default:
             break;
     }
-    [self presentViewController:opVC animated:YES completion:NULL];
     needRefresh = NO;
 }
 

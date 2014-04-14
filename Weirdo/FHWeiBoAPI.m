@@ -314,8 +314,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     if (properties.progressTarget && properties.progressSelector)
     {
         SuppressPerformSelectorLeakWarning([properties.progressTarget performSelector:properties.progressSelector withObject:[properties progressRate]]);
-//        SEL action = NSSelectorFromString(properties.progressSelector);
-//        SuppressPerformSelectorLeakWarning([properties.progressTarget performSelector:action withObject:[properties progressRate]]);
     }
 }
 
@@ -328,11 +326,8 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 	if (properties.afterFailedSelector && properties.afterFailedTarget)
 	{
         SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:properties.afterFailedSelector withObject:error]);
-//		SEL action = NSSelectorFromString(properties.afterFailedSelector);
-//        SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:action withObject:error]);
 	}
 }
-
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -345,8 +340,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         id theData = [NSJSONSerialization JSONObjectWithData:properties.data options:NSJSONReadingMutableContainers error:nil];
         theData = theData ? theData : properties.data;
         SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:properties.afterFinishedSelector withObject:theData]);
-//		SEL action = NSSelectorFromString(properties.afterFinishedSelector);
-//        SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:action withObject:theData]);
 	}
 	[connections removeObjectForKey:connectionKey];
 }

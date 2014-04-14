@@ -30,7 +30,7 @@
 - (void)loadImageForURL:(NSString *)URLString
 {
     imageURLString = URLString;
-    UIImage *image = [[FHImageCache sharedImage] getImageForURL:imageURLString];
+    UIImage *image = [[FHImageCache sharedImage] getHighestPxImageForURL:imageURLString];
     if (!image) {
         FHConnectionInterationProperty *property = [[FHConnectionInterationProperty alloc] init];
         [property setAfterFinishedSelector:@selector(finishLoadingImage:)];
@@ -101,6 +101,5 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
-
 
 @end
