@@ -193,6 +193,24 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return NO;
 }
 
+- (NSDictionary *)fetchUserInfo:(NSError **)error
+{
+    NSString *paramString = [NSString stringWithFormat:@"access_token=%@&uid=%@", token, uid];
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/users/show.json?%@", APIServer, paramString];
+    return [self getURL:URLString withConnectionInteractionProperty:nil error:error];
+}
+
+- (void)fetchUserPostsLaterThanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
+{
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&uid=%@&trim_user=1&count=5", token, uid];
+    if (post) {
+        [paramString appendFormat:@"&max_id=%@", post.ID];
+    }
+    NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/user_timeline.json?%@", APIServer, paramString];
+    [self getURL:URLString withConnectionInteractionProperty:property error:nil];
+}
+
+
 - (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
 {
     NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@", token];
@@ -321,8 +339,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 {
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty *properties = [connections objectForKey:connectionKey];
-	// perform necessary callbacks with the data.
-    
 	if (properties.afterFailedSelector && properties.afterFailedTarget)
 	{
         SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:properties.afterFailedSelector withObject:error]);
@@ -333,8 +349,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 {
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty *properties = [connections objectForKey:connectionKey];
-    
-	// perform necessary callbacks with the data.
 	if (properties.afterFinishedTarget && properties.afterFinishedSelector)
 	{
         id theData = [NSJSONSerialization JSONObjectWithData:properties.data options:NSJSONReadingMutableContainers error:nil];

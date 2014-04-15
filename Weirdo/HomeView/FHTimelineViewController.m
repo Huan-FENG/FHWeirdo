@@ -11,6 +11,7 @@
 #import "FHPostViewController.h"
 #import "FHWebViewController.h"
 #import "FHImageScrollView.h"
+#import "FHUserViewController.h"
 
 #define REFRESH_TIMEINTERVAL 15*60
 
@@ -29,6 +30,7 @@
 
 - (id)initWithTimeline:(TimelineCategory)timelineCategory
 {
+    self = [super init];
     if (self) {
         category = timelineCategory;
         posts = [[NSMutableArray alloc] init];
@@ -52,7 +54,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
     [super viewWillAppear:animated];
     if(!self.pullTableView.pullTableIsRefreshing && needRefresh) {
         self.pullTableView.pullTableIsRefreshing = YES;
@@ -264,7 +265,6 @@
             break;
         case CellClickedTypePictures:
         {
-            NSLog(@"index: %d, pictures", indexPath.row);
             NSArray *imageURLs;
             FHPost *post = [posts objectAtIndex:indexPath.row];
             if (post.picURLs.count > 0) {
@@ -278,9 +278,11 @@
             }
             break;
         }
-        case CellClickedTypeUserImage:
-            NSLog(@"index: %d, userimage", indexPath.row);
+        case CellClickedTypeUserImage:{
+            FHUserViewController *userVC = [[FHUserViewController alloc] initWithUserID:[[posts objectAtIndex:indexPath.row] userID]];
+            [self.navigationController pushViewController:userVC animated:YES];
             break;
+        }
         default:
             break;
     }
@@ -289,7 +291,6 @@
 
 - (void)timelinePostCell:(FHTimelinePostCell *)cell didSelectLink:(NSString *)link
 {
-    DLog(@"link: %@", link);
     if (!webVC) {
         webVC = [[FHWebViewController alloc] initWithLink:link];
     }else

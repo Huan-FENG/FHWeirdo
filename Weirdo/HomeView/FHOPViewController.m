@@ -67,9 +67,9 @@
         
         UIButton *doneBT = [UIButton buttonWithType:UIButtonTypeCustom];
         [doneBT setFrame:CGRectMake(280, closeBT.frame.origin.y, closeBT.frame.size.width, closeBT.frame.size.height)];
-        [doneBT.titleLabel setFont:[UIFont systemFontOfSize:12]];
-        [doneBT setTitle:@"发送" forState:UIControlStateNormal];
-        [doneBT setContentMode:UIViewContentModeCenter];
+        UIImageView *doneBT_bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationbar_sendItem.png"]];
+        doneBT_bg.center = CGPointMake(doneBT.frame.size.width/2, doneBT.frame.size.height/2);
+        [doneBT addSubview:doneBT_bg];
         [doneBT addTarget:self action:@selector(didFinishEditing) forControlEvents:UIControlEventTouchUpInside];
         [barView addSubview:doneBT];
         

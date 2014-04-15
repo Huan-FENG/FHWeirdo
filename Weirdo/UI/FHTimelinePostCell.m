@@ -52,7 +52,6 @@
         UITapGestureRecognizer *userImageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userImageViewClicked:)];
         [userImage addGestureRecognizer:userImageTap];
         
-        
         userNameLB = [[UILabel alloc] initWithFrame:CGRectMake(2*PADDING_HORIZON + userImage.frame.size.width, userImage.frame.origin.y, 320 - 3*PADDING_HORIZON - userImage.frame.size.width, 20)];
         [userNameLB setTextAlignment:NSTextAlignmentLeft];
         [userNameLB setFont:[UIFont boldSystemFontOfSize:12]];
@@ -93,7 +92,7 @@
         [retweetContent setBackgroundColor:[UIColor clearColor]];
         
         detailView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, DETAIL_VIEW_HIEIGHT)];
-        [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:4]];
+        [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6]];
         [detailView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *detailViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(detailViewClicked:)];
         [detailView addGestureRecognizer:detailViewTap];
