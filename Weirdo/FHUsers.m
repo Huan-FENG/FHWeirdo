@@ -7,6 +7,7 @@
 //
 
 #import "FHUsers.h"
+#import "FHImageCache.h"
 
 @implementation FHUsers
 
@@ -54,4 +55,5 @@
 {
     return [users objectForKey:userID];
 }
+
 @end

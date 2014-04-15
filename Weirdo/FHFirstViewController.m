@@ -91,4 +91,9 @@
         [self presentMainViewController];
     }
 }
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 @end

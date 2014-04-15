@@ -40,14 +40,14 @@
 {
     [super viewDidLoad];
     needRefresh = YES;
-    pullTableView = [[PullTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - ([UIDevice currentDevice].systemVersion.doubleValue<7.0?44:64)) style:UITableViewStylePlain];
+    pullTableView = [[PullTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (isIOS7?64:44)) style:UITableViewStylePlain];
     [self.view addSubview:pullTableView];
     [pullTableView setDelegate:self];
     [pullTableView setDataSource:self];
     [pullTableView setPullDelegate:self];
-    self.pullTableView.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
+    self.pullTableView.pullArrowImage = [UIImage imageNamed:@"grayArrow"];
     self.pullTableView.pullBackgroundColor = [UIColor whiteColor];
-    self.pullTableView.pullTextColor = [UIColor blackColor];
+    self.pullTableView.pullTextColor = [UIColor grayColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -309,17 +309,5 @@
 {
     [self pullUpToRefresh];
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

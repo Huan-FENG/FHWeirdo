@@ -23,5 +23,8 @@
 #endif
 
 #define isPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define isIOS7 ([[UIDevice currentDevice] systemVersion].doubleValue < 7.0 ? NO : YES)
+
 #define DEFAULT_COLOR [UIColor colorWithRed:35.0/255.0 green:170.0/255.0 blue:230.0/255.0 alpha:1.0]
+
 #define DEFAULT_TEXTCOLOR [UIColor colorWithRed:0/255.0 green:115.0/255.0 blue:165.0/255.0 alpha:1.0]

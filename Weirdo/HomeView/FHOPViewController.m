@@ -33,7 +33,7 @@
         
         float statusbarheight = 0;
         NSString *bgname = @"navigationbar_bg.png";
-        if (![[UIDevice currentDevice].systemVersion doubleValue] < 7.0) {
+        if (isIOS7) {
             statusbarheight = 20;
             bgname = @"navigationbar_bg-568h.png";
         }

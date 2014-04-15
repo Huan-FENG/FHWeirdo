@@ -13,7 +13,10 @@
     UIWebView *linkView;
     UIActivityIndicatorView *activity;
     UILabel *loadingTipLB;
+    UIView *mainTitleView;
+    UILabel *title;
     NSString *lastLink;
+    BOOL contentShowed;
 }
 
 @end
@@ -34,12 +37,17 @@
 {
     [super viewDidLoad];
     
+    mainTitleView = self.navigationItem.titleView;
+    title = [[UILabel alloc] initWithFrame:CGRectMake(self.view.center.x-50, 0, 100, 44)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setTextColor:[UIColor whiteColor]];
+    
     linkView = [[UIWebView alloc] init];
     [linkView setFrame:self.view.bounds];
     [linkView setDelegate:self];
     [self.view addSubview:linkView];
     
-    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.view.center.x-10, self.view.center.y - 100, 20, 20)];
+    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.view.center.x-10, self.view.center.y - 50, 20, 20)];
     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
     [linkView addSubview:activity];
     
@@ -60,10 +68,19 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationItem setTitleView:title];
     if (![lastLink isEqualToString:link]) {
+        NSURLRequest *blankrequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]];
+        [linkView loadRequest:blankrequest];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:link]];
         [linkView loadRequest:request];
+        contentShowed = NO;
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationItem setTitleView:mainTitleView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,14 +107,28 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [loadingTipLB setHidden:YES];
-    [activity stopAnimating];
+    if (!webView.isLoading) {
+        NSString *lJs = @"document.title";
+        NSString *lHtml = [webView stringByEvaluatingJavaScriptFromString:lJs];
+        if (lHtml && lHtml.length > 0) {
+            title.text = lHtml;
+            [title sizeToFit];
+        }
+    }
+    if (![webView.request.URL.absoluteString isEqual:@"about:blank"]) {
+        [loadingTipLB setHidden:YES];
+        [activity stopAnimating];
+        contentShowed = YES;
+    }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [loadingTipLB setHidden:NO];
-    [activity startAnimating];
+    if (!contentShowed) {
+        title.text = @"正在加载...";
+        [loadingTipLB setHidden:NO];
+        [activity startAnimating];
+    }
 }
 
 @end

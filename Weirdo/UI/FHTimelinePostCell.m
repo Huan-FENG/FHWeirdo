@@ -37,7 +37,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundView = nil;
-        self.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         userImage = [[UIImageView alloc] initWithFrame:CGRectMake(PADDING_HORIZON, PADDING_VERTICAL, USERIMAGE_WIDTH, USERIMAGE_WIDTH)];
