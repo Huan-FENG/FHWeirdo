@@ -298,14 +298,14 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag != SCROLLVIEW_USER_PROFILE) {
-        if (scrollView.contentOffset.y > 120-(isIOS7?64:44) && self.navigationController.navigationBarHidden) {
+        if (scrollView.contentOffset.y > 100-44 && self.navigationController.navigationBarHidden) {
             showNavigationBar = YES;
             self.navigationController.navigationBarHidden = !showNavigationBar;
             CGRect frame = userStatus.frame;
             frame.origin.y = frame.origin.y - (isIOS7?64:44);
             userStatus.frame = frame;
         }
-        if (scrollView.contentOffset.y < 120-(isIOS7?64:44) && !self.navigationController.navigationBarHidden) {
+        if (scrollView.contentOffset.y < 100-44 && !self.navigationController.navigationBarHidden) {
             showNavigationBar = NO;
             self.navigationController.navigationBarHidden = !showNavigationBar;
             CGRect frame = userStatus.frame;
@@ -476,7 +476,6 @@
         webVC = [[FHWebViewController alloc] initWithLink:link] ;
     }else
         [webVC setLink:link];
-    webVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController pushViewController:webVC animated:YES];
     needRefresh = NO;
 }

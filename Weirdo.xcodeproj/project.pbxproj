@@ -141,6 +141,7 @@
 		8216520518E928540072C65C /* tabbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 821651FD18E928540072C65C /* tabbar_bg@2x.png */; };
 		8216521118E928C30072C65C /* FHPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216520E18E928C30072C65C /* FHPost.m */; };
 		8216521218E928C30072C65C /* FHUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521018E928C30072C65C /* FHUsers.m */; };
+		82A7612818FE47350045E935 /* FHSettingInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A7612718FE47350045E935 /* FHSettingInfoViewController.m */; };
 		82A8780018F7F10A00B1DEC5 /* face85@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A877E918F7F10A00B1DEC5 /* face85@2x.png */; };
 		82A8780118F7F10A00B1DEC5 /* face86@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A877EA18F7F10A00B1DEC5 /* face86@2x.png */; };
 		82A8780218F7F10A00B1DEC5 /* face89@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A877EB18F7F10A00B1DEC5 /* face89@2x.png */; };
@@ -177,6 +178,9 @@
 		82A9AF8518FCFA3C00D25BDD /* navigationbar_sendItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A9AF8418FCFA3C00D25BDD /* navigationbar_sendItem@2x.png */; };
 		82A9AF8718FCFA5A00D25BDD /* navigationbar_backItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A9AF8618FCFA5A00D25BDD /* navigationbar_backItem@2x.png */; };
 		82A9AF8A18FCFDD000D25BDD /* FHUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */; };
+		82BB19F118FE72CF0095F6CB /* FHConnectionLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 82BB19EC18FE72CF0095F6CB /* FHConnectionLog.m */; };
+		82BB19F218FE72CF0095F6CB /* FHConnectionParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 82BB19EE18FE72CF0095F6CB /* FHConnectionParse.m */; };
+		82BB19F318FE72CF0095F6CB /* FHURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82BB19F018FE72CF0095F6CB /* FHURLConnection.m */; };
 		82C5944518EBA04E0027E2A3 /* FHImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5944418EBA04E0027E2A3 /* FHImageCache.m */; };
 		82C5944C18EBB3DF0027E2A3 /* timeline_rt_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5944A18EBB3DF0027E2A3 /* timeline_rt_border.png */; };
 		82C5944D18EBB3DF0027E2A3 /* timeline_rt_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5944B18EBB3DF0027E2A3 /* timeline_rt_border@2x.png */; };
@@ -364,6 +368,8 @@
 		8216520E18E928C30072C65C /* FHPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPost.m; sourceTree = "<group>"; };
 		8216520F18E928C30072C65C /* FHUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUsers.h; sourceTree = "<group>"; };
 		8216521018E928C30072C65C /* FHUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUsers.m; sourceTree = "<group>"; };
+		82A7612618FE47350045E935 /* FHSettingInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSettingInfoViewController.h; sourceTree = "<group>"; };
+		82A7612718FE47350045E935 /* FHSettingInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHSettingInfoViewController.m; sourceTree = "<group>"; };
 		82A877E918F7F10A00B1DEC5 /* face85@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "face85@2x.png"; sourceTree = "<group>"; };
 		82A877EA18F7F10A00B1DEC5 /* face86@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "face86@2x.png"; sourceTree = "<group>"; };
 		82A877EB18F7F10A00B1DEC5 /* face89@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "face89@2x.png"; sourceTree = "<group>"; };
@@ -402,6 +408,12 @@
 		82A9AF8618FCFA5A00D25BDD /* navigationbar_backItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_backItem@2x.png"; sourceTree = "<group>"; };
 		82A9AF8818FCFDD000D25BDD /* FHUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUserViewController.h; sourceTree = "<group>"; };
 		82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUserViewController.m; sourceTree = "<group>"; };
+		82BB19EB18FE72CF0095F6CB /* FHConnectionLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHConnectionLog.h; sourceTree = "<group>"; };
+		82BB19EC18FE72CF0095F6CB /* FHConnectionLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHConnectionLog.m; sourceTree = "<group>"; };
+		82BB19ED18FE72CF0095F6CB /* FHConnectionParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHConnectionParse.h; sourceTree = "<group>"; };
+		82BB19EE18FE72CF0095F6CB /* FHConnectionParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHConnectionParse.m; sourceTree = "<group>"; };
+		82BB19EF18FE72CF0095F6CB /* FHURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHURLConnection.h; sourceTree = "<group>"; };
+		82BB19F018FE72CF0095F6CB /* FHURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHURLConnection.m; sourceTree = "<group>"; };
 		82C5944318EBA04E0027E2A3 /* FHImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHImageCache.h; sourceTree = "<group>"; };
 		82C5944418EBA04E0027E2A3 /* FHImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHImageCache.m; sourceTree = "<group>"; };
 		82C5944A18EBB3DF0027E2A3 /* timeline_rt_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timeline_rt_border.png; sourceTree = "<group>"; };
@@ -696,6 +708,8 @@
 				82A8783018FBD2DF00B1DEC5 /* FHWebViewController.m */,
 				82A9AF8818FCFDD000D25BDD /* FHUserViewController.h */,
 				82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */,
+				82A7612618FE47350045E935 /* FHSettingInfoViewController.h */,
+				82A7612718FE47350045E935 /* FHSettingInfoViewController.m */,
 				8216520D18E928C30072C65C /* FHPost.h */,
 				8216520E18E928C30072C65C /* FHPost.m */,
 				8216520F18E928C30072C65C /* FHUsers.h */,
@@ -783,6 +797,19 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		82BB19EA18FE72CF0095F6CB /* FHURLConnection */ = {
+			isa = PBXGroup;
+			children = (
+				82BB19EB18FE72CF0095F6CB /* FHConnectionLog.h */,
+				82BB19EC18FE72CF0095F6CB /* FHConnectionLog.m */,
+				82BB19ED18FE72CF0095F6CB /* FHConnectionParse.h */,
+				82BB19EE18FE72CF0095F6CB /* FHConnectionParse.m */,
+				82BB19EF18FE72CF0095F6CB /* FHURLConnection.h */,
+				82BB19F018FE72CF0095F6CB /* FHURLConnection.m */,
+			);
+			path = FHURLConnection;
+			sourceTree = "<group>";
+		};
 		82C5944918EBB39E0027E2A3 /* timeline */ = {
 			isa = PBXGroup;
 			children = (
@@ -803,6 +830,7 @@
 		82C5945118ED7B680027E2A3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				82BB19EA18FE72CF0095F6CB /* FHURLConnection */,
 				0F9954F318FE1EE1002F495D /* FHSUStatusBar.h */,
 				0F9954F418FE1EE1002F495D /* FHSUStatusBar.m */,
 				0F1FFD4018FC2FB90038502B /* FHContentImageView */,
@@ -1061,10 +1089,13 @@
 			files = (
 				0F9954F518FE1EE1002F495D /* FHSUStatusBar.m in Sources */,
 				82A9AF8A18FCFDD000D25BDD /* FHUserViewController.m in Sources */,
+				82BB19F318FE72CF0095F6CB /* FHURLConnection.m in Sources */,
 				820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */,
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
 				0F1FFD4618FC2FE70038502B /* FHContentImageView.m in Sources */,
+				82A7612818FE47350045E935 /* FHSettingInfoViewController.m in Sources */,
 				0F2D3A7918F6F3F40062DA81 /* MessageInterceptor.m in Sources */,
+				82BB19F218FE72CF0095F6CB /* FHConnectionParse.m in Sources */,
 				82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */,
 				82C5944518EBA04E0027E2A3 /* FHImageCache.m in Sources */,
 				0F1FFD4918FC2FF80038502B /* FHTimelinePostCell.m in Sources */,
@@ -1074,6 +1105,7 @@
 				82A8783118FBD2DF00B1DEC5 /* FHWebViewController.m in Sources */,
 				8216521218E928C30072C65C /* FHUsers.m in Sources */,
 				8216521118E928C30072C65C /* FHPost.m in Sources */,
+				82BB19F118FE72CF0095F6CB /* FHConnectionLog.m in Sources */,
 				0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,
 				0F2D3A6018F5AAAA0062DA81 /* RCLabel.m in Sources */,

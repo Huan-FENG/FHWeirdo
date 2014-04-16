@@ -36,11 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSString *barImageName = @"navigationbar_bg";
-    if (isIOS7) {
-        barImageName = @"navigationbar_bg-568h.png";
-    }
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed: barImageName] forBarMetrics:UIBarMetricsDefault];
     
     mainTitleView = self.navigationItem.titleView;
     title = [[UILabel alloc] initWithFrame:CGRectMake(self.view.center.x-50, 0, 100, 44)];
