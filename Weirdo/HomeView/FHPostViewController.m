@@ -65,6 +65,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = NO;
+    [self.navigationItem setTitleView:title];
     title.text = @"微博正文";
 }
 
@@ -75,7 +76,7 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
     [self.navigationItem setTitleView:mainTitleView];
 }
@@ -115,7 +116,7 @@
         }else{
             NSMutableArray *refreshComments = [NSMutableArray arrayWithArray:comments];
             for (int i =0; i<commentsArray.count; i++) {
-                if (i == 0) {
+                if (i == 0 && refreshComments.count != 0) {
                     continue;
                 }
                 FHPost *comment = [[FHPost alloc] initWithPostDic:[commentsArray objectAtIndex:i]];
@@ -189,7 +190,7 @@
         return;
     }
     FHOPViewController *opVC = [[FHOPViewController alloc] init];
-    [opVC setReplyTo:[[comments objectAtIndex:indexPath.row] username]];
+    [opVC setReplyToIDAndName:@{[[comments objectAtIndex:indexPath.row] ID]: [[comments objectAtIndex:indexPath.row] username]}];
     [opVC setupWithPost:post operation:StatusOperationReply];
     [self presentViewController:opVC animated:YES completion:NULL];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

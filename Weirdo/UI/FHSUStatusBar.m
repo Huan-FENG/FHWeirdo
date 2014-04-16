@@ -16,8 +16,8 @@
     if (self) {
         
         CGRect frame = [UIApplication sharedApplication].statusBarFrame;
-        frame.origin.x = frame.origin.x + 220;
-        frame.size.width = frame.size.width - 220;
+        frame.origin.x = frame.origin.x;
+        frame.size.width = frame.size.width;
         self.frame = frame;
         
         self.backgroundColor = [UIColor blackColor];
@@ -31,7 +31,7 @@
         logo.image = [UIImage imageNamed:@"logoStatus.png"];
         
         messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, CGRectGetWidth(self.frame)-50, CGRectGetHeight(self.frame))];
-        
+        [messageLabel setShadowColor:[UIColor clearColor]];
         [messageLabel setBackgroundColor:[UIColor blackColor]];
         [messageLabel setFont:[UIFont boldSystemFontOfSize:12]];
         [messageLabel setTextColor:[UIColor whiteColor]];

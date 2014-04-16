@@ -8,6 +8,7 @@
 
 #import "FHOPViewController.h"
 #import "FHImageCache.h"
+#import "FHSUStatusBar.h"
 
 @interface FHOPViewController ()
 {
@@ -24,7 +25,7 @@
 
 @implementation FHOPViewController
 
-@synthesize replyTo;
+@synthesize replyToIDAndName;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -103,9 +104,13 @@
     }else if (post.retweeted.picURLs && post.retweeted.picURLs.count>0)
         thumbURLString = [post.retweeted.picURLs objectAtIndex:0];
     if (thumbURLString) {
+        DLog(@"thumbURLString: %@", thumbURLString);
         postThumb.image = [[FHImageCache sharedImage] getImageForURL:thumbURLString];
     }else{
         postThumb.image = [UIImage imageNamed:@"defaultStatusThumb.png"];
+    }
+    if (postThumb.image) {
+        DLog(@"yes!");
     }
         
     UILabel *usernameLB = [[UILabel alloc] initWithFrame:CGRectMake(postThumb.frame.size.width+postThumb.frame.origin.x + 10, 5, statusView.frame.size.width-10*2-postThumb.frame.size.width - 5, 15)];
@@ -169,8 +174,75 @@
 
 - (void)didFinishEditing
 {
-    [[FHWeiBoAPI sharedWeiBoAPI] retweetStatus:opStatus.ID content:statusTextView.text commentTo:0 interactionProperty:nil];
+    
+    FHConnectionInterationProperty *property = [[FHConnectionInterationProperty alloc] init];
+    [property setAfterFailedSelector:@selector(sendFailed:)];
+    [property setAfterFailedTarget:self];
+    [property setAfterFinishedSelector:@selector(sendSuccess:)];
+    [property setAfterFinishedTarget:self];
     [self dismissViewControllerAnimated:YES completion:NULL];
+    FHSUStatusBar *statusbar = [[FHSUStatusBar alloc] init];
+    NSString *message;
+    switch (operation) {
+        case StatusOperationComment:
+            [[FHWeiBoAPI sharedWeiBoAPI] commentStatus:opStatus.ID content:statusTextView.text commentTo:0 interactionProperty:property];
+            message = @"评论发送中...";
+            break;
+        case StatusOperationReply:
+            [[FHWeiBoAPI sharedWeiBoAPI] replyComment:[replyToIDAndName.allKeys objectAtIndex:0] Status:opStatus.ID content:statusTextView.text commentTo:1 interactionProperty:property];
+            message = @"回复发送中...";
+            break;
+        case StatusOperationRetweet:
+            [[FHWeiBoAPI sharedWeiBoAPI] retweetStatus:opStatus.ID content:statusTextView.text commentTo:0 interactionProperty:property];
+            message = @"微博转发中...";
+            break;
+        default:
+            break;
+    }
+    [statusbar showStatusMessage:message];
+}
+
+- (void)sendFailed:(NSError *)error
+{
+    NSString *message;
+    switch (operation) {
+        case StatusOperationComment:
+            message = @"评论发送失败";
+            break;
+        case StatusOperationReply:
+            message = @"回复发送失败";
+            break;
+        case StatusOperationRetweet:
+            message = @"转发微博失败";
+            break;
+        default:
+            break;
+    }
+    FHSUStatusBar *statusbar = [[FHSUStatusBar alloc] init];
+    [statusbar showStatusMessage:message];
+}
+
+- (void)sendSuccess:(NSDictionary *)successResponse
+{
+    if (successResponse) {
+        NSString *message;
+        switch (operation) {
+            case StatusOperationComment:
+                message = @"评论发送成功";
+                break;
+            case StatusOperationReply:
+                message = @"回复发送成功";
+                break;
+            case StatusOperationRetweet:
+                message = @"转发微博成功";
+                break;
+            default:
+                break;
+        }
+        FHSUStatusBar *statusbar = [[FHSUStatusBar alloc] init];
+        [statusbar showStatusMessage:message];
+    }else
+        [self sendFailed:nil];
 }
 
 - (void)showTextViewPlaceholder
@@ -195,7 +267,7 @@
             statusTextViewPlaceholder.text = @"待我评论一番";
             break;
         case StatusOperationReply:
-            statusTextViewPlaceholder.text = [NSString stringWithFormat:@"回复@%@:", replyTo];
+            statusTextViewPlaceholder.text = [NSString stringWithFormat:@"回复@%@:", [[replyToIDAndName allValues] objectAtIndex:0]];
             break;
         default:
             break;

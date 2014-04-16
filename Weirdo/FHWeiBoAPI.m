@@ -289,7 +289,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)replyComment:(NSNumber *)commentID Status:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property
 {
-    NSMutableString *paramString = [NSMutableString stringWithFormat:@"cid%@&id=%@&access_token=%@", commentID, statusID, token];
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"cid=%@&id=%@&access_token=%@", commentID, statusID, token];
     if (content) {
         content = content.length > 140? [content substringToIndex:139]:content;
         content = [self URLEncodString:content];
