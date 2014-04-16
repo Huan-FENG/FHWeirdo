@@ -10,6 +10,7 @@
 #import "FHTimelineViewController.h"
 #import "SMPageControl.h"
 #import "FHUserViewController.h"
+#import "FHSettingInfoViewController.h"
 
 @interface FHHomePageViewController ()
 { 
@@ -19,6 +20,9 @@
     UIScrollView *titleScroll;
     SMPageControl *pageIndicator;
     TimelineCategory willToVCCategory;
+    
+    UINavigationController *userInfoVC;
+    FHSettingInfoViewController *settingInfoVC;
 }
 
 @end
@@ -97,23 +101,41 @@
     }
     
     UIButton *userInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [userInfoBtn setFrame:CGRectMake(0, 0, 14, 14)];
+    [userInfoBtn setFrame:CGRectMake((isIOS7?0:10), 0, 14, 14)];
     [userInfoBtn setBackgroundImage:[UIImage imageNamed:@"home.png"] forState:UIControlStateNormal];
     [userInfoBtn addTarget:self action:@selector(checkUserInfo) forControlEvents:UIControlEventTouchUpInside];
-    UIView *userInfoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, userInfoBtn.bounds.size.width+10, userInfoBtn.bounds.size.height)];
+    UIView *userInfoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, userInfoBtn.bounds.size.width+userInfoBtn.frame.origin.x, userInfoBtn.bounds.size.height)];
     [userInfoBtnBackGround setContentMode:UIViewContentModeCenter];
     [userInfoBtnBackGround setBackgroundColor:[UIColor clearColor]];
     [userInfoBtnBackGround addSubview:userInfoBtn];
     [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:userInfoBtnBackGround]];
+    
+    UIButton *infoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [infoBtn setFrame:CGRectMake(0, 0, 14, 14)];
+    [infoBtn setBackgroundImage:[UIImage imageNamed:@"message.png"] forState:UIControlStateNormal];
+    [infoBtn addTarget:self action:@selector(checkSettingInfo) forControlEvents:UIControlEventTouchUpInside];
+    UIView *infoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (isIOS7?infoBtn.bounds.size.width:infoBtn.bounds.size.width+10), infoBtn.bounds.size.height)];
+    [infoBtnBackGround setContentMode:UIViewContentModeCenter];
+    [infoBtnBackGround setBackgroundColor:[UIColor clearColor]];
+    [infoBtnBackGround addSubview:infoBtn];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:infoBtnBackGround]];
+}
+
+- (void)checkSettingInfo
+{
+    if (!settingInfoVC) {
+        settingInfoVC = [[FHSettingInfoViewController alloc] init];
+    }
+    [self.navigationController pushViewController:settingInfoVC animated:YES];
 }
 
 - (void)checkUserInfo
 {
-    FHUserViewController *userInfoVC = [[FHUserViewController alloc] init];
-    userInfoVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *userInfoNav = [[UINavigationController alloc] initWithRootViewController:userInfoVC];
-    [userInfoNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg.png"] forBarMetrics:UIBarMetricsDefault];
-    [self presentViewController:userInfoNav animated:YES completion:NULL];
+    if (!userInfoVC) {
+        userInfoVC = [[UINavigationController alloc] initWithRootViewController:[[FHUserViewController alloc] init]];
+        userInfoVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    }
+    [self presentViewController:userInfoVC animated:YES completion:NULL];
 }
 
 #pragma mark

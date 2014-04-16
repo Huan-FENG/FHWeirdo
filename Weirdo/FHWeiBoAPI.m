@@ -15,6 +15,7 @@ _Pragma("clang diagnostic pop") \
 } while (0)
 
 #import "FHWeiBoAPI.h"
+#import "FHURLConnection.h"
 
 @implementation FHWeiBoAPI
 
@@ -80,11 +81,11 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
     
     if (properties) {
-        NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+        NSURLConnection *connection = [FHURLConnection connectionWithRequest:request delegate:self];
         NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
         [connections setObject:properties forKey:connectionKey];
     }else{
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
+        NSData *response = [FHURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
         if (response) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
             NSError *error = [self isRespondError:dic];
@@ -104,11 +105,11 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URLString]];
     [request setHTTPMethod:@"GET"];
     if (properties) {
-        NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+        NSURLConnection *connection = [FHURLConnection connectionWithRequest:request delegate:self];
         NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
         [connections setObject:properties forKey:connectionKey];
     }else{
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
+        NSData *response = [FHURLConnection sendSynchronousRequest:request returningResponse:nil error:erro];
         if (response) {
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
             NSError *error = [self isRespondError:dic];

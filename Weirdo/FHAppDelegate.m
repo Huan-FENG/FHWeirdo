@@ -19,6 +19,8 @@
     [[UILabel appearance] setFont:[UIFont boldSystemFontOfSize:16]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//    [[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"navigationbar_backItem.png"] stretchableImageWithLeftCapWidth:14 topCapHeight:5] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg.png"] forBarMetrics:UIBarMetricsDefault];
     return YES;
 }
 
