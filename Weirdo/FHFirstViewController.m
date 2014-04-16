@@ -7,7 +7,6 @@
 //
 
 #import "FHFirstViewController.h"
-#import "FHMainViewController.h"
 #import "FHHomeNavigationController.h"
 
 @interface FHFirstViewController ()

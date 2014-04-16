@@ -202,7 +202,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)fetchUserPostsLaterThanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
 {
-    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&uid=%@&trim_user=1&count=5", token, uid];
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&uid=%@&count=5", token, uid];
     if (post) {
         [paramString appendFormat:@"&max_id=%@", post.ID];
     }

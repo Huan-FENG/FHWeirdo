@@ -36,6 +36,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSString *barImageName = @"navigationbar_bg";
+    if (isIOS7) {
+        barImageName = @"navigationbar_bg-568h.png";
+    }
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed: barImageName] forBarMetrics:UIBarMetricsDefault];
     
     mainTitleView = self.navigationItem.titleView;
     title = [[UILabel alloc] initWithFrame:CGRectMake(self.view.center.x-50, 0, 100, 44)];
@@ -58,6 +63,16 @@
     [loadingTipLB setBackgroundColor:[UIColor clearColor]];
     [loadingTipLB setTextColor:[UIColor lightGrayColor]];
     [linkView addSubview:loadingTipLB];
+    
+    UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
+    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
+    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
+    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
+    [backBarBtnBackGround addSubview:backBarBtn];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
 }
 
 - (void)setLink:(NSString *)newlink
@@ -102,7 +117,7 @@
     [loadingTipLB setHidden:NO];
     loadingTipLB.text = @"加载失败";
     link = nil;
-    [loadingTipLB performSelector:@selector(hideLoadingTip) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(hideLoadingTip) withObject:nil afterDelay:2.0];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -115,7 +130,7 @@
             [title sizeToFit];
         }
     }
-    if (![webView.request.URL.absoluteString isEqual:@"about:blank"]) {
+    if (![webView.request.URL.absoluteString isEqual:@"about:blank"] && activity.isAnimating) {
         [loadingTipLB setHidden:YES];
         [activity stopAnimating];
         contentShowed = YES;

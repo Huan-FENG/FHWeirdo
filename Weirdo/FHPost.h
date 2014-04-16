@@ -20,7 +20,6 @@
 @property (nonatomic) FHPost *retweeted;
 @property (nonatomic) NSString *userID;
 @property (nonatomic) NSString *username;
-//@property (nonatomic) UIImage *userImage;
 @property (nonatomic) NSString *reporstsCount;
 @property (nonatomic) NSString *commentsCount;
 @property (nonatomic) NSString *voteCounts;

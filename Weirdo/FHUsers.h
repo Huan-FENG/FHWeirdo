@@ -18,6 +18,6 @@
 + (FHUsers *)sharedUsers;
 - (void)addUser:(FHUser *)user;
 - (FHUser *)getUserForID:(NSString *)userID;
-- (FHUser *)getCurrentUser:(NSError **)error;
+- (FHUser *)getCurrentUser;
 
 @end

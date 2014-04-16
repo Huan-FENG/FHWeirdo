@@ -113,7 +113,7 @@
 		0F2D3A8118F6F3F40062DA81 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2D3A7518F6F3F40062DA81 /* whiteArrow.png */; };
 		0F2D3A8218F6F3F40062DA81 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F2D3A7618F6F3F40062DA81 /* whiteArrow@2x.png */; };
 		0F2D3A8518F6F4F50062DA81 /* FHTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D3A8418F6F4F50062DA81 /* FHTimelineViewController.m */; };
-		0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F521D7018D87CDA00250B3F /* FHMainViewController.m */; };
+		0F9954F518FE1EE1002F495D /* FHSUStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F9954F418FE1EE1002F495D /* FHSUStatusBar.m */; };
 		820F828318D7D8DF00D3C05D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828218D7D8DF00D3C05D /* Foundation.framework */; };
 		820F828518D7D8DF00D3C05D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828418D7D8DF00D3C05D /* CoreGraphics.framework */; };
 		820F828718D7D8DF00D3C05D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820F828618D7D8DF00D3C05D /* UIKit.framework */; };
@@ -321,8 +321,8 @@
 		0F2D3A7618F6F3F40062DA81 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		0F2D3A8318F6F4F50062DA81 /* FHTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTimelineViewController.h; sourceTree = "<group>"; };
 		0F2D3A8418F6F4F50062DA81 /* FHTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTimelineViewController.m; sourceTree = "<group>"; };
-		0F521D6F18D87CDA00250B3F /* FHMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHMainViewController.h; sourceTree = "<group>"; };
-		0F521D7018D87CDA00250B3F /* FHMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHMainViewController.m; sourceTree = "<group>"; };
+		0F9954F318FE1EE1002F495D /* FHSUStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSUStatusBar.h; sourceTree = "<group>"; };
+		0F9954F418FE1EE1002F495D /* FHSUStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHSUStatusBar.m; sourceTree = "<group>"; };
 		820F827F18D7D8DF00D3C05D /* Weirdo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weirdo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		820F828218D7D8DF00D3C05D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		820F828418D7D8DF00D3C05D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -696,8 +696,6 @@
 				82A8783018FBD2DF00B1DEC5 /* FHWebViewController.m */,
 				82A9AF8818FCFDD000D25BDD /* FHUserViewController.h */,
 				82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */,
-				0F521D6F18D87CDA00250B3F /* FHMainViewController.h */,
-				0F521D7018D87CDA00250B3F /* FHMainViewController.m */,
 				8216520D18E928C30072C65C /* FHPost.h */,
 				8216520E18E928C30072C65C /* FHPost.m */,
 				8216520F18E928C30072C65C /* FHUsers.h */,
@@ -805,6 +803,8 @@
 		82C5945118ED7B680027E2A3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				0F9954F318FE1EE1002F495D /* FHSUStatusBar.h */,
+				0F9954F418FE1EE1002F495D /* FHSUStatusBar.m */,
 				0F1FFD4018FC2FB90038502B /* FHContentImageView */,
 				0F1FFD3C18FC18C20038502B /* FHImageScrollView */,
 				82C5947318F534F60027E2A3 /* FHCommentCell.h */,
@@ -1059,6 +1059,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F9954F518FE1EE1002F495D /* FHSUStatusBar.m in Sources */,
 				82A9AF8A18FCFDD000D25BDD /* FHUserViewController.m in Sources */,
 				820F82D518D934E400D3C05D /* FHHomePageViewController.m in Sources */,
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
@@ -1080,7 +1081,6 @@
 				82C5947218F51DEA0027E2A3 /* FHPostViewController.m in Sources */,
 				0F2D3A8518F6F4F50062DA81 /* FHTimelineViewController.m in Sources */,
 				820F828F18D7D8DF00D3C05D /* main.m in Sources */,
-				0F521D7118D87CDA00250B3F /* FHMainViewController.m in Sources */,
 				0F2D3A7718F6F3F40062DA81 /* EGORefreshTableHeaderView.m in Sources */,
 				820F82C818D7F83900D3C05D /* FHWeiBoAPI.m in Sources */,
 				82C5946F18F3D7F10027E2A3 /* FHOPViewController.m in Sources */,

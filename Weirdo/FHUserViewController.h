@@ -11,6 +11,4 @@
 
 @interface FHUserViewController : UIViewController <UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, FHTimelinPostCellDelegate>
 
-- (id)initWithUserID:(NSString *)userID;
-
 @end

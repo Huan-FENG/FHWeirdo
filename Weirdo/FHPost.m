@@ -35,8 +35,8 @@
             FHUser *user = [[FHUser alloc] initWithUserDic:[original objectForKey:@"user"]];
             userID = user.ID;
             username = user.name;
-//            userImageURLString = user.profileImageURL;
-        }
+        }else
+            userID = [[original objectForKey:@"uid"] stringValue];
         
         NSDictionary *originalRetweet = [original objectForKey:@"retweeted_status"];
         if (originalRetweet)

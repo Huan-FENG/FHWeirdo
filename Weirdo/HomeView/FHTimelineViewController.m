@@ -11,7 +11,6 @@
 #import "FHPostViewController.h"
 #import "FHWebViewController.h"
 #import "FHImageScrollView.h"
-#import "FHUserViewController.h"
 
 #define REFRESH_TIMEINTERVAL 15*60
 
@@ -278,11 +277,8 @@
             }
             break;
         }
-        case CellClickedTypeUserImage:{
-            FHUserViewController *userVC = [[FHUserViewController alloc] initWithUserID:[[posts objectAtIndex:indexPath.row] userID]];
-            [self.navigationController pushViewController:userVC animated:YES];
+        case CellClickedTypeUserImage:
             break;
-        }
         default:
             break;
     }

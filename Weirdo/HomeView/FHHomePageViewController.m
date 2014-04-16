@@ -9,6 +9,7 @@
 #import "FHHomePageViewController.h"
 #import "FHTimelineViewController.h"
 #import "SMPageControl.h"
+#import "FHUserViewController.h"
 
 @interface FHHomePageViewController ()
 { 
@@ -47,6 +48,7 @@
         [titleScroll setShowsHorizontalScrollIndicator:NO];
         [titleScroll setShowsVerticalScrollIndicator:NO];
         [titleScroll setContentSize:CGSizeMake(titleScroll.frame.size.width*3, titleScroll.self.frame.size.height)];
+        [titleScroll setScrollEnabled:NO];
         for (int i=0; i<3; i++) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(100*i, 10, titleScroll.frame.size.width, titleScroll.frame.size.height - 10)];
             [title setTextColor:[UIColor whiteColor]];
@@ -93,6 +95,25 @@
             [(UIScrollView *)view setDelegate:self];
         }
     }
+    
+    UIButton *userInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [userInfoBtn setFrame:CGRectMake(0, 0, 14, 14)];
+    [userInfoBtn setBackgroundImage:[UIImage imageNamed:@"home.png"] forState:UIControlStateNormal];
+    [userInfoBtn addTarget:self action:@selector(checkUserInfo) forControlEvents:UIControlEventTouchUpInside];
+    UIView *userInfoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, userInfoBtn.bounds.size.width+10, userInfoBtn.bounds.size.height)];
+    [userInfoBtnBackGround setContentMode:UIViewContentModeCenter];
+    [userInfoBtnBackGround setBackgroundColor:[UIColor clearColor]];
+    [userInfoBtnBackGround addSubview:userInfoBtn];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:userInfoBtnBackGround]];
+}
+
+- (void)checkUserInfo
+{
+    FHUserViewController *userInfoVC = [[FHUserViewController alloc] init];
+    userInfoVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    UINavigationController *userInfoNav = [[UINavigationController alloc] initWithRootViewController:userInfoVC];
+    [userInfoNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    [self presentViewController:userInfoNav animated:YES completion:NULL];
 }
 
 #pragma mark
@@ -128,7 +149,6 @@
 -(void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
     willToVCCategory = [(FHTimelineViewController *)[pendingViewControllers lastObject] category];
-//    willToVCCategory = [(FHTimlineTableViewController *)[pendingViewControllers lastObject] category];
 }
 
 #pragma mark
@@ -138,12 +158,10 @@
 {
     UIViewController *nextVC;
     FHTimelineViewController *timelineVC = (FHTimelineViewController *)viewController;
-//    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
     switch (timelineVC.category) {
         case TimelineCategoryHome:{
             if (!VC2) {
                 VC2 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryFriends];
-//                VC2 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
                 [VC2.view setBackgroundColor:[UIColor whiteColor]];
             }
             nextVC = VC2;
@@ -152,7 +170,6 @@
         case TimelineCategoryFriends:{
             if (!VC3) {
                 VC3 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryPublic];
-//                VC3 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryPublic];
                 [VC3.view setBackgroundColor:[UIColor whiteColor]];
             }
             nextVC = VC3;
@@ -168,12 +185,10 @@
 {
     UIViewController *previousVC;
     FHTimelineViewController *timelineVC = (FHTimelineViewController *)viewController;
-//    FHTimlineTableViewController *timelineVC = (FHTimlineTableViewController *)viewController;
     switch (timelineVC.category) {
         case TimelineCategoryFriends:{
             if (!VC1) {
                 VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
-//                VC1 = [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryHome];
                 [VC1.view setBackgroundColor:[UIColor whiteColor]];
             }
             previousVC = VC1;
@@ -182,7 +197,6 @@
         case TimelineCategoryPublic:{
             if (!VC2) {
                 VC2 =  [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryFriends];
-//                VC2 =  [[FHTimlineTableViewController alloc] initWithTimeline:TimelineCategoryFriends];
                 [VC2.view setBackgroundColor:[UIColor whiteColor]];
             }
             previousVC = VC2;

@@ -56,18 +56,10 @@
     return [users objectForKey:userID];
 }
 
-- (FHUser *)getCurrentUser:(NSError **)error;
+- (FHUser *)getCurrentUser
 {
     NSString *currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:@"uid"];
-    FHUser *currentUser = [self getUserForID:currentUserID];
-    if (!currentUserID) {
-        NSDictionary *userInfo = [[FHWeiBoAPI sharedWeiBoAPI] fetchUserInfo:error];
-        if (userInfo) {
-            currentUser = [[FHUser alloc] initWithUserDic:userInfo];
-            [self addUser:currentUser];
-        }
-    }
-    return currentUser;
+    return [self getUserForID:currentUserID];
 }
 
 @end

@@ -15,7 +15,7 @@
 
 @implementation FHCommentCell
 {
-    NSTimer *updateImageTimer;
+//    NSTimer *updateImageTimer;
 }
 @synthesize userImage, usernameLB, timeLB, commentLB;
 
@@ -64,8 +64,8 @@
     NSString *userID = timer.userInfo;
     FHUser *user = [[FHUsers sharedUsers] getUserForID:userID];
     if (user.profileImage) {
-        [updateImageTimer invalidate];
-        updateImageTimer = nil;
+        [timer invalidate];
+        timer = nil;
         [userImage setAlpha:0.0];
         userImage.image = user.profileImage;
         [UIView animateWithDuration:0.5 animations:^{
@@ -79,7 +79,7 @@
     FHUser *user = [[FHUsers sharedUsers] getUserForID:comment.userID];
     userImage.image = user.profileImage;
     if (!userImage.image) {
-        updateImageTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateUserImage:) userInfo:comment.userID repeats:YES];
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateUserImage:) userInfo:comment.userID repeats:YES];
     }
 
     usernameLB.text = comment.username;

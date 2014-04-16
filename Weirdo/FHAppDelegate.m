@@ -17,6 +17,8 @@
     [[UILabel appearance] setShadowOffset:CGSizeMake(0.5, 0.5)];
     [[UILabel appearance] setTextAlignment:NSTextAlignmentCenter];
     [[UILabel appearance] setFont:[UIFont boldSystemFontOfSize:16]];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     return YES;
 }
 

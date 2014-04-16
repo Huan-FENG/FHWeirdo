@@ -50,10 +50,21 @@
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = YES;
     needRefresh = YES;
+    
+    UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
+    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
+    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
+    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
+    [backBarBtnBackGround addSubview:backBarBtn];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.navigationController.navigationBarHidden = NO;
     title.text = @"微博正文";
 }
 
@@ -119,6 +130,8 @@
 
 - (void)fetchFailedWithNetworkError:(NSError *)error
 {
+    loadMoreLB.text = @"获取失败";
+    [loadMoreActivity stopAnimating];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
