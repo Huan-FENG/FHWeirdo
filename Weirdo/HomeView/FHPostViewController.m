@@ -236,7 +236,7 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if(!loadMoreActivity.isAnimating && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
-        DLog(@"start loading more")
+//        DLog(@"start loading more")
         [loadMoreActivity startAnimating];
         loadMoreLB.text = @"获取中...";
         [self pullDownToRefresh];

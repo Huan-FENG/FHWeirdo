@@ -95,7 +95,7 @@
         if (keyvalue.count == 2) {
             [parmsDic setObject:[keyvalue objectAtIndex:1] forKey:[keyvalue objectAtIndex:0]];
         }else
-            NSLog(@"cann't parse stringParm: %@", parm);
+            DLog(@"cann't parse stringParm: %@", parm);
     }
     return parmsDic;
 }

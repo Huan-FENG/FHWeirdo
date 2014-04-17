@@ -34,7 +34,7 @@
     UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
     [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
-    [backBarBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
     [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
     [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];

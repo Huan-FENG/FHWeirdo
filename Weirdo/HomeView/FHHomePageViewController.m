@@ -42,10 +42,6 @@
 {
     if (self) {
         self = [self initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
-        [VC1.view setBackgroundColor:[UIColor whiteColor]];
-        [VC1.view setTag:0];
-        [self setViewControllers:@[VC1] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         
         UIView *customTitle = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 100, 45)];
         titleScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, customTitle.bounds.size.width, 30)];
@@ -91,6 +87,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    VC1 = [[FHTimelineViewController alloc] initWithTimeline:TimelineCategoryHome];
+    [VC1.view setBackgroundColor:[UIColor whiteColor]];
+    [self setViewControllers:@[VC1] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     
     [self setDataSource:self];
     [self setDelegate:self];
@@ -146,7 +146,7 @@
     if (scrollView.contentOffset.x == self.view.frame.size.width) {
         return;
     }
-
+    DLog(@"x:%.f",scrollView.contentOffset.x);
     CGPoint scrollToPoint;
     if (scrollView.contentOffset.x > self.view.frame.size.width) {
         CGFloat percentage = (scrollView.contentOffset.x - self.view.frame.size.width) / self.view.frame.size.width;
@@ -155,7 +155,9 @@
         CGFloat percentage = (self.view.frame.size.width - scrollView.contentOffset.x) / self.view.frame.size.width;
         scrollToPoint = CGPointMake(pageIndicator.currentPage*titleScroll.frame.size.width - percentage*titleScroll.frame.size.width, 0);
     }
-    [titleScroll setContentOffset:scrollToPoint animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [titleScroll setContentOffset:scrollToPoint animated:YES];
+    });
 }
 
 #pragma mark

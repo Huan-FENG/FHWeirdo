@@ -176,7 +176,6 @@
     fromLB.text = post.source;
     
     RCLabelComponentsStructure *componentsDS = [RCLabel extractTextStyle:post.text];
-//    cell.RCLabel.delegate=self;
     content.componentsAndPlainText = componentsDS;
     RCLabel *tempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(userImage.frame.origin.x-5, userImage.frame.origin.y + userImage.frame.size.height + PADDING_VERTICAL, 320 - 2*PADDING_HORIZON+5, 80)];
     [tempLabel setFont:FONT];

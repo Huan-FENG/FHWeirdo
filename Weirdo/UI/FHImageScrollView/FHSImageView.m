@@ -30,6 +30,15 @@
         [loadingTipLB setFont:[UIFont systemFontOfSize:12.0]];
         loadingTipLB.text = @"加载中...";
         [self addSubview:loadingTipLB];
+        
+        UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
+        [self addGestureRecognizer:pinchGestureRecognizer];
+        
+        UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
+        [self addGestureRecognizer:panGestureRecognizer];
+        
+        [self setUserInteractionEnabled:YES];
+        [self setMultipleTouchEnabled:YES];
     }
     return self;
 }
@@ -43,7 +52,7 @@
         if (!image) {
             image = [[FHImageCache sharedImage] getImageForURL:sImageURL];
             if (!image) {
-                image = [UIImage imageNamed:@"defaultImage.jpg"];
+                image = [UIImage imageNamed:@"default_image.png"];
                 [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(checkImage:) userInfo:sImageURL repeats:YES];
             }
             loadImageURL = [sImageURL stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/large/"];
@@ -106,6 +115,25 @@
                 [[FHImageCache sharedImage] cacheImage:image forURL:loadImageURL];
             }
         }];
+    }
+}
+
+- (void) pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+{
+    UIView *view = pinchGestureRecognizer.view;
+    if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+        pinchGestureRecognizer.scale = 1;
+    }
+}
+
+- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    UIView *view = panGestureRecognizer.view;
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
+        [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
+        [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
     }
 }
 

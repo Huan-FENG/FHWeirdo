@@ -51,6 +51,7 @@
     NSString *formatCreatedTime;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     formatter.dateFormat = @"EEE MMM d HH:mm:ss Z y";
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     NSDate *dateTime = [formatter dateFromString:originalCreatedTime];
 
     formatter.dateFormat = @"yyyy年M月d日 H点m分";

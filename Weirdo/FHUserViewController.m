@@ -251,7 +251,7 @@
     [property setAfterFinishedTarget:self];
     [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
     
-    FHPost *status = (statuses && statuses.count > 0) ? [statuses objectAtIndex:0] : nil;
+    FHPost *status = (statuses && statuses.count > 0) ? [statuses lastObject] : nil;
     [[FHWeiBoAPI sharedWeiBoAPI] fetchUserPostsLaterThanPost:status interactionProperty:property];
 }
 
@@ -272,10 +272,18 @@
     
     if (statusArray && statusArray.count > 0)
     {
-        for (NSDictionary *statusDic in statusArray) {
-            FHPost *status = [[FHPost alloc] initWithPostDic:statusDic];
+        for (int i = 0; i < statusArray.count; i++) {
+            if (freshStatus.count != 0 && i == 0) {
+                continue;
+            }
+            FHPost *status = [[FHPost alloc] initWithPostDic:[statusArray objectAtIndex:i]];
             [freshStatus addObject:status];
         }
+        
+//        for (NSDictionary *statusDic in statusArray) {
+//            FHPost *status = [[FHPost alloc] initWithPostDic:statusDic];
+//            [freshStatus addObject:status];
+//        }
         statuses = freshStatus;
         [userStatus reloadData];
     }

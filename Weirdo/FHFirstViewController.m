@@ -86,9 +86,15 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:webView.request.URL]) {
         [self presentMainViewController];
     }
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -41,7 +41,12 @@
 {
     [super viewDidLoad];
     needRefresh = YES;
-    pullTableView = [[PullTableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (isIOS7?64:44)) style:UITableViewStylePlain];
+    pullTableView = [[PullTableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64);
+//    if ([UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
+//        frame = CGRectMake(0, 64, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64);
+//    }
+    pullTableView = [[PullTableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     [self.view addSubview:pullTableView];
     [pullTableView setDelegate:self];
     [pullTableView setDataSource:self];
@@ -53,6 +58,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (self.category != TimelineCategoryHome && [UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
+        CGRect frame = pullTableView.frame;
+        frame.origin.y = frame.origin.y + 64;
+        pullTableView.frame = frame;
+        
+    }
     [super viewWillAppear:animated];
     if(!self.pullTableView.pullTableIsRefreshing && needRefresh) {
         self.pullTableView.pullTableIsRefreshing = YES;
@@ -68,6 +79,12 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    if (self.category == TimelineCategoryHome && [UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
+        CGRect frame = pullTableView.frame;
+        frame.origin.y = 64;
+        pullTableView.frame = frame;
+        
+    }
     needRefresh = NO;
 }
 
@@ -198,7 +215,7 @@
     self.pullTableView.pullTableIsLoadingMore = NO;
     self.pullTableView.pullTableIsRefreshing = NO;
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
 

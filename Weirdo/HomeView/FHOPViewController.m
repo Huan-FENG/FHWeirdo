@@ -107,7 +107,7 @@
         postThumb.image = [[FHImageCache sharedImage] getImageForURL:thumbURLString];
     }
     if (!postThumb.image) {
-        postThumb.image = [UIImage imageNamed:@"defaultStatusThumb.png"];
+        postThumb.image = [UIImage imageNamed:@"default_status_thumb.png"];
     }
     
     UILabel *usernameLB = [[UILabel alloc] initWithFrame:CGRectMake(postThumb.frame.size.width+postThumb.frame.origin.x + 10, 5, statusView.frame.size.width-10*2-postThumb.frame.size.width - 5, 15)];

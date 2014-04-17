@@ -128,6 +128,7 @@
     if (![webView.request.URL.absoluteString isEqual:@"about:blank"] && activity.isAnimating) {
         [loadingTipLB setHidden:YES];
         [activity stopAnimating];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         contentShowed = YES;
     }
 }
@@ -138,6 +139,7 @@
         title.text = @"正在加载...";
         [loadingTipLB setHidden:NO];
         [activity startAnimating];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     }
 }
 
