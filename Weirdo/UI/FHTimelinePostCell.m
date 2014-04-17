@@ -202,7 +202,7 @@
     
     if (post.retweeted) {
         FHPost *retweeted = post.retweeted;
-        NSString *retweetContentText = [NSString stringWithFormat:@"@%@:%@", retweeted.username, retweeted.text];
+        NSString *retweetContentText = [NSString stringWithFormat:@"@%@: %@", retweeted.username, retweeted.text];
         RCLabelComponentsStructure *retweetComponentsDS = [RCLabel extractTextStyle:retweetContentText];
         retweetContent.componentsAndPlainText = retweetComponentsDS;
         RCLabel *retweetTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(PADDING_RETWEET, content.frame.origin.y + content.frame.size.height + PADDING_VERTICAL, 320-2*PADDING_RETWEET, 80)];

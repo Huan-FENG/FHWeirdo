@@ -73,14 +73,10 @@
     [self.navigationItem setTitleView:title];
     
     UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
-    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 14)];
+    [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
     [backBarBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
-    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
-    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [backBarBtnBackGround addSubview:backBarBtn];
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtn]];
     
     needRefresh = YES;
     showNavigationBar = NO;
@@ -156,17 +152,13 @@
     [pageIndicator setCurrentPage:0];
     
     UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
-    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn setFrame:CGRectMake(15, 15, 24, 14)];
+    [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
     [backBarBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(10, 15, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
-    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
-    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [backBarBtnBackGround addSubview:backBarBtn];
     
     [userProfile addSubview:profileScroll];
     [userProfile addSubview:pageIndicator];
-    [userProfile addSubview:backBarBtnBackGround];
+    [userProfile addSubview:backBarBtn];
     
     UIImageView *detailView = [[UIImageView alloc] initWithFrame:CGRectMake(0, userProfile.frame.size.height, userProfile.frame.size.width, 35)];
     [detailView setImage:[[UIImage imageNamed:@"userprofile_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6]];
@@ -465,7 +457,7 @@
                 imageURLs = post.retweeted.picURLs;
             if (index < imageURLs.count) {
                 FHImageScrollView *imageScrollView = [[FHImageScrollView alloc] initWithImageURLs:imageURLs currentIndex:index];
-                [self.view addSubview:imageScrollView];
+                [self.navigationController.view addSubview:imageScrollView];
                 [imageScrollView show];
             }
             break;

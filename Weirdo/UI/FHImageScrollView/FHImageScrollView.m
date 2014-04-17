@@ -73,6 +73,7 @@
     } completion:^(BOOL finished){
         if (finished) {
             [self removeFromSuperview];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
     }];
 }
@@ -83,7 +84,11 @@
     [scrollImageView setContentOffset:CGPointMake(currentIndex*scrollImageView.frame.size.width, 0)];
     [UIView animateWithDuration:0.5 animations:^{
         [self setAlpha:1.0];
-    } completion:NULL];
+    } completion:^(BOOL finished){
+        if (finished) {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        }
+    }];
 }
 
 - (void)loadImageViewForIndex:(NSUInteger)index;
@@ -130,16 +135,6 @@
 {
     currentIndex = scrollView.contentOffset.x/scrollView.frame.size.width;
     indexLB.text = [NSString stringWithFormat:@"%d/%d", currentIndex+1, imagesArray.count];
-//    [self unloadImageViewForIndex:currentIndex];
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

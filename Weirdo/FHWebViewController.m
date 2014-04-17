@@ -60,14 +60,10 @@
     [linkView addSubview:loadingTipLB];
     
     UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
-    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 14)];
+    [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
     [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
-    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
-    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [backBarBtnBackGround addSubview:backBarBtn];
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtn]];
 }
 
 - (void)setLink:(NSString *)newlink

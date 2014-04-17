@@ -8,6 +8,8 @@
 
 #import "FHSettingInfoViewController.h"
 #import "FHConnectionLog.h"
+#import "FHSUStatusBar.h"
+#import <MessageUI/MessageUI.h>
 
 @interface FHSettingInfoViewController ()
 
@@ -32,28 +34,49 @@
     [self.navigationItem setTitleView:title];
     
     UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBarBtn setFrame:CGRectMake(0, 0, 14, 14)];
-    [backBarBtn setBackgroundImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backBarBtn setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 14)];
+    [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
     [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *backBarBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, backBarBtn.bounds.size.width+10, backBarBtn.bounds.size.height)];
-    [backBarBtnBackGround setContentMode:UIViewContentModeCenter];
-    [backBarBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [backBarBtnBackGround addSubview:backBarBtn];
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtn]];
+    
+    UIImageView *feedbackView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
+    [feedbackView setFrame:CGRectMake(0, 5, self.view.frame.size.width, 30)];
+    UILabel *feedback = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, feedbackView.frame.size.width-20*2-60, 20)];
+    feedback.text = @"意见反馈";
+    feedback.textAlignment = NSTextAlignmentLeft;
+    feedback.backgroundColor = [UIColor clearColor];
+    feedback.font = [UIFont systemFontOfSize:11.0];
+    [feedbackView addSubview:feedback];
+    
+    UIButton *emailbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emailbutton setFrame:CGRectMake(feedback.frame.origin.x+feedback.frame.size.width, 0, feedbackView.frame.size.height, feedbackView.frame.size.height)];
+    [emailbutton setImage:[UIImage imageNamed:@"setting_mail.png"] forState:UIControlStateNormal];
+    [emailbutton addTarget:self action:@selector(showMailView) forControlEvents:UIControlEventTouchUpInside];
+    [feedbackView addSubview:emailbutton];
+    
+    UIButton *messagebutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [messagebutton setFrame:CGRectMake(emailbutton.frame.origin.x+emailbutton.frame.size.width, emailbutton.frame.origin.y, emailbutton.frame.size.width, emailbutton.frame.size.height)];
+    [messagebutton setImage:[UIImage imageNamed:@"setting_chat.png"] forState:UIControlStateNormal];
+    [messagebutton addTarget:self action:@selector(showMessageView) forControlEvents:UIControlEventTouchUpInside];
+    
+    [feedbackView setUserInteractionEnabled:YES];
+    [feedbackView addSubview:messagebutton];
+    
+    [self.view addSubview:feedbackView];
     
     UIImageView *identifierView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
-    [identifierView setFrame:CGRectMake(0, 5, self.view.frame.size.width, 30)];
+    [identifierView setFrame:CGRectMake(0, feedbackView.frame.origin.y + feedbackView.frame.size.height + 10, self.view.frame.size.width, 30)];
     
     UILabel *identifier = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, identifierView.frame.size.width-20*2, 20)];
     identifier.text = [NSString stringWithFormat:@"标志符：%@", [FHConnectionLog logIdentifer]];
     identifier.textAlignment = NSTextAlignmentLeft;
     identifier.backgroundColor = [UIColor clearColor];
-    identifier.font = [UIFont systemFontOfSize:11.0];
+    identifier.font = feedback.font;
     [identifierView addSubview:identifier];
     [self.view addSubview:identifierView];
     
     UIImageView *announcementView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
-    [announcementView setFrame:CGRectMake(0, identifierView.frame.size.height + 10, self.view.frame.size.width, 180)];
+    [announcementView setFrame:CGRectMake(0, identifierView.frame.origin.y + identifierView.frame.size.height + 10, self.view.frame.size.width, 180)];
     UILabel *announcement = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, announcementView.frame.size.width - 20*2, 0)];
     announcement.numberOfLines = 0;
     announcement.shadowColor = [UIColor clearColor];
@@ -69,12 +92,82 @@
     announcementView.frame = frame;
     [announcementView addSubview:announcement];
     [self.view addSubview:announcementView];
-    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)showMessageView
+{
+    if( [MFMessageComposeViewController canSendText] ){
+        
+        MFMessageComposeViewController * controller = [[MFMessageComposeViewController alloc] init];
+        controller.recipients = [NSArray arrayWithObject:@"13810447856"];
+        controller.body = [NSString stringWithFormat:@"用户:%@", [FHConnectionLog logIdentifer]];
+        controller.messageComposeDelegate = self;
+        [self presentViewController:controller animated:YES completion:NULL];
+        [[[[controller viewControllers] lastObject] navigationItem] setTitle:@"意见反馈"];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"无法发送短信" message:@"设备没有短信功能" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+
+- (void)showMailView
+{
+    MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
+    mailPicker.mailComposeDelegate = self;
+    [mailPicker setSubject:@"意见反馈"];
+    [mailPicker setToRecipients: @[@"fenghuan517@gmail.com"]];
+    
+    NSString *emailBody = [NSString stringWithFormat:@"用户:%@\n", [FHConnectionLog logIdentifer] ];
+    [mailPicker setMessageBody:emailBody isHTML:NO];
+    [self presentViewController:mailPicker animated:YES completion:NULL];
+}
+
+#pragma mark
+#pragma mark - MFMailComposeViewControllerDelegate
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    FHSUStatusBar *statusbar = [[FHSUStatusBar alloc] init];
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            [statusbar showStatusMessage: @"取消编辑邮件"];
+            break;
+        case MFMailComposeResultSaved:
+            [statusbar showStatusMessage:@"成功保存邮件"];
+            break;
+        case MFMailComposeResultSent:
+            [statusbar showStatusMessage:@"意见反馈邮件已添至发送列表"];
+            break;
+        case MFMailComposeResultFailed:
+            [statusbar showStatusMessage:@"发送邮件失败"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    FHSUStatusBar *statusbar = [[FHSUStatusBar alloc] init];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    switch (result) {
+        case MessageComposeResultCancelled:
+            [statusbar showStatusMessage:@"反馈信息发送取消"];
+            break;
+        case MessageComposeResultFailed:
+            [statusbar showStatusMessage:@"反馈信息发送失败"];
+            break;
+        case MessageComposeResultSent:
+            [statusbar showStatusMessage:@"反馈信息发送中"];
+            break;
+        default:
+            break;
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

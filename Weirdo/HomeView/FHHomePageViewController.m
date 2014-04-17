@@ -101,24 +101,16 @@
     }
     
     UIButton *userInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [userInfoBtn setFrame:CGRectMake((isIOS7?0:10), 0, 12, 16)];
-    [userInfoBtn setBackgroundImage:[UIImage imageNamed:@"userprofile.png"] forState:UIControlStateNormal];
+    [userInfoBtn setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 16)];
+    [userInfoBtn setImage:[UIImage imageNamed:@"userprofile.png"] forState:UIControlStateNormal];
     [userInfoBtn addTarget:self action:@selector(checkUserInfo) forControlEvents:UIControlEventTouchUpInside];
-    UIView *userInfoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, userInfoBtn.bounds.size.width+userInfoBtn.frame.origin.x, userInfoBtn.bounds.size.height)];
-    [userInfoBtnBackGround setContentMode:UIViewContentModeCenter];
-    [userInfoBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [userInfoBtnBackGround addSubview:userInfoBtn];
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:userInfoBtnBackGround]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:userInfoBtn]];
     
     UIButton *infoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [infoBtn setFrame:CGRectMake(0, 0, 14, 14)];
-    [infoBtn setBackgroundImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
+    [infoBtn setFrame:CGRectMake(0, 0, (isIOS7?16:16+IOS6_BAR_BUTTOM_PADDING), 16)];
+    [infoBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
     [infoBtn addTarget:self action:@selector(checkSettingInfo) forControlEvents:UIControlEventTouchUpInside];
-    UIView *infoBtnBackGround = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (isIOS7?infoBtn.bounds.size.width:infoBtn.bounds.size.width+10), infoBtn.bounds.size.height)];
-    [infoBtnBackGround setContentMode:UIViewContentModeCenter];
-    [infoBtnBackGround setBackgroundColor:[UIColor clearColor]];
-    [infoBtnBackGround addSubview:infoBtn];
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:infoBtnBackGround]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:infoBtn]];
 }
 
 - (void)checkSettingInfo

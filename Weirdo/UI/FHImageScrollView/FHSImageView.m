@@ -22,7 +22,7 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self setContentMode:UIViewContentModeScaleAspectFit];
         
-        loadingTipLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.frame.size.width, 30)];
+        loadingTipLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 30)];
         [loadingTipLB setBackgroundColor:[UIColor blackColor]];
         [loadingTipLB setAlpha:0.8];
         [loadingTipLB setShadowColor:[UIColor clearColor]];
@@ -132,7 +132,13 @@
     UIView *view = panGestureRecognizer.view;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
+        DLog(@"view.center.x:%.f, view.width:%.f, self.width:%.f, translation.x:%.f", view.center.x, view.frame.size.width, self.frame.size.width, translation.x);
+        CGPoint centerPoint = (CGPoint){view.center.x + translation.x, view.center.y + translation.y};
+        if ((view.center.x+translation.x) > self.frame.size.width/2 || (view.center.x+translation.x) < (320 - self.frame.size.width/2)) {
+            centerPoint.x = view.center.x;
+        }
+        [view setCenter:centerPoint];
+//        [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
         [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
     }
 }
