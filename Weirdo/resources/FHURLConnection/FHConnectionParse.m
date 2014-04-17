@@ -17,6 +17,7 @@
 
 #import "FHConnectionParse.h"
 #import "FHConnectionLog.h"
+#import "Reachability/Reachability.h"
 
 @interface FHConnectionParse (Private)
 
@@ -132,14 +133,14 @@
     NSString *stringLog;
     if (!connectionLog) {
         // init the first line of the Log file
-        stringLog = @"ID\ttype\ttime\turlbase\turlparms\turlbodyparms\tresponsedata\n";
+        stringLog = @"ID\ttype\ttime\turlbase\turlparms\turlbodyparms\tresponsedata\tstatus\n";
     }else{
         NSDictionary *data = [connectionLog objectForKey:PARSE_KEY_RESPONSEPDATA];
         NSString *theData;
         if (data) {
             theData = [data description];
         }
-        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData];
+        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\t%d\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData, [Reachability reachabilityForInternetConnection].currentReachabilityStatus];
     }
     return stringLog;
 }

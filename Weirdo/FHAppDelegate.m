@@ -13,7 +13,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [[UILabel appearance] setShadowColor:[UIColor lightGrayColor]];
     [[UILabel appearance] setShadowOffset:CGSizeMake(0.5, 0.5)];
     [[UILabel appearance] setTextAlignment:NSTextAlignmentCenter];

@@ -20,6 +20,7 @@
     NSString *logID;
 }
 
++ (NSString *)logIdentifer;
 + (FHConnectionLog *)sharedLog;
 - (void)cacheConnectionLog:(NSString *)log;
 

@@ -307,6 +307,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty * properties = [connections objectForKey:connectionKey];
 	NSMutableData *data = [[NSMutableData alloc] init];
@@ -325,6 +326,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty *properties = [connections objectForKey:connectionKey];
 	NSMutableData * oldData = (NSMutableData *) properties.data;
@@ -338,6 +340,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty *properties = [connections objectForKey:connectionKey];
 	if (properties.afterFailedSelector && properties.afterFailedTarget)
@@ -348,6 +351,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	NSString *connectionKey = [NSString stringWithFormat: @"%ld", ((intptr_t) connection)];
 	FHConnectionInterationProperty *properties = [connections objectForKey:connectionKey];
 	if (properties.afterFinishedTarget && properties.afterFinishedSelector)

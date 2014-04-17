@@ -11,6 +11,7 @@
 @interface FHImageCache : NSObject
 {
     NSMutableDictionary *images;
+    NSMutableArray *imageURLs;
 }
 
 + (FHImageCache *)sharedImage;

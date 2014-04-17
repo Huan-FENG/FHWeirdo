@@ -169,7 +169,7 @@
     [userProfile addSubview:backBarBtnBackGround];
     
     UIImageView *detailView = [[UIImageView alloc] initWithFrame:CGRectMake(0, userProfile.frame.size.height, userProfile.frame.size.width, 35)];
-//    [detailView setImage:[[UIImage imageNamed:@"timeline_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6]];
+    [detailView setImage:[[UIImage imageNamed:@"userprofile_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6]];
     for (int i = 0; i<3; i++) {
         CGRect frame = CGRectMake(i*(detailView.frame.size.width/3), 1, detailView.frame.size.width/3, 15);
         UILabel *count = [[UILabel alloc] initWithFrame:frame];

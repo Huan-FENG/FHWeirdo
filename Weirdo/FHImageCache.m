@@ -24,6 +24,7 @@
 {
     if (self) {
         images = [[NSMutableDictionary alloc] init];
+        imageURLs = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -42,8 +43,10 @@
 - (void)cacheImage:(UIImage *)image forURL:(NSString *)URLString
 {
     [images setObject:image forKey:URLString];
-    if (images.count > 20) {
-        [images removeObjectsForKeys:[[images allKeys] subarrayWithRange:NSMakeRange(0, 5)]];
+    [imageURLs addObject:URLString];
+    if (images.count > 25) {
+        [images removeObjectForKey:[imageURLs objectAtIndex:0]];
+        [imageURLs removeObjectAtIndex:0];
     }
 }
 

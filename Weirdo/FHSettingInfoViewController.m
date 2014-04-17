@@ -7,6 +7,7 @@
 //
 
 #import "FHSettingInfoViewController.h"
+#import "FHConnectionLog.h"
 
 @interface FHSettingInfoViewController ()
 
@@ -40,22 +41,20 @@
     [backBarBtnBackGround addSubview:backBarBtn];
     [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtnBackGround]];
     
-    UIImageView *identifierView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_info_border.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5 ]];
-    [identifierView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 30)];
-    identifierView.backgroundColor = [UIColor lightGrayColor];
+    UIImageView *identifierView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
+    [identifierView setFrame:CGRectMake(0, 5, self.view.frame.size.width, 30)];
     
-    UILabel *identifier = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, identifierView.frame.size.width-15*2, 20)];
-    identifier.text = [NSString stringWithFormat:@"标志符：%@", [[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+    UILabel *identifier = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, identifierView.frame.size.width-20*2, 20)];
+    identifier.text = [NSString stringWithFormat:@"标志符：%@", [FHConnectionLog logIdentifer]];
     identifier.textAlignment = NSTextAlignmentLeft;
     identifier.backgroundColor = [UIColor clearColor];
     identifier.font = [UIFont systemFontOfSize:11.0];
     [identifierView addSubview:identifier];
     [self.view addSubview:identifierView];
     
-    UIImageView *announcementView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_info_border.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5 ]];
-    [announcementView setFrame:CGRectMake(0, identifierView.frame.size.height + 5, self.view.frame.size.width, 180)];
-    [announcementView setBackgroundColor:[UIColor yellowColor]];
-    UILabel *announcement = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, announcementView.frame.size.width - 15*2, 0)];
+    UIImageView *announcementView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
+    [announcementView setFrame:CGRectMake(0, identifierView.frame.size.height + 10, self.view.frame.size.width, 180)];
+    UILabel *announcement = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, announcementView.frame.size.width - 20*2, 0)];
     announcement.numberOfLines = 0;
     announcement.shadowColor = [UIColor clearColor];
     announcement.textAlignment = NSTextAlignmentLeft;

@@ -14,6 +14,11 @@
 
 @implementation FHConnectionLog
 
++ (NSString *)logIdentifer
+{
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
 + (FHConnectionLog *)sharedLog
 {
     static FHConnectionLog *sharedLogInstance = nil;
@@ -227,7 +232,7 @@
 - (BOOL)loginLogCloud
 {
     NSString *logPsw = @"cc89051718";
-    NSString *device = [NSString stringWithFormat:@"%@", [[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+    NSString *device = [NSString stringWithFormat:@"%@", [FHConnectionLog logIdentifer]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.meepotech.com/0/account/login?user_name=c30268056&password=%@&device_name=%@", logPsw, device]] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:50.0f];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];

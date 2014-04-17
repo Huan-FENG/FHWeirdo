@@ -39,17 +39,14 @@
     self = [self initWithFrame:CGRectZero];
     if (self) {
         NSString *sImageURL = imageURL;
-        NSString *lImageURL = [imageURL stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/large/"];
-        
-        UIImage *image;
-        image = [[FHImageCache sharedImage] getImageForURL:lImageURL];
+        UIImage *image = [[FHImageCache sharedImage] getHighestPxImageForURL:sImageURL];
         if (!image) {
             image = [[FHImageCache sharedImage] getImageForURL:sImageURL];
             if (!image) {
-//                image = @"defaul.png";
+                image = [UIImage imageNamed:@"defaultImage.jpg"];
                 [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(checkImage:) userInfo:sImageURL repeats:YES];
             }
-            loadImageURL = lImageURL;
+            loadImageURL = [sImageURL stringByReplacingOccurrencesOfString:@"/thumbnail/" withString:@"/large/"];
             [self loadImage];
         }else
             [loadingTipLB setHidden:YES];
@@ -61,9 +58,9 @@
 - (void)checkImage:(NSTimer *)timer
 {
     NSString *checkImageURL = timer.userInfo;
-    UIImage *checkImage = [[FHImageCache sharedImage] getImageForURL:checkImageURL];
+    UIImage *checkImage = [[FHImageCache sharedImage] getHighestPxImageForURL:checkImageURL];
     if (!checkImage) {
-        checkImage = [[FHImageCache sharedImage] getImageForURL:loadImageURL];
+        checkImage = [[FHImageCache sharedImage] getImageForURL:checkImageURL];
     }
     if (checkImage) {
         [self setImage:checkImage];

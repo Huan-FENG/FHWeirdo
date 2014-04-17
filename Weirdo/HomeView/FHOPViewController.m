@@ -104,15 +104,12 @@
     }else if (post.retweeted.picURLs && post.retweeted.picURLs.count>0)
         thumbURLString = [post.retweeted.picURLs objectAtIndex:0];
     if (thumbURLString) {
-        DLog(@"thumbURLString: %@", thumbURLString);
         postThumb.image = [[FHImageCache sharedImage] getImageForURL:thumbURLString];
-    }else{
+    }
+    if (!postThumb.image) {
         postThumb.image = [UIImage imageNamed:@"defaultStatusThumb.png"];
     }
-    if (postThumb.image) {
-        DLog(@"yes!");
-    }
-        
+    
     UILabel *usernameLB = [[UILabel alloc] initWithFrame:CGRectMake(postThumb.frame.size.width+postThumb.frame.origin.x + 10, 5, statusView.frame.size.width-10*2-postThumb.frame.size.width - 5, 15)];
     [usernameLB setBackgroundColor:[UIColor clearColor]];
     [usernameLB setFont:[UIFont systemFontOfSize:12.0]];
