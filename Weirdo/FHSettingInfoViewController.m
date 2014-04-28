@@ -12,7 +12,9 @@
 #import <MessageUI/MessageUI.h>
 
 @interface FHSettingInfoViewController ()
-
+{
+    UILabel *uploadedSize;
+}
 @end
 
 @implementation FHSettingInfoViewController
@@ -75,8 +77,17 @@
     [identifierView addSubview:identifier];
     [self.view addSubview:identifierView];
     
+    UIImageView *uploadedSizeView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
+    [uploadedSizeView setFrame:CGRectMake(0, identifierView.frame.origin.y + identifierView.frame.size.height + 10, self.view.frame.size.width, 30)];
+    uploadedSize = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, uploadedSizeView.frame.size.width-20*2, 20)];
+    uploadedSize.textAlignment = NSTextAlignmentLeft;
+    uploadedSize.backgroundColor = [UIColor clearColor];
+    uploadedSize.font = feedback.font;
+    [uploadedSizeView addSubview:uploadedSize];
+    [self.view addSubview:uploadedSizeView];
+    
     UIImageView *announcementView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
-    [announcementView setFrame:CGRectMake(0, identifierView.frame.origin.y + identifierView.frame.size.height + 10, self.view.frame.size.width, 180)];
+    [announcementView setFrame:CGRectMake(0, uploadedSizeView.frame.origin.y + uploadedSizeView.frame.size.height + 10, self.view.frame.size.width, 180)];
     UILabel *announcement = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, announcementView.frame.size.width - 20*2, 0)];
     announcement.numberOfLines = 0;
     announcement.shadowColor = [UIColor clearColor];
@@ -97,6 +108,32 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    uploadedSize.text = [NSString stringWithFormat:@"已上传：%@", [self getUploadedDataSize]];
+}
+
+- (NSString *)getUploadedDataSize
+{
+    NSString *uploadedDataSizeString;
+    long long uploadedDataSize = [FHConnectionLog getUploadedSize];
+    if (uploadedDataSize) {
+        if (uploadedDataSize > 1000) {
+            if (uploadedDataSize/(1024.0) > 1000) {
+                if (uploadedDataSize/(1024*1024.0) > 1000) {
+                    uploadedDataSizeString = [NSString stringWithFormat:@"%.2f GB", uploadedDataSize/(1024*1024*1024.0)];
+                }else
+                    uploadedDataSizeString = [NSString stringWithFormat:@"%.2f MB", uploadedDataSize/(1024*1024.0)];
+            }else
+                uploadedDataSizeString = [NSString stringWithFormat:@"%.2f KB", uploadedDataSize/(1024.0)];
+
+        }else
+            uploadedDataSizeString = [NSString stringWithFormat:@"%.2lld B", uploadedDataSize];
+    }else
+        uploadedDataSizeString = @"0 byte";
+    return uploadedDataSizeString;
 }
 
 - (void)showMessageView

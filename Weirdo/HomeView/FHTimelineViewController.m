@@ -43,9 +43,6 @@
     needRefresh = YES;
     pullTableView = [[PullTableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64);
-//    if ([UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
-//        frame = CGRectMake(0, 64, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64);
-//    }
     pullTableView = [[PullTableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     [self.view addSubview:pullTableView];
     [pullTableView setDelegate:self];
@@ -60,7 +57,7 @@
 {
     if (self.category != TimelineCategoryHome && [UIDevice currentDevice].systemVersion.doubleValue == 7.0) {
         CGRect frame = pullTableView.frame;
-        frame.origin.y = frame.origin.y + 64;
+        frame.origin.y = 64;
         pullTableView.frame = frame;
         
     }
@@ -92,8 +89,6 @@
 {
     [self setPullTableView:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,7 +175,7 @@
     }
     if (postsArray && postsArray.count > 0)
     {
-        for (int i = postsArray.count; i>0; i--) {
+        for (int i = (int)postsArray.count; i>0; i--) {
             NSDictionary *postDic = [postsArray objectAtIndex:i-1];
             FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
             [freshPosts insertObject:post atIndex:0];
@@ -277,7 +272,7 @@
             break;
         }
         case CellClickedTypeVote:
-            NSLog(@"index: %d, vote", indexPath.row);
+            NSLog(@"index: %d, vote", (int)indexPath.row);
             break;
         case CellClickedTypePictures:
         {

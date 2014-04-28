@@ -77,6 +77,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 - (NSDictionary *)postURL:(NSString *)URLString bodyString:(NSString *)bodyString withConnectionInteractionProperty:(FHConnectionInterationProperty *)properties error:(NSError **)erro
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URLString]];
+    [request setTimeoutInterval:60.0];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -103,6 +104,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 - (NSDictionary *)getURL:(NSString *)URLString withConnectionInteractionProperty:(FHConnectionInterationProperty *)properties error:(NSError **)erro
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:URLString]];
+    [request setTimeoutInterval:60.0];
     [request setHTTPMethod:@"GET"];
     if (properties) {
         NSURLConnection *connection = [FHURLConnection connectionWithRequest:request delegate:self];
@@ -128,7 +130,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 {
     NSError *erro;
     if ([response objectForKey:@"error_code"]) {
-        int errorCode = [[response objectForKey:@"error_code"] integerValue];
+        int errorCode = [[response objectForKey:@"error_code"] intValue];
         switch (errorCode) {
             case 21314:
             case 21315:
@@ -145,13 +147,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return erro;
 }
 
-- (NSURL *)authorizeURL
-{
-    NSString *paramString = [NSString stringWithFormat:@"client_id=%@&redirect_uri=%@&display=mobile", appKey, APIRedirectURI];
-    NSString *URLString = [NSString stringWithFormat:@"%@/oauth2/authorize?%@", APIServer, paramString];
-    return [NSURL URLWithString:URLString];
-}
-
 - (BOOL)checkToken
 {
     NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
@@ -164,7 +159,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return YES;
 }
 
-- (void)getAccountTokenWithCode:(NSString *)code
+- (BOOL)getAccountTokenWithCode:(NSString *)code
 {
     NSString *paramString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=authorization_code&code=%@&redirect_uri=%@", appKey, appSecretKey, code, APIRedirectURI];
     NSString *URLString = [NSString stringWithFormat:@"%@/oauth2/access_token?%@", APIServer, paramString];
@@ -174,19 +169,30 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         token = [response objectForKey:@"access_token"];
         uid = [response objectForKey:@"uid"];
         [self synchronize];
+        return YES;
     }
+    return NO;
+}
+
+- (NSURL *)authorizeURL
+{
+    NSString *paramString = [NSString stringWithFormat:@"client_id=%@&redirect_uri=%@&display=mobile", appKey, APIRedirectURI];
+    NSString *URLString = [NSString stringWithFormat:@"%@/oauth2/authorize?%@", APIServer, paramString];
+    return [NSURL URLWithString:URLString];
 }
 
 - (BOOL)isAuthorized:(NSURL *)redirectURL
 {
     if (!redirectURL) {
-        return [self checkToken];
+        if ([self checkToken]) {
+            return YES;
+        }
     }else{
         NSString *authorizeString = redirectURL.absoluteString;
         NSRange codeRange = [authorizeString rangeOfString:@"code="];
         if (codeRange.location != NSNotFound) {
             NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
-            DLog(@"code: %@",code);
+            [[NSUserDefaults standardUserDefaults] setObject:code forKey:@"authorize_code"];
             [self getAccountTokenWithCode:code];
             return YES;
         }
@@ -241,7 +247,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property
 {
-    NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
+    NSString *paramString = [NSString stringWithFormat:@"access_token=%@&feature=1", token];
     NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/public_timeline.json?%@", APIServer, paramString];
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }
@@ -285,7 +291,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     NSString *URLString = [NSString stringWithFormat:@"%@/2/comments/create.json", APIServer];
     NSError *error;
     [self postURL:URLString bodyString:paramString withConnectionInteractionProperty:property error:&error];
-    DLog(@"comment error:%d", error.code);
+    DLog(@"comment error:%d", (int)error.code);
 }
 
 - (void)replyComment:(NSNumber *)commentID Status:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property
@@ -299,7 +305,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     NSString *URLString = [NSString stringWithFormat:@"%@/2/comments/reply.json", APIServer];
     NSError *error;
     [self postURL:URLString bodyString:paramString withConnectionInteractionProperty:property error:&error];
-    DLog(@"comment error:%d", error.code);
+    DLog(@"comment error:%ld", (long)error.code);
 }
 
 #pragma mark

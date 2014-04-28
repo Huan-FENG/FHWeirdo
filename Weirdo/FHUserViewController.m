@@ -445,7 +445,7 @@
             break;
         }
         case CellClickedTypeVote:
-            NSLog(@"index: %d, vote", indexPath.row);
+            NSLog(@"index: %d, vote", (int)indexPath.row);
             break;
         case CellClickedTypePictures:
         {

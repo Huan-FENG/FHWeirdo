@@ -43,7 +43,7 @@
     [title setTextColor:[UIColor whiteColor]];
     
     linkView = [[UIWebView alloc] init];
-    [linkView setFrame:self.view.bounds];
+    [linkView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (isIOS7?64:44))];
     [linkView setDelegate:self];
     [self.view addSubview:linkView];
     

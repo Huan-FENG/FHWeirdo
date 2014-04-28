@@ -257,7 +257,7 @@
     }
     if (post.retweeted)
     {
-        RCLabelComponentsStructure *rComponentsDS = [RCLabel extractTextStyle:[NSString stringWithFormat:@"@%@:%@", post.retweeted.username, post.retweeted.text]];
+        RCLabelComponentsStructure *rComponentsDS = [RCLabel extractTextStyle:[NSString stringWithFormat:@"@%@: %@", post.retweeted.username, post.retweeted.text]];
         RCLabel *rTempLabel = [[RCLabel alloc] initWithFrame:CGRectMake(0, 0, 320 - 2*PADDING_RETWEET, 80)];
         [rTempLabel setFont:FONT];
         rTempLabel.componentsAndPlainText = rComponentsDS;

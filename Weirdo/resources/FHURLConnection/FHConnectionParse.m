@@ -105,7 +105,7 @@
     NSMutableDictionary *connectionDic = [[NSMutableDictionary alloc] init];
     [connectionDic addEntriesFromDictionary: [self parseURLToDic:request.URL]];
     [connectionDic addEntriesFromDictionary:[self parseBodyToDic:request.HTTPBody]];
-    [connectionDic setObject: [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]] forKey:PARSE_KEY_TIME];
+    [connectionDic setObject: [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]*1000.0] forKey:PARSE_KEY_TIME];
     [connectionDic setObject:request.HTTPMethod forKey:PARSE_KEY_CONNECTIONTYPE];
     [connectionDic setObject:connectionId forKey:PARSE_KEY_CONNECTIONID];
     [[FHConnectionLog sharedLog] cacheConnectionLog:[FHConnectionParse parseConnectionLog:connectionDic]];
@@ -114,7 +114,7 @@
 - (void)parseResponseData:(NSData *)data forConnectionID:(NSString *)connectionId
 {
     NSMutableDictionary *connectionDic = [[NSMutableDictionary alloc] init];
-    [connectionDic setObject:[NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]] forKey:PARSE_KEY_TIME];
+    [connectionDic setObject:[NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]*1000.0] forKey:PARSE_KEY_TIME];
     [connectionDic setObject:@"data" forKey:PARSE_KEY_CONNECTIONTYPE];
     
     id jsonToObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
@@ -129,7 +129,7 @@
 
 + (NSString *)parseConnectionLog:(NSDictionary *)connectionLog
 {
-//  ID || type || time || urlbase || urlparms || urlbodyparms || responsedata
+//  ID || type || time || urlbase || urlparms || urlbodyparms || responsedata || status
     NSString *stringLog;
     if (!connectionLog) {
         // init the first line of the Log file
@@ -140,7 +140,7 @@
         if (data) {
             theData = [data description];
         }
-        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\t%d\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData, [Reachability reachabilityForInternetConnection].currentReachabilityStatus];
+        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\t%d\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData, (int)[Reachability reachabilityForInternetConnection].currentReachabilityStatus];
     }
     return stringLog;
 }

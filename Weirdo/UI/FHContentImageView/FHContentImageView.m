@@ -66,10 +66,10 @@
     }
 }
 
-+ (float)getViewHeightForImageCount:(int)count
++ (float)getViewHeightForImageCount:(NSUInteger)count
 {
     float height = 0.0;
-    int rows =  (count - 1)/3 + 1;
+    int rows =  ((int)count - 1)/3 + 1;
     switch (rows) {
         case 1:
             if (count == 1) {

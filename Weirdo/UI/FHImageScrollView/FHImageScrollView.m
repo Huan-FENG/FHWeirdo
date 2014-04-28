@@ -7,7 +7,7 @@
 //
 
 #import "FHImageScrollView.h"
-#import "FHSImageView.h"
+#import "FHScrollImage.h"
 
 @implementation FHImageScrollView
 {
@@ -54,7 +54,7 @@
         currentIndex = index;
         
         [scrollImageView setContentSize:CGSizeMake(scrollImageView.frame.size.width*imageURLs.count, self.frame.size.height)];
-        indexLB.text = [NSString stringWithFormat:@"%d/%d", index+1, imageURLs.count];
+        indexLB.text = [NSString stringWithFormat:@"%d/%d", (int)index+1, (int)imageURLs.count];
         
         for (int i = 0; i<imageURLs.count; i++) {
             if (!imageViews) {
@@ -104,9 +104,9 @@
 
 - (void)loadImageViewAtIndex:(NSUInteger)index
 {
-    FHSImageView *imageView = [imageViews objectAtIndex:index];
+    FHScrollImage *imageView = [imageViews objectAtIndex:index];
     if ([imageView isKindOfClass:[NSNull class]]) {
-        imageView = [[FHSImageView alloc] initWithImageURL:[imagesArray objectAtIndex:index]];
+        imageView = [[FHScrollImage alloc] initWithImageURL:[imagesArray objectAtIndex:index]];
         CGRect frame = imageView.frame;
         frame.origin.x = index*scrollImageView.frame.size.width;
         [imageView setFrame:frame];
@@ -134,7 +134,13 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     currentIndex = scrollView.contentOffset.x/scrollView.frame.size.width;
-    indexLB.text = [NSString stringWithFormat:@"%d/%d", currentIndex+1, imagesArray.count];
+    indexLB.text = [NSString stringWithFormat:@"%d/%d", (int)currentIndex+1, (int)imagesArray.count];
+    if (currentIndex > 0 && [imageViews objectAtIndex:(currentIndex - 1)]) {
+        [[imageViews objectAtIndex:currentIndex-1] setZoomScale:1.0];
+    }
+    if (currentIndex <imageViews.count-1 && [imageViews objectAtIndex:currentIndex+1]) {
+        [[imageViews objectAtIndex:currentIndex+1] setZoomScale:1.0];
+    }
 }
 
 @end

@@ -9,8 +9,9 @@
 #import "FHConnectionLog.h"
 #import "FHConnectionParse.h"
 #import <CommonCrypto/CommonDigest.h>
-#define KEY_LOGTOKEN @"logToken"
-#define KEY_LOGID @"logID"
+#define KEY_LOG_TOKEN @"logToken"
+#define KEY_LOG_ID @"logID"
+#define KEY_LOG_UPLOADED_SIZE @"logUploadedSize"
 
 @implementation FHConnectionLog
 
@@ -114,6 +115,7 @@
 
 - (void)writeSingleLog:(NSString *)log
 {
+    
     if (!cachePath && ![self setCachePath]){
         NSLog(@"ERROR! CacheConnectionLog failed! Log: [%@]", log);
         return;
@@ -138,6 +140,10 @@
 
 - (void)checkLogSizeForUpload
 {
+    if ([defaultFileManager fileExistsAtPath:[[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"]]) {
+        [self uploadLog];
+    }
+    
     NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
     if (logAttr) {
         long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
@@ -149,6 +155,10 @@
 
 - (void)uploadLog
 {
+    if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
+        return;
+    }
+    
     NSString *uploadLogPath = [[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"];
     if (![self checkLogExistence:uploadLogPath]) {
         [cacheQueue setSuspended:YES];
@@ -177,13 +187,21 @@
     }
     
     if (uploadCompleted) {
+        long long previousUploadedSize = [FHConnectionLog getUploadedSize];
+        long long uploadedSize = [[[defaultFileManager attributesOfItemAtPath:uploadLogPath error:NULL] objectForKey:NSFileSize] longLongValue] + previousUploadedSize;
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:uploadedSize] forKey:KEY_LOG_UPLOADED_SIZE];
         [defaultFileManager removeItemAtPath:uploadLogPath error:nil];
     }
 }
 
++ (long long)getUploadedSize
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_UPLOADED_SIZE] longLongValue];
+}
+
 - (BOOL)getLogID
 {
-    logID = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOGID];
+    logID = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_ID];
     if (!logID) {
         return [self idOfLogCloud];
     }
@@ -209,7 +227,7 @@
     NSDictionary *recievedJsonToDic = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
     logID = [recievedJsonToDic objectForKey:@"user_id"];
     if (logID) {
-        [[NSUserDefaults standardUserDefaults] setObject:logID forKey:KEY_LOGID];
+        [[NSUserDefaults standardUserDefaults] setObject:logID forKey:KEY_LOG_ID];
         return YES;
     }
     return NO;
@@ -217,7 +235,7 @@
 
 - (BOOL)getLogToken
 {
-    token = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOGTOKEN];
+    token = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_TOKEN];
     if (!token) {
         return [self loginLogCloud];
     }
@@ -244,7 +262,7 @@
     NSDictionary *recievedJsonToDic = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
     token = [recievedJsonToDic objectForKey:@"token"];
     if (token) {
-        [[NSUserDefaults standardUserDefaults] setObject:token forKey:KEY_LOGTOKEN];
+        [[NSUserDefaults standardUserDefaults] setObject:token forKey:KEY_LOG_TOKEN];
         return YES;
     }
     return NO;
@@ -253,7 +271,7 @@
 - (BOOL)uploadLogToCloud:(NSString *)logFilePath
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH-mm-ss"];
     NSString *date = [formatter stringFromDate:[NSDate date]];
     NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [[[UIDevice currentDevice] identifierForVendor] UUIDString], date];
     path = [self URLEncodedString:path];

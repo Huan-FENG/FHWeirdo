@@ -1055,13 +1055,13 @@ CGFloat MyGetWidthCallback( void* refCon ){
         NSString *componentText = [text substringWithRange:NSMakeRange(tempPosition, range.location - tempPosition)];
         RCLabelComponent *component = [RCLabelComponent componentWithString:componentText tag:@"rawText" attributes:nil];
         component.isClosure = YES;
-        component.position = [plainData rangeOfString:componentText].location;
+        component.position = (int)[plainData rangeOfString:componentText].location;
         [components addObject:component];
         
         NSString *rangeString = [text substringWithRange:range];
         RCLabelComponent *componentSpecial = [RCLabelComponent componentWithString:rangeString tag:@"a" attributes:nil];
         componentSpecial.isClosure = YES;
-        componentSpecial.position = [plainData rangeOfString:rangeString].location;
+        componentSpecial.position = (int)[plainData rangeOfString:rangeString].location;
         [components addObject:componentSpecial];
         if ([rangeString hasPrefix:@":"] || [rangeString hasPrefix:@"@"] || [rangeString hasPrefix:@"http" ] || [rangeString hasPrefix:@"#"]) {
             componentSpecial.tagLabel = @"a";
@@ -1092,7 +1092,7 @@ CGFloat MyGetWidthCallback( void* refCon ){
     if (tempPosition < text.length) {
         RCLabelComponent *component = [RCLabelComponent componentWithString:[text substringFromIndex:tempPosition] tag:@"rawText" attributes:nil];
         component.isClosure = YES;
-        component.position = tempPosition;
+        component.position = (int)tempPosition;
         [components addObject:component];
     }
     RCLabelComponentsStructure *componentsDS = [[RCLabelComponentsStructure alloc] init];
@@ -1119,7 +1119,7 @@ CGFloat MyGetWidthCallback( void* refCon ){
 	CFMutableDictionaryRef styleDict = CFDictionaryCreateMutable(NULL, 0, 0, 0);
 	CFDictionaryAddValue( styleDict, kCTForegroundColorAttributeName, [self.textColor CGColor] );
 	CFAttributedStringSetAttributes( _attrString, CFRangeMake( 0, CFAttributedStringGetLength(_attrString) ), styleDict, 0 ); 
-	[self applyParagraphStyleToText:_attrString attributes:nil atPosition:0 withLength:CFAttributedStringGetLength(_attrString)];
+	[self applyParagraphStyleToText:_attrString attributes:nil atPosition:0 withLength:(int)CFAttributedStringGetLength(_attrString)];
     CFStringRef keys[] = { kCTFontAttributeName };
     CFTypeRef values[] = { _thisFont };
     
@@ -1129,20 +1129,20 @@ CGFloat MyGetWidthCallback( void* refCon ){
 
 	for (RCLabelComponent *component in self.componentsAndPlainText.components)
 	{
-		int index = [self.componentsAndPlainText.components indexOfObject:component];
+		int index = (int)[self.componentsAndPlainText.components indexOfObject:component];
 		component.componentIndex = index;
 		if ([component.tagLabel isEqualToString:@"i"])
 		{
 			// make font italic
-			[self applyItalicStyleToText:_attrString atPosition:component.position withLength:[component.text length]];
-            [self applyColor:nil toText:_attrString atPosition:component.position withLength:[component.text length]]; 
+			[self applyItalicStyleToText:_attrString atPosition:component.position withLength:(int)[component.text length]];
+            [self applyColor:nil toText:_attrString atPosition:component.position withLength:(int)[component.text length]];
          //   [self applyColor:@"#2e2e2e" toText:_attrString atPosition:component.position withLength:[component.text length]];
 		}
 		else if ([component.tagLabel isEqualToString:@"b"])
 		{
 			// make font bold
-			[self applyBoldStyleToText:_attrString atPosition:component.position withLength:[component.text length]];
-            [self applyColor:nil toText:_attrString atPosition:component.position withLength:[component.text length]]; 
+			[self applyBoldStyleToText:_attrString atPosition:component.position withLength:(int)[component.text length]];
+            [self applyColor:nil toText:_attrString atPosition:component.position withLength:(int)[component.text length]];
            // [self applyColor:@"#2e2e2e" toText:_attrString atPosition:component.position withLength:[component.text length]];
 		}
 		else if ([component.tagLabel isEqualToString:@"a"])
@@ -1151,32 +1151,32 @@ CGFloat MyGetWidthCallback( void* refCon ){
             if (!value) {
                 [component.attributes setObject:@"" forKey:@"href"];
             }
-            [self applyLinkAttributes:_attrString attributes:component.attributes atPosition:component.position withLength:[component.text length]];
+            [self applyLinkAttributes:_attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
         }
 		else if ([component.tagLabel isEqualToString:@"u"] || [component.tagLabel isEqualToString:@"underlined"])
 		{
 			// underline
 			if ([component.tagLabel isEqualToString:@"u"])
 			{
-				[self applySingleUnderlineText:_attrString atPosition:component.position withLength:[component.text length]];
+				[self applySingleUnderlineText:_attrString atPosition:component.position withLength:(int)[component.text length]];
 			}
 			if ([component.attributes objectForKey:@"color"])
 			{
 				NSString *value = [component.attributes objectForKey:@"color"];
-				[self applyUnderlineColor:value toText:_attrString atPosition:component.position withLength:[component.text length]];
+				[self applyUnderlineColor:value toText:_attrString atPosition:component.position withLength:(int)[component.text length]];
 			}
 		}
 		else if ([component.tagLabel isEqualToString:@"font"])
 		{
-			[self applyFontAttributes:component.attributes toText:_attrString atPosition:component.position withLength:[component.text length]];
+			[self applyFontAttributes:component.attributes toText:_attrString atPosition:component.position withLength:(int)[component.text length]];
 		}
 		else if ([component.tagLabel isEqualToString:@"p"])
 		{
-			[self applyParagraphStyleToText:_attrString attributes:component.attributes atPosition:component.position withLength:[component.text length]];
+			[self applyParagraphStyleToText:_attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
 		}
         else if([component.tagLabel isEqualToString:@"img"])
         {
-            [self applyImageAttributes:_attrString attributes:component.attributes atPosition:component.position withLength:[component.text length]];
+            [self applyImageAttributes:_attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
         }
 	}
     CFRelease(styleDict);

@@ -11,7 +11,6 @@
 		0F1FFD4518FC2FE70038502B /* FHImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F1FFD4118FC2FE70038502B /* FHImageView.m */; };
 		0F1FFD4618FC2FE70038502B /* FHContentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F1FFD4318FC2FE70038502B /* FHContentImageView.m */; };
 		0F1FFD4918FC2FF80038502B /* FHTimelinePostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F1FFD4818FC2FF80038502B /* FHTimelinePostCell.m */; };
-		0F1FFD4C18FC304E0038502B /* FHSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F1FFD4B18FC304E0038502B /* FHSImageView.m */; };
 		0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A46FD18DAE28A00BCEC71 /* FHUser.m */; };
 		0F2D157C18EAF66200FBD443 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D157A18EAF66200FBD443 /* SMPageControl.m */; };
 		0F2D3A0518F5AA410062DA81 /* emotionImage.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F2D39B018F5AA410062DA81 /* emotionImage.plist */; };
@@ -158,8 +157,12 @@
 		82A9AF8518FCFA3C00D25BDD /* navigationbar_sendItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A9AF8418FCFA3C00D25BDD /* navigationbar_sendItem@2x.png */; };
 		82A9AF8718FCFA5A00D25BDD /* navigationbar_backItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82A9AF8618FCFA5A00D25BDD /* navigationbar_backItem@2x.png */; };
 		82A9AF8A18FCFDD000D25BDD /* FHUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */; };
+		82B02480190E188F007972F6 /* YLGIFImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B0247D190E188F007972F6 /* YLGIFImage.m */; };
+		82B02481190E188F007972F6 /* YLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B0247F190E188F007972F6 /* YLImageView.m */; };
+		82B02485190E260B007972F6 /* hsa_org.gif in Resources */ = {isa = PBXBuildFile; fileRef = 82B02484190E260B007972F6 /* hsa_org.gif */; };
 		82BB19F518FFA1000095F6CB /* default_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82BB19F418FFA1000095F6CB /* default_image@2x.png */; };
 		82BB19F718FFB1850095F6CB /* default_status_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82BB19F618FFB1850095F6CB /* default_status_thumb@2x.png */; };
+		82BB19FA1900BF5F0095F6CB /* FHScrollImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 82BB19F91900BF5F0095F6CB /* FHScrollImage.m */; };
 		82C5944518EBA04E0027E2A3 /* FHImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5944418EBA04E0027E2A3 /* FHImageCache.m */; };
 		82C5944C18EBB3DF0027E2A3 /* timeline_rt_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5944A18EBB3DF0027E2A3 /* timeline_rt_border.png */; };
 		82C5944D18EBB3DF0027E2A3 /* timeline_rt_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82C5944B18EBB3DF0027E2A3 /* timeline_rt_border@2x.png */; };
@@ -193,8 +196,6 @@
 		0F1FFD4418FC2FE70038502B /* FHContentImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHContentImageView.h; sourceTree = "<group>"; };
 		0F1FFD4718FC2FF80038502B /* FHTimelinePostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTimelinePostCell.h; sourceTree = "<group>"; };
 		0F1FFD4818FC2FF80038502B /* FHTimelinePostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTimelinePostCell.m; sourceTree = "<group>"; };
-		0F1FFD4A18FC304E0038502B /* FHSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSImageView.h; sourceTree = "<group>"; };
-		0F1FFD4B18FC304E0038502B /* FHSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHSImageView.m; sourceTree = "<group>"; };
 		0F2A46FC18DAE28A00BCEC71 /* FHUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUser.h; sourceTree = "<group>"; };
 		0F2A46FD18DAE28A00BCEC71 /* FHUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUser.m; sourceTree = "<group>"; };
 		0F2D157A18EAF66200FBD443 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
@@ -371,8 +372,15 @@
 		82A9AF8618FCFA5A00D25BDD /* navigationbar_backItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_backItem@2x.png"; sourceTree = "<group>"; };
 		82A9AF8818FCFDD000D25BDD /* FHUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUserViewController.h; sourceTree = "<group>"; };
 		82A9AF8918FCFDD000D25BDD /* FHUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUserViewController.m; sourceTree = "<group>"; };
+		82B0247C190E188F007972F6 /* YLGIFImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLGIFImage.h; sourceTree = "<group>"; };
+		82B0247D190E188F007972F6 /* YLGIFImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLGIFImage.m; sourceTree = "<group>"; };
+		82B0247E190E188F007972F6 /* YLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLImageView.h; sourceTree = "<group>"; };
+		82B0247F190E188F007972F6 /* YLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLImageView.m; sourceTree = "<group>"; };
+		82B02484190E260B007972F6 /* hsa_org.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = hsa_org.gif; sourceTree = "<group>"; };
 		82BB19F418FFA1000095F6CB /* default_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_image@2x.png"; sourceTree = "<group>"; };
 		82BB19F618FFB1850095F6CB /* default_status_thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_status_thumb@2x.png"; sourceTree = "<group>"; };
+		82BB19F81900BF5F0095F6CB /* FHScrollImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHScrollImage.h; sourceTree = "<group>"; };
+		82BB19F91900BF5F0095F6CB /* FHScrollImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHScrollImage.m; sourceTree = "<group>"; };
 		82C5944318EBA04E0027E2A3 /* FHImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHImageCache.h; sourceTree = "<group>"; };
 		82C5944418EBA04E0027E2A3 /* FHImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHImageCache.m; sourceTree = "<group>"; };
 		82C5944A18EBB3DF0027E2A3 /* timeline_rt_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timeline_rt_border.png; sourceTree = "<group>"; };
@@ -421,8 +429,8 @@
 			children = (
 				0F1FFD3D18FC18FE0038502B /* FHImageScrollView.h */,
 				0F1FFD3E18FC18FE0038502B /* FHImageScrollView.m */,
-				0F1FFD4A18FC304E0038502B /* FHSImageView.h */,
-				0F1FFD4B18FC304E0038502B /* FHSImageView.m */,
+				82BB19F81900BF5F0095F6CB /* FHScrollImage.h */,
+				82BB19F91900BF5F0095F6CB /* FHScrollImage.m */,
 			);
 			path = FHImageScrollView;
 			sourceTree = "<group>";
@@ -590,6 +598,7 @@
 		0F521D7218D8925F00250B3F /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				82B0247B190E188F007972F6 /* YLGIFImage */,
 				82A8782918FBBF4F00B1DEC5 /* default-568h@2x.png */,
 				82A8782B18FBBF4F00B1DEC5 /* default@2x.png */,
 				0FA4387218FEDEF500135AF3 /* FHURLConnection */,
@@ -739,6 +748,7 @@
 		821651EA18E926D20072C65C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				82B02484190E260B007972F6 /* hsa_org.gif */,
 				0FA4388A19000A6300135AF3 /* setting_chat@2x.png */,
 				0FA4388B19000A6300135AF3 /* comment_fill_32x28.png */,
 				0FA4388C19000A6300135AF3 /* setting_mail@2x.png */,
@@ -757,6 +767,17 @@
 				82C5944918EBB39E0027E2A3 /* timeline */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		82B0247B190E188F007972F6 /* YLGIFImage */ = {
+			isa = PBXGroup;
+			children = (
+				82B0247C190E188F007972F6 /* YLGIFImage.h */,
+				82B0247D190E188F007972F6 /* YLGIFImage.m */,
+				82B0247E190E188F007972F6 /* YLImageView.h */,
+				82B0247F190E188F007972F6 /* YLImageView.m */,
+			);
+			path = YLGIFImage;
 			sourceTree = "<group>";
 		};
 		82C5944918EBB39E0027E2A3 /* timeline */ = {
@@ -916,6 +937,7 @@
 				0F2D3A2918F5AA410062DA81 /* face42@2x.png in Resources */,
 				0F2D3A5218F5AA410062DA81 /* face7@2x.png in Resources */,
 				0F2D3A8118F6F3F40062DA81 /* whiteArrow.png in Resources */,
+				82B02485190E260B007972F6 /* hsa_org.gif in Resources */,
 				0F2D3A3818F5AA410062DA81 /* face56@2x.png in Resources */,
 				0F2D3A5718F5AA410062DA81 /* face84@2x.png in Resources */,
 				0F2D3A3E18F5AA410062DA81 /* face61@2x.png in Resources */,
@@ -1019,18 +1041,20 @@
 				820F82CE18D92FE100D3C05D /* FHHomeNavigationController.m in Sources */,
 				0F1FFD4618FC2FE70038502B /* FHContentImageView.m in Sources */,
 				82A7612818FE47350045E935 /* FHSettingInfoViewController.m in Sources */,
+				82B02481190E188F007972F6 /* YLImageView.m in Sources */,
 				0F2D3A7918F6F3F40062DA81 /* MessageInterceptor.m in Sources */,
 				0FA4387D18FEDEF500135AF3 /* FHConnectionParse.m in Sources */,
+				82B02480190E188F007972F6 /* YLGIFImage.m in Sources */,
 				82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */,
 				82C5944518EBA04E0027E2A3 /* FHImageCache.m in Sources */,
 				0F1FFD4918FC2FF80038502B /* FHTimelinePostCell.m in Sources */,
 				820F829318D7D8DF00D3C05D /* FHAppDelegate.m in Sources */,
-				0F1FFD4C18FC304E0038502B /* FHSImageView.m in Sources */,
 				820F82CB18D8069E00D3C05D /* FHConnectionInterationProperty.m in Sources */,
 				82A8783118FBD2DF00B1DEC5 /* FHWebViewController.m in Sources */,
 				0FA4387F18FEDEF500135AF3 /* Reachability.m in Sources */,
 				8216521218E928C30072C65C /* FHUsers.m in Sources */,
 				8216521118E928C30072C65C /* FHPost.m in Sources */,
+				82BB19FA1900BF5F0095F6CB /* FHScrollImage.m in Sources */,
 				0FA4387C18FEDEF500135AF3 /* FHConnectionLog.m in Sources */,
 				0F2A46FE18DAE28A00BCEC71 /* FHUser.m in Sources */,
 				820F829918D7D8DF00D3C05D /* FHFirstViewController.m in Sources */,

@@ -23,5 +23,5 @@
 
 - (void)resetView;
 - (void)updateViewWithURLs:(NSArray *)imageURLs;
-+ (float)getViewHeightForImageCount:(int)count;
++ (float)getViewHeightForImageCount:(NSUInteger)count;
 @end

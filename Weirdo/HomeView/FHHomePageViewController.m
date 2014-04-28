@@ -132,13 +132,11 @@
 
 #pragma mark
 #pragma mark - scrollView delegate
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.contentOffset.x == self.view.frame.size.width) {
         return;
     }
-    DLog(@"x:%.f",scrollView.contentOffset.x);
     CGPoint scrollToPoint;
     if (scrollView.contentOffset.x > self.view.frame.size.width) {
         CGFloat percentage = (scrollView.contentOffset.x - self.view.frame.size.width) / self.view.frame.size.width;
@@ -147,9 +145,7 @@
         CGFloat percentage = (self.view.frame.size.width - scrollView.contentOffset.x) / self.view.frame.size.width;
         scrollToPoint = CGPointMake(pageIndicator.currentPage*titleScroll.frame.size.width - percentage*titleScroll.frame.size.width, 0);
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [titleScroll setContentOffset:scrollToPoint animated:YES];
-    });
+    [titleScroll setContentOffset:scrollToPoint animated:NO];
 }
 
 #pragma mark

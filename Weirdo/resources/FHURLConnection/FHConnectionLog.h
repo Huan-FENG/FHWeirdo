@@ -20,8 +20,9 @@
     NSString *logID;
 }
 
-+ (NSString *)logIdentifer;
 + (FHConnectionLog *)sharedLog;
++ (NSString *)logIdentifer;
++ (long long)getUploadedSize;
 - (void)cacheConnectionLog:(NSString *)log;
 
 @end

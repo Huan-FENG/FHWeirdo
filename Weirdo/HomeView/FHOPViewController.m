@@ -158,7 +158,7 @@
     }
     [statusTextView becomeFirstResponder];
     statusTextView.selectedRange = NSMakeRange(0, 0);
-    charCountLB.text = [NSString stringWithFormat:@"%d/140字", statusTextView.text.length];
+    charCountLB.text = [NSString stringWithFormat:@"%d/140字", (int)statusTextView.text.length];
 }
 
 - (void)didReceiveMemoryWarning
@@ -288,9 +288,9 @@
     UITextRange *range = [textView markedTextRange];
     NSString *markedText = [textView textInRange:range];
     if (markedText) {
-        length = textView.text.length - markedText.length;
+        length = (int)textView.text.length - (int)markedText.length;
     }else
-        length = textView.text.length;
+        length = (int)textView.text.length;
     
     if (length>140) {
         NSRange selectedRange = textView.selectedRange;
