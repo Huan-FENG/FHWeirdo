@@ -129,6 +129,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 - (NSError *)isRespondError:(NSDictionary *)response
 {
     NSError *erro;
+    NSMutableDictionary *userinfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"系统错误", NSLocalizedDescriptionKey, nil];
     if ([response objectForKey:@"error_code"]) {
         int errorCode = [[response objectForKey:@"error_code"] intValue];
         switch (errorCode) {
@@ -136,42 +137,49 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
             case 21315:
             case 21316:
             case 21317:
-            // token invalid
+            case 21327:
+            case 21332:
+            case 21501:
+            {
+                errorCode = ERROR_TOKEN_INVALID;
+                [userinfo setObject:@"授权失效或错误" forKey:NSLocalizedDescriptionKey];
                 break;
-                
+            }
             default:
+                [userinfo setObject:[response objectForKey:@"error"] forKey:NSLocalizedDescriptionKey];
                 break;
         }
-        erro = [NSError errorWithDomain:@"WeiBoErrorDomain" code:errorCode userInfo:[response objectForKey:@"error"]];
+        erro = [NSError errorWithDomain:@"WeiBoErrorDomain" code:errorCode userInfo:userinfo];
     }
     return erro;
 }
 
-- (BOOL)checkToken
+- (NSError *)checkToken
 {
     NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
     NSString *URLString = [NSString stringWithFormat:@"%@/2/account/get_uid.json?%@", APIServer, paramString];
     NSError *error;
     [self getURL:URLString withConnectionInteractionProperty:nil error:&error];
-    if (error) {
-        return NO;;
-    }
-    return YES;
+    return error;
 }
 
-- (BOOL)getAccountTokenWithCode:(NSString *)code
+- (NSError *)getAccountTokenWithCode:(NSString *)code
 {
     NSString *paramString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&grant_type=authorization_code&code=%@&redirect_uri=%@", appKey, appSecretKey, code, APIRedirectURI];
     NSString *URLString = [NSString stringWithFormat:@"%@/oauth2/access_token?%@", APIServer, paramString];
     NSError *error;
     NSDictionary *response = [self postURL:URLString bodyString:nil withConnectionInteractionProperty:nil error:&error];
     if (response) {
-        token = [response objectForKey:@"access_token"];
-        uid = [response objectForKey:@"uid"];
-        [self synchronize];
-        return YES;
+        NSError *erro = [self isRespondError:response];
+        if (erro) {
+            error = erro;
+        }else{
+            token = [response objectForKey:@"access_token"];
+            uid = [response objectForKey:@"uid"];
+            [self synchronize];
+        }
     }
-    return NO;
+    return error;
 }
 
 - (NSURL *)authorizeURL
@@ -181,30 +189,21 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return [NSURL URLWithString:URLString];
 }
 
-- (BOOL)isAuthorized:(NSURL *)redirectURL
+- (NSError *)isAuthorized:(NSURL *)redirectURL
 {
+    NSError *error;
     if (!redirectURL) {
-        if ([self checkToken]) {
-            return YES;
-        }
+        error = [self checkToken];
     }else{
         NSString *authorizeString = redirectURL.absoluteString;
         NSRange codeRange = [authorizeString rangeOfString:@"code="];
         if (codeRange.location != NSNotFound) {
             NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
             [[NSUserDefaults standardUserDefaults] setObject:code forKey:@"authorize_code"];
-            [self getAccountTokenWithCode:code];
-            return YES;
+            error = [self getAccountTokenWithCode:code];
         }
     }
-    return NO;
-}
-
-- (NSDictionary *)fetchUserInfo:(NSError **)error
-{
-    NSString *paramString = [NSString stringWithFormat:@"access_token=%@&uid=%@", token, uid];
-    NSString *URLString = [NSString stringWithFormat:@"%@/2/users/show.json?%@", APIServer, paramString];
-    return [self getURL:URLString withConnectionInteractionProperty:nil error:error];
+    return error;
 }
 
 - (void)fetchUserPostsLaterThanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
@@ -216,7 +215,6 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/user_timeline.json?%@", APIServer, paramString];
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }
-
 
 - (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property
 {
@@ -259,7 +257,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)fetchCommentForStatus:(NSNumber *)statusID laterThanComment:(NSNumber *)commentID interactionProperty:(FHConnectionInterationProperty *)property
 {
-    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&id=%@", token, statusID];
+    NSMutableString *paramString = [NSMutableString stringWithFormat:@"access_token=%@&id=%@&count=20", token, statusID];
     if (commentID) {
         [paramString appendFormat:@"&max_id=%@", commentID];
     }
@@ -365,6 +363,13 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
         id theData = [NSJSONSerialization JSONObjectWithData:properties.data options:NSJSONReadingMutableContainers error:nil];
         theData = theData ? theData : properties.data;
         SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:properties.afterFinishedSelector withObject:theData]);
+        
+        if ([theData isKindOfClass:[NSDictionary class]]) {
+            NSError *error = [self isRespondError:theData];
+            if (error && properties.afterFailedTarget && properties.afterFailedSelector) {
+                SuppressPerformSelectorLeakWarning([properties.afterFailedTarget performSelector:properties.afterFailedSelector withObject:error]);
+            }
+        }
 	}
 	[connections removeObjectForKey:connectionKey];
 }

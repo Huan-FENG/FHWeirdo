@@ -16,7 +16,7 @@ typedef enum : NSUInteger {
     TimelineCategoryPublic,
 } TimelineCategory;
 
-@interface FHTimelineViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, PullTableViewDelegate, FHTimelinPostCellDelegate>
+@interface FHTimelineViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, PullTableViewDelegate, FHTimelinPostCellDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) PullTableView *pullTableView;
 @property (nonatomic) TimelineCategory category;

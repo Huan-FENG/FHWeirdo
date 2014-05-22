@@ -13,4 +13,6 @@
     UIWebView *loginWebView;
 }
 
+@property (nonatomic, assign) BOOL reLogin;
+
 @end

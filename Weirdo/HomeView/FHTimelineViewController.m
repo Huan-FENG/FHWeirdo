@@ -11,6 +11,7 @@
 #import "FHPostViewController.h"
 #import "FHWebViewController.h"
 #import "FHImageScrollView.h"
+#import "FHFirstViewController.h"
 
 #define REFRESH_TIMEINTERVAL 15*60
 
@@ -210,7 +211,8 @@
     self.pullTableView.pullTableIsLoadingMore = NO;
     self.pullTableView.pullTableIsRefreshing = NO;
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
+    alert.tag = error.code;
     [alert show];
 }
 
@@ -317,6 +319,15 @@
 - (void)pullTableViewDidTriggerLoadMore:(PullTableView *)pullTableView
 {
     [self pullUpToRefresh];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == ERROR_TOKEN_INVALID) {
+        FHFirstViewController *relogin = [[FHFirstViewController alloc] init];
+        relogin.reLogin = YES;
+        [self presentViewController:relogin animated:YES completion:NULL];
+    }
 }
 
 @end

@@ -13,6 +13,7 @@
 #import "FHOPViewController.h"
 #import "FHImageScrollView.h"
 #import "FHWebViewController.h"
+#import "FHFirstViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define SCROLLVIEW_USER_PROFILE 1
@@ -24,6 +25,8 @@
     UITableView *userStatus;
     UILabel *loadMoreLB;
     UIActivityIndicatorView *loadMoreActivity;
+    UIButton *updateBarBtn;
+    UIButton *updateViewBtn;
     NSMutableArray *statuses;
     
     UIImageView *userImageView;
@@ -78,21 +81,64 @@
     [backBarBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtn]];
     
+    updateBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [updateBarBtn setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 14)];
+    [updateBarBtn setImage:[UIImage imageNamed:@"navigationbar_updateItem.png"] forState:UIControlStateNormal];
+    [updateBarBtn addTarget:self action:@selector(updateStatuses) forControlEvents:UIControlEventTouchUpInside];
+    UIActivityIndicatorView *updateActivityInBar = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [updateActivityInBar setFrame:CGRectMake(0, 0, 15, 15)];
+    [updateBarBtn addSubview:updateActivityInBar];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:updateBarBtn]];
+    
     needRefresh = YES;
     showNavigationBar = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if (needRefresh) {
-        [self pullDownToRefresh];
-    }
     self.navigationController.navigationBarHidden = !showNavigationBar;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self pullDownToRefresh:needRefresh];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)updateButtonAnimate:(BOOL)animate
+{
+    if (animate) {
+        [updateBarBtn setImage:nil forState:UIControlStateNormal];
+        [updateBarBtn setUserInteractionEnabled:NO];
+        [updateViewBtn setImage:nil forState:UIControlStateNormal];
+        [updateViewBtn setUserInteractionEnabled:NO];
+    }else{
+        [updateBarBtn setImage:[UIImage imageNamed:@"navigationbar_updateItem.png"] forState:UIControlStateNormal];
+        [updateBarBtn setUserInteractionEnabled:YES];
+        [updateViewBtn setImage:[UIImage imageNamed:@"navigationbar_updateItem.png"] forState:UIControlStateNormal];
+        [updateViewBtn setUserInteractionEnabled:YES];
+    }
+    
+    for (id activity in updateBarBtn.subviews) {
+        if ([activity isKindOfClass:[UIActivityIndicatorView class]]) {
+            if (animate) {
+                [activity startAnimating];
+            }else
+                [activity stopAnimating];
+        }
+    }
+    for (id activity in updateViewBtn.subviews) {
+        if ([activity isKindOfClass:[UIActivityIndicatorView class]]) {
+            if (animate) {
+                [activity startAnimating];
+            }else
+                [activity stopAnimating];
+        }
+    }
 }
 
 - (UIView *)setUserProfileView
@@ -151,14 +197,24 @@
     [pageIndicator setNumberOfPages:2];
     [pageIndicator setCurrentPage:0];
     
-    UIButton *backBarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBarBtn setFrame:CGRectMake(15, 15, 24, 14)];
-    [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
-    [backBarBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *backViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backViewBtn setFrame:CGRectMake(15, 15, 24, 14)];
+    [backViewBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
+    [backViewBtn addTarget:self action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    
+    updateViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [updateViewBtn setFrame:CGRectMake(275, 15, 24, 14)];
+    [updateViewBtn setImage:nil forState:UIControlStateNormal];
+    [updateViewBtn addTarget:self action:@selector(updateStatuses) forControlEvents:UIControlEventTouchUpInside];
+    UIActivityIndicatorView *updateActivityInView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [updateActivityInView setFrame:CGRectMake(0, 0, 15, 15)];
+    [updateActivityInView startAnimating];
+    [updateViewBtn addSubview:updateActivityInView];
     
     [userProfile addSubview:profileScroll];
     [userProfile addSubview:pageIndicator];
-    [userProfile addSubview:backBarBtn];
+    [userProfile addSubview:backViewBtn];
+    [userProfile addSubview:updateViewBtn];
     
     UIImageView *detailView = [[UIImageView alloc] initWithFrame:CGRectMake(0, userProfile.frame.size.height, userProfile.frame.size.width, 35)];
     [detailView setImage:[[UIImage imageNamed:@"userprofile_detail_border.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6]];
@@ -235,23 +291,38 @@
     }
 }
 
-- (void)pullDownToRefresh
+- (void)updateStatuses
 {
+    [self pullDownToRefresh:YES];
+}
+
+- (void)pullDownToRefresh:(BOOL)isUpdate
+{
+    if (isUpdate) {
+        [self updateButtonAnimate:YES];
+    }
     FHConnectionInterationProperty *property = [[FHConnectionInterationProperty alloc ] init];
     [property setAfterFailedTarget:self];
     [property setAfterFailedSelector:@selector(fetchFailedWithNetworkError:)];
     [property setAfterFinishedTarget:self];
-    [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    if (!isUpdate) {
+        [property setAfterFinishedSelector:@selector(fetchFinishedWithResponseDic:)];
+    }else
+        [property setAfterFinishedSelector:@selector(updateFinishedWithResponseDic:)];
     
-    FHPost *status = (statuses && statuses.count > 0) ? [statuses lastObject] : nil;
+    
+    FHPost *status = (!isUpdate && statuses && statuses.count > 0) ? [statuses lastObject] : nil;
     [[FHWeiBoAPI sharedWeiBoAPI] fetchUserPostsLaterThanPost:status interactionProperty:property];
 }
 
 - (void)fetchFailedWithNetworkError:(NSError *)error
 {
+    [self updateButtonAnimate:NO];
+    
     loadMoreLB.text = @"获取失败";
     [loadMoreActivity stopAnimating];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
+    alert.tag = ERROR_TOKEN_INVALID;
     [alert show];
 }
 
@@ -259,26 +330,36 @@
 {
     NSArray *statusArray = [responseDic objectForKey:@"statuses"];
     
-    NSMutableArray *freshStatus;
-    freshStatus = [NSMutableArray arrayWithArray:statuses];
+    NSMutableArray *freshStatuses;
+    freshStatuses = [NSMutableArray arrayWithArray:statuses];
     
     if (statusArray && statusArray.count > 0)
     {
         for (int i = 0; i < statusArray.count; i++) {
-            if (freshStatus.count != 0 && i == 0) {
+            if (freshStatuses.count != 0 && i == 0) {
                 continue;
             }
             FHPost *status = [[FHPost alloc] initWithPostDic:[statusArray objectAtIndex:i]];
-            [freshStatus addObject:status];
+            [freshStatuses addObject:status];
         }
-        
-//        for (NSDictionary *statusDic in statusArray) {
-//            FHPost *status = [[FHPost alloc] initWithPostDic:statusDic];
-//            [freshStatus addObject:status];
-//        }
-        statuses = freshStatus;
+    
+        statuses = freshStatuses;
         [userStatus reloadData];
     }
+    [self updateUserProfileView];
+}
+
+- (void)updateFinishedWithResponseDic:(NSDictionary *)responseDic
+{
+    [self updateButtonAnimate:NO];
+    NSArray *statusArray = [responseDic objectForKey:@"statuses"];
+    NSMutableArray *freshStatuses = [[NSMutableArray alloc] init];
+    for (NSDictionary *statusDic in statusArray) {
+        FHPost *status = [[FHPost alloc] initWithPostDic:statusDic];
+        [freshStatuses addObject:status];
+    }
+    statuses = freshStatuses;
+    [userStatus reloadData];
     [self updateUserProfileView];
 }
 
@@ -321,7 +402,7 @@
         if(!loadMoreActivity.isAnimating && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
             [loadMoreActivity startAnimating];
             loadMoreLB.text = @"获取中...";
-            [self pullDownToRefresh];
+            [self pullDownToRefresh:NO];
         }
     }
 }
@@ -485,4 +566,15 @@
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark
+#pragma mark - alertView delegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == ERROR_TOKEN_INVALID) {
+        FHFirstViewController *relogin = [[FHFirstViewController alloc] init];
+        relogin.reLogin = YES;
+        [self presentViewController:relogin animated:YES completion:NULL];
+    }
+}
 @end

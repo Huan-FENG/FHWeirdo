@@ -15,6 +15,7 @@
 
 @implementation FHFirstViewController
 
+@synthesize reLogin;
 
 - (void)viewDidLoad
 {
@@ -37,10 +38,18 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:nil]) {
-        [self presentMainViewController];
-    }else
+    if (reLogin) {
         [self loadLoginWebView];
+        return;
+    }
+    
+    NSError *error = [[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:nil];
+    if (error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:nil cancelButtonTitle:@"重新授权" otherButtonTitles:nil, nil];
+        [alertView show];
+        [self loadLoginWebView];
+    }else
+        [self presentMainViewController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -7,17 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AliyunOpenServiceSDK/OSS.h>
 
-#import <Foundation/Foundation.h>
-
-@interface FHConnectionLog : NSObject
+@interface FHConnectionLog : NSObject <OSSClientDelegate>
 {
+    OSSClient *logUploadClient;
     NSOperationQueue *cacheQueue;
     NSString *cachePath;
     NSFileManager *defaultFileManager;
     BOOL isFinishWritingFile;
-    NSString *token;
-    NSString *logID;
 }
 
 + (FHConnectionLog *)sharedLog;

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FHTimelinePostCell.h"
 
-@interface FHUserViewController : UIViewController <UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, FHTimelinPostCellDelegate>
+@interface FHUserViewController : UIViewController <UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, FHTimelinPostCellDelegate, UIAlertViewDelegate>
 
 @end

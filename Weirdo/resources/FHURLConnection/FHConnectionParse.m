@@ -117,11 +117,13 @@
     [connectionDic setObject:[NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]*1000.0] forKey:PARSE_KEY_TIME];
     [connectionDic setObject:@"data" forKey:PARSE_KEY_CONNECTIONTYPE];
     
-    id jsonToObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-    if (jsonToObject) {
-        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        [connectionDic setObject:jsonString forKey:PARSE_KEY_RESPONSEPDATA];
-//        [connectionDic setObject:jsonToObject forKey:PARSE_KEY_RESPONSEPDATA];
+    if (data) {
+        id jsonToObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+        if (jsonToObject) {
+            NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            [connectionDic setObject:jsonString forKey:PARSE_KEY_RESPONSEPDATA];
+            //        [connectionDic setObject:jsonToObject forKey:PARSE_KEY_RESPONSEPDATA];
+        }
     }
     [connectionDic setObject:connectionId forKey:PARSE_KEY_CONNECTIONID];
     [[FHConnectionLog sharedLog] cacheConnectionLog:[FHConnectionParse parseConnectionLog:connectionDic]];

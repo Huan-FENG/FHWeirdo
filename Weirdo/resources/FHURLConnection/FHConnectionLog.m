@@ -9,9 +9,13 @@
 #import "FHConnectionLog.h"
 #import "FHConnectionParse.h"
 #import <CommonCrypto/CommonDigest.h>
-#define KEY_LOG_TOKEN @"logToken"
-#define KEY_LOG_ID @"logID"
+
+#define KEY_UPLOAD_ACCESS_ID @"KKHq1zh79ZQvnk2F"
+#define KEY_UPLOAD_ACCESS_KEY @"ESh0HLSJvgWlRQqe837m0S20jIEAgE"
+#define KEY_UPLOAD_ENDPOINT @"http://oss-cn-beijing.aliyuncs.com"
+#define KEY_UPLOAD_BUCKET @"weirdo"
 #define KEY_LOG_UPLOADED_SIZE @"logUploadedSize"
+#define upload_size_threshold 1024*1024*1
 
 @implementation FHConnectionLog
 
@@ -30,6 +34,20 @@
     return sharedLogInstance;
 }
 
++ (long long)getUploadedSize
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_UPLOADED_SIZE] longLongValue];
+}
+
+- (NSString *)URLEncodedString:(NSString *)string
+{
+    NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(nil,
+                                                                                                    (CFStringRef)string, nil,
+                                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                    kCFStringEncodingUTF8));
+    return encodedString;
+}
+
 - (id)init
 {
     isFinishWritingFile = YES;
@@ -39,6 +57,8 @@
     [NSTimer scheduledTimerWithTimeInterval:24*60*60.0 target:self selector:@selector(uploadLog) userInfo:nil repeats:YES];
     [NSTimer scheduledTimerWithTimeInterval:60*60.0 target:self selector:@selector(checkLogSizeForUpload) userInfo:nil repeats:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundUpload) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    logUploadClient = [[OSSClient alloc] initWithEndPoint:KEY_UPLOAD_ENDPOINT AccessId:KEY_UPLOAD_ACCESS_ID andAccessKey:KEY_UPLOAD_ACCESS_KEY];
+    logUploadClient.delegate = self;
     return self;
 }
 
@@ -142,13 +162,14 @@
 {
     if ([defaultFileManager fileExistsAtPath:[[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"]]) {
         [self uploadLog];
-    }
+    }else{
     
-    NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
-    if (logAttr) {
-        long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
-        if (size > 1024*1024*2) {
-            [self uploadLog];
+        NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
+        if (logAttr) {
+            long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
+            if (size > upload_size_threshold) {
+                [self uploadLog];
+            }
         }
     }
 }
@@ -168,140 +189,38 @@
         [defaultFileManager moveItemAtPath:cachePath toPath:uploadLogPath error:nil];
         [cacheQueue setSuspended:NO];
     }
-    
-    BOOL uploadCompleted = NO;
-    if ([self getLogToken] && [self getLogID]) {
-        for (int i = 0; i < 2; i++) {
-            uploadCompleted = [self uploadLogToCloud:uploadLogPath];
-            if (uploadCompleted)
-                break;
-            else{
-                i = 0? [self getLogToken] : [self getLogID];
-                uploadCompleted = [self uploadLogToCloud:uploadLogPath];
-                if (uploadCompleted)
-                    break;
-                else
-                    continue;
-            }
-        }
-    }
-    
-    if (uploadCompleted) {
-        long long previousUploadedSize = [FHConnectionLog getUploadedSize];
-        long long uploadedSize = [[[defaultFileManager attributesOfItemAtPath:uploadLogPath error:NULL] objectForKey:NSFileSize] longLongValue] + previousUploadedSize;
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:uploadedSize] forKey:KEY_LOG_UPLOADED_SIZE];
-        [defaultFileManager removeItemAtPath:uploadLogPath error:nil];
-    }
+    [self uploadLogToCloud:uploadLogPath];
 }
 
-+ (long long)getUploadedSize
-{
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_UPLOADED_SIZE] longLongValue];
-}
-
-- (BOOL)getLogID
-{
-    logID = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_ID];
-    if (!logID) {
-        return [self idOfLogCloud];
-    }
-    return YES;
-}
-
-- (BOOL)resetLogID
-{
-    return [self idOfLogCloud];
-}
-
-- (BOOL)idOfLogCloud
-{
-    NSString *urlString = [NSString stringWithFormat:@"https://api.meepotech.com/0/account/info?count=0&token=%@",token] ;
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:50.0f];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPMethod:@"GET"];
-    NSError *error;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    if (!responseData) {
-        return NO;
-    }
-    NSDictionary *recievedJsonToDic = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    logID = [recievedJsonToDic objectForKey:@"user_id"];
-    if (logID) {
-        [[NSUserDefaults standardUserDefaults] setObject:logID forKey:KEY_LOG_ID];
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)getLogToken
-{
-    token = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_TOKEN];
-    if (!token) {
-        return [self loginLogCloud];
-    }
-    return YES;
-}
-
-- (BOOL)resetLogToken
-{
-    return [self loginLogCloud];
-}
-
-- (BOOL)loginLogCloud
-{
-    NSString *logPsw = @"cc89051718";
-    NSString *device = [NSString stringWithFormat:@"%@", [FHConnectionLog logIdentifer]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.meepotech.com/0/account/login?user_name=c30268056&password=%@&device_name=%@", logPsw, device]] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:50.0f];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPMethod:@"POST"];
-    NSError *error;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    if (!responseData) {
-        return NO;
-    }
-    NSDictionary *recievedJsonToDic = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    token = [recievedJsonToDic objectForKey:@"token"];
-    if (token) {
-        [[NSUserDefaults standardUserDefaults] setObject:token forKey:KEY_LOG_TOKEN];
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)uploadLogToCloud:(NSString *)logFilePath
+- (void)uploadLogToCloud:(NSString *)logFilePath
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH-mm-ss"];
     NSString *date = [formatter stringFromDate:[NSDate date]];
-    NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [[[UIDevice currentDevice] identifierForVendor] UUIDString], date];
-    path = [self URLEncodedString:path];
-    NSString *urlString = [NSString stringWithFormat:@"https://api-content.meepotech.com/0/groups/%@/roots/meepo/files/%@?token=%@&modified=%.0f", logID, path, token, [[NSDate date] timeIntervalSince1970]*1000];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:50.0f];
+    NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [FHConnectionLog logIdentifer], date];
     NSData *data = [NSData dataWithContentsOfFile:logFilePath];
-    [request setHTTPBody:data];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-    NSError *error;
-    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSDictionary *recievedJsonToDic;
-    NSLog(@"%ld",(long)response.statusCode);
-    if (response.statusCode == 200 && responseData) {
-        recievedJsonToDic = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    }
-    if (error || [recievedJsonToDic objectForKey:@"error_code"]) {
-        return NO;
-    }
-    return YES;
+    ObjectMetadata * objMetadata = [[ObjectMetadata alloc] init];
+    [logUploadClient putObject:KEY_UPLOAD_BUCKET key:path data:data objectMetadata:objMetadata];
 }
 
-- (NSString *)URLEncodedString:(NSString *)string
+#pragma mark
+#pragma mark - OSSClientDelegate
+
+- (void)OSSObjectPutObjectFinish:(OSSClient*) client result:(PutObjectResult*) result
 {
-    NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(nil,
-                                                                                                    (CFStringRef)string, nil,
-                                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                                    kCFStringEncodingUTF8));
-    return encodedString;
+    NSString *uploadLogPath = [[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"];
+    long long previousUploadedSize = [FHConnectionLog getUploadedSize];
+    long long uploadedSize = [[[defaultFileManager attributesOfItemAtPath:uploadLogPath error:NULL] objectForKey:NSFileSize] longLongValue] + previousUploadedSize;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:uploadedSize] forKey:KEY_LOG_UPLOADED_SIZE];
+    [defaultFileManager removeItemAtPath:uploadLogPath error:nil];
+    
+    NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
+    if (logAttr) {
+        long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
+        if (size > upload_size_threshold) {
+            [self uploadLog];
+        }
+    }
 }
 
 @end

@@ -10,6 +10,8 @@
 #import "FHConnectionInterationProperty.h"
 #import "FHPost.h"
 
+#define ERROR_TOKEN_INVALID 21314
+
 @interface FHWeiBoAPI : NSObject
 {
     NSMutableDictionary *connections;
@@ -22,7 +24,7 @@
 + (FHWeiBoAPI *)sharedWeiBoAPI;
 
 - (NSURL *)authorizeURL;
-- (BOOL)isAuthorized:(NSURL *)redirectURL;
+- (NSError *)isAuthorized:(NSURL *)redirectURL;
 
 - (void)fetchUserPostsLaterThanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)fetchHomePostsNewer:(BOOL)newer thanPost:(FHPost *)post interactionProperty:(FHConnectionInterationProperty *)property;
