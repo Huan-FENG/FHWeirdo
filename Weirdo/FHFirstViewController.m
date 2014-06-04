@@ -80,7 +80,6 @@
 {
     FHHomeNavigationController *mainVC = [[FHHomeNavigationController alloc] init];
     [mainVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-//    FHMainViewController *mainVC = [[FHMainViewController alloc] init];
     [self presentViewController:mainVC animated:YES completion:nil];
 }
 
@@ -96,8 +95,12 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    if ([[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:webView.request.URL]) {
+    NSError *error = [[FHWeiBoAPI sharedWeiBoAPI] isAuthorized:webView.request.URL];
+    if (!error) {
         [self presentMainViewController];
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:nil cancelButtonTitle:@"重新授权" otherButtonTitles:nil, nil];
+        [alertView show];
     }
 }
 
