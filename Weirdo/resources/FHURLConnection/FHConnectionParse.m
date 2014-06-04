@@ -17,7 +17,7 @@
 
 #import "FHConnectionParse.h"
 #import "FHConnectionLog.h"
-#import "Reachability/Reachability.h"
+#import "AReachability.h"
 
 @interface FHConnectionParse (Private)
 
@@ -142,7 +142,14 @@
         if (data) {
             theData = [data description];
         }
-        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\t%d\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData, (int)[Reachability reachabilityForInternetConnection].currentReachabilityStatus];
+        NSString *status = @"0";
+        if ([[AReachability reachabilityForInternetConnection] currentReachabilityStatus] == ReachableViaWiFi) {
+            status = @"2";
+        }else if ([[AReachability reachabilityForInternetConnection] currentReachabilityStatus] == ReachableViaWWAN) {
+            status = @"1";
+        }
+
+        stringLog = [NSString stringWithFormat:@"%@\t%@\t%@\t%@\t%@\t%@\t%@\t%@\n", [connectionLog objectForKey:PARSE_KEY_CONNECTIONID], [connectionLog objectForKey:PARSE_KEY_CONNECTIONTYPE], [connectionLog objectForKey:PARSE_KEY_TIME], [connectionLog objectForKey:PARSE_KEY_URLBASE], [connectionLog objectForKey:PARSE_KEY_URLPARMETERS], [connectionLog objectForKey:PARSE_KEY_URLBODYPARMETERS], theData, status];
     }
     return stringLog;
 }

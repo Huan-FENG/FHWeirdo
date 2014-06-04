@@ -145,7 +145,7 @@
 		8216520518E928540072C65C /* tabbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 821651FD18E928540072C65C /* tabbar_bg@2x.png */; };
 		8216521118E928C30072C65C /* FHPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216520E18E928C30072C65C /* FHPost.m */; };
 		8216521218E928C30072C65C /* FHUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521018E928C30072C65C /* FHUsers.m */; };
-		825DDE35192DCDD600B55A38 /* AliyunOpenServiceSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE34192DCDD600B55A38 /* AliyunOpenServiceSDK.framework */; };
+		8237151D192EF224007F68A9 /* AliyunOpenServiceSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237151C192EF224007F68A9 /* AliyunOpenServiceSDK.framework */; };
 		825DDE73192DCE5B00B55A38 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE72192DCE5B00B55A38 /* CFNetwork.framework */; };
 		825DDE75192DCE6F00B55A38 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE74192DCE6F00B55A38 /* SystemConfiguration.framework */; };
 		825DDE77192DCE7B00B55A38 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE76192DCE7B00B55A38 /* MobileCoreServices.framework */; };
@@ -179,6 +179,7 @@
 		82C5946F18F3D7F10027E2A3 /* FHOPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5946E18F3D7F10027E2A3 /* FHOPViewController.m */; };
 		82C5947218F51DEA0027E2A3 /* FHPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947118F51DEA0027E2A3 /* FHPostViewController.m */; };
 		82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947418F534F60027E2A3 /* FHCommentCell.m */; };
+		82CA94AC193DE18D00867A43 /* AReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CA94AB193DE18D00867A43 /* AReachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -360,7 +361,7 @@
 		8216520E18E928C30072C65C /* FHPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPost.m; sourceTree = "<group>"; };
 		8216520F18E928C30072C65C /* FHUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHUsers.h; sourceTree = "<group>"; };
 		8216521018E928C30072C65C /* FHUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHUsers.m; sourceTree = "<group>"; };
-		825DDE34192DCDD600B55A38 /* AliyunOpenServiceSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliyunOpenServiceSDK.framework; sourceTree = "<group>"; };
+		8237151C192EF224007F68A9 /* AliyunOpenServiceSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AliyunOpenServiceSDK.framework; path = ../../../Desktop/AliyunOpenServiceSDK.framework; sourceTree = "<group>"; };
 		825DDE72192DCE5B00B55A38 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		825DDE74192DCE6F00B55A38 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		825DDE76192DCE7B00B55A38 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -404,6 +405,8 @@
 		82C5947118F51DEA0027E2A3 /* FHPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHPostViewController.m; sourceTree = "<group>"; };
 		82C5947318F534F60027E2A3 /* FHCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FHCommentCell.h; path = Weirdo/UI/FHCommentCell.h; sourceTree = SOURCE_ROOT; };
 		82C5947418F534F60027E2A3 /* FHCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FHCommentCell.m; path = Weirdo/UI/FHCommentCell.m; sourceTree = SOURCE_ROOT; };
+		82CA94AA193DE18D00867A43 /* AReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AReachability.h; sourceTree = "<group>"; };
+		82CA94AB193DE18D00867A43 /* AReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AReachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +414,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8237151D192EF224007F68A9 /* AliyunOpenServiceSDK.framework in Frameworks */,
 				825DDE79192DCE8700B55A38 /* libz.dylib in Frameworks */,
 				825DDE77192DCE7B00B55A38 /* MobileCoreServices.framework in Frameworks */,
 				825DDE75192DCE6F00B55A38 /* SystemConfiguration.framework in Frameworks */,
@@ -418,7 +422,6 @@
 				0FA4389119000D4F00135AF3 /* MessageUI.framework in Frameworks */,
 				820F828518D7D8DF00D3C05D /* CoreGraphics.framework in Frameworks */,
 				820F828718D7D8DF00D3C05D /* UIKit.framework in Frameworks */,
-				825DDE35192DCDD600B55A38 /* AliyunOpenServiceSDK.framework in Frameworks */,
 				820F828318D7D8DF00D3C05D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,6 +628,7 @@
 		0FA4387218FEDEF500135AF3 /* FHURLConnection */ = {
 			isa = PBXGroup;
 			children = (
+				82CA94A9193DE18D00867A43 /* AppleReachability */,
 				0FA4387318FEDEF500135AF3 /* FHConnectionLog.h */,
 				0FA4387418FEDEF500135AF3 /* FHConnectionLog.m */,
 				0FA4387518FEDEF500135AF3 /* FHConnectionParse.h */,
@@ -657,11 +661,11 @@
 		820F828118D7D8DF00D3C05D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8237151C192EF224007F68A9 /* AliyunOpenServiceSDK.framework */,
 				825DDE78192DCE8700B55A38 /* libz.dylib */,
 				825DDE76192DCE7B00B55A38 /* MobileCoreServices.framework */,
 				825DDE74192DCE6F00B55A38 /* SystemConfiguration.framework */,
 				825DDE72192DCE5B00B55A38 /* CFNetwork.framework */,
-				825DDE34192DCDD600B55A38 /* AliyunOpenServiceSDK.framework */,
 				0FA4389019000D4F00135AF3 /* MessageUI.framework */,
 				820F828218D7D8DF00D3C05D /* Foundation.framework */,
 				820F828418D7D8DF00D3C05D /* CoreGraphics.framework */,
@@ -674,6 +678,7 @@
 		820F828818D7D8DF00D3C05D /* Weirdo */ = {
 			isa = PBXGroup;
 			children = (
+				82DD85AF193435360035BD82 /* iPad */,
 				820F829118D7D8DF00D3C05D /* FHAppDelegate.h */,
 				820F829218D7D8DF00D3C05D /* FHAppDelegate.m */,
 				820F829418D7D8DF00D3C05D /* Main.storyboard */,
@@ -817,6 +822,23 @@
 				0F1FFD4818FC2FF80038502B /* FHTimelinePostCell.m */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		82CA94A9193DE18D00867A43 /* AppleReachability */ = {
+			isa = PBXGroup;
+			children = (
+				82CA94AA193DE18D00867A43 /* AReachability.h */,
+				82CA94AB193DE18D00867A43 /* AReachability.m */,
+			);
+			name = AppleReachability;
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		82DD85AF193435360035BD82 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1075,6 +1097,7 @@
 				0F2D157C18EAF66200FBD443 /* SMPageControl.m in Sources */,
 				0F1FFD3F18FC18FE0038502B /* FHImageScrollView.m in Sources */,
 				0F2D3A7A18F6F3F40062DA81 /* PullTableView.m in Sources */,
+				82CA94AC193DE18D00867A43 /* AReachability.m in Sources */,
 				0F2D3A7818F6F3F40062DA81 /* LoadMoreTableFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1203,7 +1226,7 @@
 		820F82B518D7D8DF00D3C05D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1213,14 +1236,21 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/fenghuan/Desktop,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fenghuan/Desktop,
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1228,7 +1258,7 @@
 		820F82B618D7D8DF00D3C05D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1238,14 +1268,21 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/Users/fenghuan/Desktop,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Weirdo/Weirdo-Prefix.pch";
 				INFOPLIST_FILE = "Weirdo/Weirdo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fenghuan/Desktop,
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
