@@ -11,6 +11,7 @@
 #import "FHPost.h"
 
 #define ERROR_TOKEN_INVALID 21314
+#define ERROR_AUTHORIZE_DID_NOT_COMPLETED 00005
 
 @interface FHWeiBoAPI : NSObject
 {
@@ -36,6 +37,6 @@
 - (void)retweetStatus:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)commentStatus:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property;
 - (void)replyComment:(NSNumber *)commentID Status:(NSNumber *)statusID content:(NSString *)content commentTo:(int)commentType interactionProperty:(FHConnectionInterationProperty *)property;
-
+- (NSDictionary *)checkVersion;
 
 @end

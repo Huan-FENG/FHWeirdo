@@ -13,7 +13,7 @@
 #define KEY_UPLOAD_ACCESS_ID @"KKHq1zh79ZQvnk2F"
 #define KEY_UPLOAD_ACCESS_KEY @"ESh0HLSJvgWlRQqe837m0S20jIEAgE"
 #define KEY_UPLOAD_ENDPOINT @"http://oss-cn-beijing.aliyuncs.com"
-#define KEY_UPLOAD_BUCKET @"weirdo"
+#define KEY_UPLOAD_BUCKET @"weirdov2"
 #define KEY_LOG_UPLOADED_SIZE @"logUploadedSize"
 #define upload_size_threshold 1024*1024*1
 

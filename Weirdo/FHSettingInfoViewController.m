@@ -14,6 +14,7 @@
 @interface FHSettingInfoViewController ()
 {
     UILabel *uploadedSize;
+    NSString *update_url;
 }
 @end
 
@@ -86,8 +87,18 @@
     [uploadedSizeView addSubview:uploadedSize];
     [self.view addSubview:uploadedSizeView];
     
+    UIImageView *versionView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
+    [versionView setFrame:CGRectMake(0, uploadedSizeView.frame.origin.y + uploadedSizeView.frame.size.height + 10, self.view.frame.size.width, 30)];
+    UILabel *version = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, versionView.frame.size.width-20*2, 20)];
+    version.textAlignment = NSTextAlignmentLeft;
+    version.backgroundColor = [UIColor clearColor];
+    version.font = feedback.font;
+    version.text = [NSString stringWithFormat:@"版本号：%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
+    [versionView addSubview:version];
+    [self.view addSubview:versionView];
+    
     UIImageView *announcementView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
-    [announcementView setFrame:CGRectMake(0, uploadedSizeView.frame.origin.y + uploadedSizeView.frame.size.height + 10, self.view.frame.size.width, 180)];
+    [announcementView setFrame:CGRectMake(0, versionView.frame.origin.y + versionView.frame.size.height + 10, self.view.frame.size.width, 180)];
     UILabel *announcement = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, announcementView.frame.size.width - 20*2, 0)];
     announcement.numberOfLines = 0;
     announcement.shadowColor = [UIColor clearColor];
@@ -113,6 +124,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     uploadedSize.text = [NSString stringWithFormat:@"已上传：%@", [self getUploadedDataSize]];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self checkVersion];
 }
 
 - (NSString *)getUploadedDataSize
@@ -164,6 +180,16 @@
     [self presentViewController:mailPicker animated:YES completion:NULL];
 }
 
+- (void)checkVersion
+{
+    NSDictionary *checkresult = [[FHWeiBoAPI sharedWeiBoAPI] checkVersion];
+    if (checkresult) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本可用" message:[checkresult objectForKey:@"changelog"] delegate:self cancelButtonTitle:@"稍后更新" otherButtonTitles:@"前往更新", nil];
+        update_url = [checkresult objectForKey:@"update_url"];
+        [alert show];
+    }
+}
+
 #pragma mark
 #pragma mark - MFMailComposeViewControllerDelegate
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -212,4 +238,12 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        if (update_url) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:update_url]];
+        }
+    }
+}
 @end

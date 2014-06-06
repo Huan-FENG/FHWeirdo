@@ -19,6 +19,7 @@ typedef enum : NSUInteger {
     CellClickedTypeComment,
     CellClickedTypeVote,
     CellClickedTypeUserImage,
+    CellClickedTypeReport,
 } CellClickedType;
 
 @protocol FHTimelinPostCellDelegate <NSObject>

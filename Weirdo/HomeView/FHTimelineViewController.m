@@ -20,6 +20,7 @@
     NSMutableArray *posts;
     BOOL needRefresh;
     FHWebViewController *webVC;
+    NSMutableArray *reportedIDs;
 }
 
 @end
@@ -41,6 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    reportedIDs = [[NSMutableArray alloc] init];
     needRefresh = YES;
     pullTableView = [[PullTableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64);
@@ -179,6 +181,9 @@
         for (int i = (int)postsArray.count; i>0; i--) {
             NSDictionary *postDic = [postsArray objectAtIndex:i-1];
             FHPost *post = [[FHPost alloc] initWithPostDic:postDic];
+            if ([reportedIDs containsObject:post.ID]) {
+                continue;
+            }
             [freshPosts insertObject:post atIndex:0];
         }
         posts = freshPosts;
@@ -198,6 +203,9 @@
                 continue;
             }
             FHPost *post = [[FHPost alloc] initWithPostDic:[postsArray objectAtIndex:i]];
+            if ([reportedIDs containsObject:post.ID]) {
+                continue;
+            }
             [freshPosts addObject:post];
         }
         posts = freshPosts;
@@ -293,6 +301,17 @@
         }
         case CellClickedTypeUserImage:
             break;
+        case CellClickedTypeReport:{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"举报" message:@"已收到举报信息，将尽快反馈给新浪微博，在此期间，Weirdo暂时屏蔽此条微博！感谢您的支持与理解" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+            [alert show];
+            FHPost *post = [posts objectAtIndex:indexPath.row];
+            [reportedIDs addObject:post.ID];
+            [pullTableView beginUpdates];
+            [posts removeObjectAtIndex:indexPath.row];
+            [pullTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [pullTableView endUpdates];
+            break;
+        }
         default:
             break;
     }
