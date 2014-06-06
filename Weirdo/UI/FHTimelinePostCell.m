@@ -51,12 +51,23 @@
         UITapGestureRecognizer *userImageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userImageViewClicked:)];
         [userImage addGestureRecognizer:userImageTap];
         
-        userNameLB = [[UILabel alloc] initWithFrame:CGRectMake(2*PADDING_HORIZON + userImage.frame.size.width, userImage.frame.origin.y, 320 - 3*PADDING_HORIZON - userImage.frame.size.width, 20)];
+        userNameLB = [[UILabel alloc] initWithFrame:CGRectMake(2*PADDING_HORIZON + userImage.frame.size.width, userImage.frame.origin.y, 320 - 3*PADDING_HORIZON - userImage.frame.size.width - 60, 20)];
         [userNameLB setTextAlignment:NSTextAlignmentLeft];
         [userNameLB setFont:[UIFont boldSystemFontOfSize:12]];
         [userNameLB setTextColor:[UIColor brownColor]];
         [userNameLB setContentMode:UIViewContentModeBottom];
         [userNameLB setBackgroundColor: [UIColor clearColor]];
+        
+        UILabel *reportLB = [[UILabel alloc] initWithFrame:CGRectMake(320 - PADDING_HORIZON - 60, userNameLB.frame.origin.y, 60, 45)];
+        UITapGestureRecognizer *reportTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportStatus:)];
+        [reportLB addGestureRecognizer:reportTap];
+        [reportLB setUserInteractionEnabled:YES];
+        reportLB.text = @"举报";
+        reportLB.textColor = [UIColor redColor];
+        reportLB.font = [UIFont systemFontOfSize:9];
+        reportLB.textAlignment = NSTextAlignmentRight;
+        [reportLB setContentMode:UIViewContentModeTop];
+        [reportLB setBackgroundColor:[UIColor clearColor]];
         
         timeLB = [[UILabel alloc] initWithFrame:CGRectMake(userNameLB.frame.origin.x, userNameLB.frame.origin.y + userNameLB.frame.size.height, 50, userImage.frame.size.height - userNameLB.frame.size.height)];
         [timeLB setContentMode:UIViewContentModeBottom];
@@ -137,6 +148,7 @@
         
         [self.contentView addSubview:userImage];
         [self.contentView addSubview:userNameLB];
+        [self.contentView addSubview:reportLB];
         [self.contentView addSubview:timeLB];
         [self.contentView addSubview:fromLB];
         [self.contentView addSubview:content];
@@ -314,6 +326,13 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
         [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:CellClickedTypeUserImage contentIndex:0];
+    }
+}
+
+- (void)reportStatus:(UITapGestureRecognizer *)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(timelinePostCell:didSelectAtIndexPath:withClickedType:contentIndex:)]) {
+        [self.delegate timelinePostCell:self didSelectAtIndexPath:self.indexPath withClickedType:CellClickedTypeReport contentIndex:0];
     }
 }
 

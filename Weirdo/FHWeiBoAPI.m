@@ -21,6 +21,7 @@ _Pragma("clang diagnostic pop") \
 
 static NSString *APIServer = @"https://api.weibo.com";
 static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
+static NSString *VersionCheckURL = @"http://itunes.apple.com/lookup?id=870936418";
 
 + (FHWeiBoAPI *)sharedWeiBoAPI
 {
@@ -154,6 +155,32 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     return erro;
 }
 
+- (NSDictionary *)checkVersion
+{
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+    NSArray *currentVersions = [currentVersion componentsSeparatedByString:@"."];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:VersionCheckURL]];
+    [request setHTTPMethod:@"GET"];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error:NULL];
+    NSArray *newVersions;
+    NSDictionary *dic;
+    if (data) {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        if (dic && [dic objectForKey:@"results"]) {
+            for (id result in [dic objectForKey:@"results"]) {
+                newVersions = [[result objectForKey:@"version"] componentsSeparatedByString:@"."];
+            }
+        }
+    }
+    if (newVersions) {
+        if (([[currentVersions objectAtIndex:0] isEqualToString:[newVersions objectAtIndex:0]]) && ([[currentVersions objectAtIndex:1] isEqualToString:[newVersions objectAtIndex:1]])) {
+            return nil;
+        }
+    }else
+        return nil;
+    return [dic objectForKey:@"results"];
+}
+
 - (NSError *)checkToken
 {
     NSString *paramString = [NSString stringWithFormat:@"access_token=%@", token];
@@ -197,6 +224,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
     }else{
         NSString *authorizeString = redirectURL.absoluteString;
         NSRange codeRange = [authorizeString rangeOfString:@"code="];
+        error = [NSError errorWithDomain:@"SYSTEM" code:ERROR_AUTHORIZE_DID_NOT_COMPLETED userInfo:nil];
         if (codeRange.location != NSNotFound) {
             NSString *code = [authorizeString substringFromIndex:(codeRange.location+codeRange.length)];
             [[NSUserDefaults standardUserDefaults] setObject:code forKey:@"authorize_code"];

@@ -180,6 +180,8 @@
 		82C5947218F51DEA0027E2A3 /* FHPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947118F51DEA0027E2A3 /* FHPostViewController.m */; };
 		82C5947518F534F60027E2A3 /* FHCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C5947418F534F60027E2A3 /* FHCommentCell.m */; };
 		82CA94AC193DE18D00867A43 /* AReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CA94AB193DE18D00867A43 /* AReachability.m */; };
+		82EC7AF81940601A00B0703A /* newdefault-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82EC7AF61940601A00B0703A /* newdefault-568h@2x.png */; };
+		82EC7AF91940601A00B0703A /* newdefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82EC7AF71940601A00B0703A /* newdefault@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -407,6 +409,8 @@
 		82C5947418F534F60027E2A3 /* FHCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FHCommentCell.m; path = Weirdo/UI/FHCommentCell.m; sourceTree = SOURCE_ROOT; };
 		82CA94AA193DE18D00867A43 /* AReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AReachability.h; sourceTree = "<group>"; };
 		82CA94AB193DE18D00867A43 /* AReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AReachability.m; sourceTree = "<group>"; };
+		82EC7AF61940601A00B0703A /* newdefault-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newdefault-568h@2x.png"; sourceTree = "<group>"; };
+		82EC7AF71940601A00B0703A /* newdefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newdefault@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -613,6 +617,8 @@
 		0F521D7218D8925F00250B3F /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				82EC7AF61940601A00B0703A /* newdefault-568h@2x.png */,
+				82EC7AF71940601A00B0703A /* newdefault@2x.png */,
 				82B0247B190E188F007972F6 /* YLGIFImage */,
 				82A8782918FBBF4F00B1DEC5 /* default-568h@2x.png */,
 				82A8782B18FBBF4F00B1DEC5 /* default@2x.png */,
@@ -678,7 +684,6 @@
 		820F828818D7D8DF00D3C05D /* Weirdo */ = {
 			isa = PBXGroup;
 			children = (
-				82DD85AF193435360035BD82 /* iPad */,
 				820F829118D7D8DF00D3C05D /* FHAppDelegate.h */,
 				820F829218D7D8DF00D3C05D /* FHAppDelegate.m */,
 				820F829418D7D8DF00D3C05D /* Main.storyboard */,
@@ -834,13 +839,6 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
-		82DD85AF193435360035BD82 /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = iPad;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -975,7 +973,9 @@
 				0F2D3A4A18F5AA410062DA81 /* face72@2x.png in Resources */,
 				82A9AF8718FCFA5A00D25BDD /* navigationbar_backItem@2x.png in Resources */,
 				82C5946618F38C760027E2A3 /* timeline_retweet_count_icon@2x.png in Resources */,
+				82EC7AF91940601A00B0703A /* newdefault@2x.png in Resources */,
 				0F2D3A4418F5AA410062DA81 /* face67@2x.png in Resources */,
+				82EC7AF81940601A00B0703A /* newdefault-568h@2x.png in Resources */,
 				0F2D3A4118F5AA410062DA81 /* face64@2x.png in Resources */,
 				0F2D3A5018F5AA410062DA81 /* face78@2x.png in Resources */,
 				0F2D3A3218F5AA410062DA81 /* face50@2x.png in Resources */,

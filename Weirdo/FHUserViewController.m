@@ -270,10 +270,17 @@
         }else
             [userImageView setImage:user.profileImage];
         userName.text = user.name;
+        [descriptionLB setFrame:CGRectMake(40, 40, self.view.frame.size.width - 100, 0)];
         descriptionLB.text = user.description;
         if (!descriptionLB.text || descriptionLB.text.length == 0) {
             descriptionLB.text = @"暂无简介";
         }
+        [descriptionLB sizeToFit];
+        CGRect frame = descriptionLB.frame;
+        frame.origin.y = (100 - 10 - descriptionLB.frame.size.height)/2;
+        frame.origin.x = (self.view.frame.size.width - descriptionLB.frame.size.width)/2;
+        [descriptionLB setFrame:frame];
+        
         statusCount.text = [NSString stringWithFormat:@"%d", user.postsCount.intValue];
         friendCount.text = [NSString stringWithFormat:@"%d", user.friendsCount.intValue];
         followerCount.text = [NSString stringWithFormat:@"%d", user.followersCount.intValue];
