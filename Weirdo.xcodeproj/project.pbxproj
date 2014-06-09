@@ -678,7 +678,6 @@
 		820F828818D7D8DF00D3C05D /* Weirdo */ = {
 			isa = PBXGroup;
 			children = (
-				82DD85AF193435360035BD82 /* iPad */,
 				820F829118D7D8DF00D3C05D /* FHAppDelegate.h */,
 				820F829218D7D8DF00D3C05D /* FHAppDelegate.m */,
 				820F829418D7D8DF00D3C05D /* Main.storyboard */,
@@ -832,13 +831,6 @@
 			);
 			name = AppleReachability;
 			path = Reachability;
-			sourceTree = "<group>";
-		};
-		82DD85AF193435360035BD82 /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -386,7 +386,9 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 	{
         id theData = [NSJSONSerialization JSONObjectWithData:properties.data options:NSJSONReadingMutableContainers error:nil];
         theData = theData ? theData : properties.data;
-        SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:properties.afterFinishedSelector withObject:theData]);
+        if (properties.afterFinishedTarget && [properties.afterFinishedTarget respondsToSelector:properties.afterFinishedSelector]) {
+            SuppressPerformSelectorLeakWarning([properties.afterFinishedTarget performSelector:properties.afterFinishedSelector withObject:theData]);
+        }
         
         if ([theData isKindOfClass:[NSDictionary class]]) {
             NSError *error = [self isRespondError:theData];

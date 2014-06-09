@@ -17,6 +17,7 @@
     UILabel *indexLB;
     
     NSMutableArray *imageViews;
+    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -91,8 +92,14 @@
     }];
 }
 
-- (void)loadImageViewForIndex:(NSUInteger)index;
+- (void)loadImageViewForIndex:(NSInteger)index;
 {
+    if (index > (imagesArray.count -1))
+        index = imagesArray.count -1;
+    
+    if (index < 0)
+        index = 0;
+
     [self loadImageViewAtIndex:index];
     if (index > 0) {
         [self loadImageViewAtIndex:index-1];
@@ -121,25 +128,29 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int x = scrollView.contentOffset.x;
-    //move to next...
-    if(x > currentIndex*scrollImageView.frame.size.width) {
-        [self loadImageViewForIndex:currentIndex < imagesArray.count-1? currentIndex+1: currentIndex];
-    }else{
-        //move to pre...
-        [self loadImageViewForIndex:currentIndex>0? currentIndex - 1:0];
-    }
-
+    
+    DLog(@"%d",x);
+    int index = (x+scrollView.frame.size.width/2)/scrollView.frame.size.width;
+    [self loadImageViewForIndex:index];
+    
+    indexLB.text = [NSString stringWithFormat:@"%d/%d", (int)index+1, (int)imagesArray.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     currentIndex = scrollView.contentOffset.x/scrollView.frame.size.width;
-    indexLB.text = [NSString stringWithFormat:@"%d/%d", (int)currentIndex+1, (int)imagesArray.count];
+//    DLog(@"currentIndex: %d", currentIndex);
+//    indexLB.text = [NSString stringWithFormat:@"%d/%d", (int)currentIndex+1, (int)imagesArray.count];
     if (currentIndex > 0 && [imageViews objectAtIndex:(currentIndex - 1)]) {
-        [[imageViews objectAtIndex:currentIndex-1] setZoomScale:1.0];
+        if (![[imageViews objectAtIndex:currentIndex-1] isKindOfClass:[NSNull class]]) {
+            [[imageViews objectAtIndex:currentIndex-1] setZoomScale:1.0];
+        }
     }
     if (currentIndex <imageViews.count-1 && [imageViews objectAtIndex:currentIndex+1]) {
-        [[imageViews objectAtIndex:currentIndex+1] setZoomScale:1.0];
+        if (![[imageViews objectAtIndex:currentIndex+1] isKindOfClass:[NSNull class]]) {
+            [[imageViews objectAtIndex:currentIndex+1] setZoomScale:1.0];
+        }
+        
     }
 }
 

@@ -17,6 +17,8 @@
 #define KEY_LOG_UPLOADED_SIZE @"logUploadedSize"
 #define upload_size_threshold 1024*1024*1
 
+#define KEY_CACH_LOG 1
+
 @implementation FHConnectionLog
 
 + (NSString *)logIdentifer
@@ -98,8 +100,10 @@
 
 - (void)cacheConnectionLog:(NSString *)log
 {
-    NSInvocationOperation *cacheLogOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeSingleLog:) object:log];
-    [cacheQueue addOperation:cacheLogOperation];
+    if (KEY_CACH_LOG) {
+        NSInvocationOperation *cacheLogOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeSingleLog:) object:log];
+        [cacheQueue addOperation:cacheLogOperation];
+    }
 }
 
 - (BOOL)setCachePath
