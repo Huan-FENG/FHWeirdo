@@ -145,7 +145,6 @@
 		8216520518E928540072C65C /* tabbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 821651FD18E928540072C65C /* tabbar_bg@2x.png */; };
 		8216521118E928C30072C65C /* FHPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216520E18E928C30072C65C /* FHPost.m */; };
 		8216521218E928C30072C65C /* FHUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8216521018E928C30072C65C /* FHUsers.m */; };
-		8237151D192EF224007F68A9 /* AliyunOpenServiceSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237151C192EF224007F68A9 /* AliyunOpenServiceSDK.framework */; };
 		825DDE73192DCE5B00B55A38 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE72192DCE5B00B55A38 /* CFNetwork.framework */; };
 		825DDE75192DCE6F00B55A38 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE74192DCE6F00B55A38 /* SystemConfiguration.framework */; };
 		825DDE77192DCE7B00B55A38 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 825DDE76192DCE7B00B55A38 /* MobileCoreServices.framework */; };
@@ -414,7 +413,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8237151D192EF224007F68A9 /* AliyunOpenServiceSDK.framework in Frameworks */,
 				825DDE79192DCE8700B55A38 /* libz.dylib in Frameworks */,
 				825DDE77192DCE7B00B55A38 /* MobileCoreServices.framework in Frameworks */,
 				825DDE75192DCE6F00B55A38 /* SystemConfiguration.framework in Frameworks */,

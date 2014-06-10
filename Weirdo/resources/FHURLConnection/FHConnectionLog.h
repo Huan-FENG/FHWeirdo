@@ -7,20 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AliyunOpenServiceSDK/OSS.h>
 
-@interface FHConnectionLog : NSObject <OSSClientDelegate>
+@interface FHConnectionLog : NSObject
+//<OSSClientDelegate>
 {
-    OSSClient *logUploadClient;
+    //OSSClient *logUploadClient;
     NSOperationQueue *cacheQueue;
+    NSString *waitToUploadRoot;
     NSString *cachePath;
     NSFileManager *defaultFileManager;
     BOOL isFinishWritingFile;
+    BOOL isUploading;
 }
 
 + (FHConnectionLog *)sharedLog;
 + (NSString *)logIdentifer;
 + (long long)getUploadedSize;
+- (long long)getToUploadSize;
 - (void)cacheConnectionLog:(NSString *)log;
-
+- (void)sycUploadDataSizeToNotfication:(NSString *)name;
 @end

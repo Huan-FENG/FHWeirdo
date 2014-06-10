@@ -11,10 +11,13 @@
 #import "FHSUStatusBar.h"
 #import <MessageUI/MessageUI.h>
 
+static NSString *notificationName = @"SycUploadedDataSizeNoti";
+
 @interface FHSettingInfoViewController ()
 {
     UILabel *uploadedSize;
     NSString *update_url;
+    UIActivityIndicatorView *sycSizeIndicator;
 }
 @end
 
@@ -23,6 +26,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sycUploadedSizeFinished:) name:notificationName object:nil];
     
     if (isIOS7) {
         UIView *statusBarView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
@@ -85,7 +91,16 @@
     uploadedSize.backgroundColor = [UIColor clearColor];
     uploadedSize.font = feedback.font;
     [uploadedSizeView addSubview:uploadedSize];
+    
+    sycSizeIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [sycSizeIndicator setFrame:CGRectMake(uploadedSizeView.frame.size.width - uploadedSizeView.frame.size.height - 5, 5, uploadedSizeView.frame.size.height-10, uploadedSizeView.frame.size.height-10)];
+    [uploadedSizeView addSubview:sycSizeIndicator];
+    
+    [uploadedSizeView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *sycSize = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sycUploadedSizeWithServer:)];
+    [uploadedSizeView addGestureRecognizer:sycSize];
     [self.view addSubview:uploadedSizeView];
+    
     
     UIImageView *versionView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"setting_detail_border.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:5 ]];
     [versionView setFrame:CGRectMake(0, uploadedSizeView.frame.origin.y + uploadedSizeView.frame.size.height + 10, self.view.frame.size.width, 30)];
@@ -123,7 +138,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    uploadedSize.text = [NSString stringWithFormat:@"已上传：%@", [self getUploadedDataSize]];
+    uploadedSize.text = [NSString stringWithFormat:@"已上传/待上传：%@/%@(点击同步)", [self getUploadedDataSize], [self getToUploadDataSize]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,25 +146,59 @@
     [self checkVersion];
 }
 
+- (NSString *)getToUploadDataSize
+{
+    long long toUploadDataSize = [[FHConnectionLog sharedLog] getToUploadSize];
+    return [self formatSize:toUploadDataSize];
+}
+
 - (NSString *)getUploadedDataSize
 {
-    NSString *uploadedDataSizeString;
     long long uploadedDataSize = [FHConnectionLog getUploadedSize];
-    if (uploadedDataSize) {
-        if (uploadedDataSize > 1000) {
-            if (uploadedDataSize/(1024.0) > 1000) {
-                if (uploadedDataSize/(1024*1024.0) > 1000) {
-                    uploadedDataSizeString = [NSString stringWithFormat:@"%.2f GB", uploadedDataSize/(1024*1024*1024.0)];
-                }else
-                    uploadedDataSizeString = [NSString stringWithFormat:@"%.2f MB", uploadedDataSize/(1024*1024.0)];
-            }else
-                uploadedDataSizeString = [NSString stringWithFormat:@"%.2f KB", uploadedDataSize/(1024.0)];
+    return [self formatSize:uploadedDataSize];
+}
 
+
+- (void)sycUploadedSizeWithServer:(UITapGestureRecognizer *)gesture
+{
+    [sycSizeIndicator startAnimating];
+    [NSThread detachNewThreadSelector:@selector(sycUploadDataSizeToNotfication:) toTarget:[FHConnectionLog sharedLog] withObject:notificationName];
+}
+
+- (void)sycUploadedSizeFinished:(NSNotification *)noti
+{
+    [sycSizeIndicator stopAnimating];
+    id recieved = [noti object];
+    if ([recieved isKindOfClass:[NSError class]]) {
+        NSError *error = (NSError *)recieved;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"同步失败" message:error.localizedDescription delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    if ([recieved isKindOfClass:[NSNumber class]]) {
+        uploadedSize.text = [NSString stringWithFormat:@"已上传/待上传：%@/%@(点击同步)", [self getUploadedDataSize], [self getToUploadDataSize]];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"同步成功" message:@"您的”已上传“数据量已经与服务器实际获取的数据量同步！" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+
+- (NSString *)formatSize:(long long)size
+{
+    NSString *sizeString;
+    if (size) {
+        if (size > 1000) {
+            if (size/(1024.0) > 1000) {
+                if (size/(1024*1024.0) > 1000) {
+                    sizeString = [NSString stringWithFormat:@"%.2f GB", size/(1024*1024*1024.0)];
+                }else
+                    sizeString = [NSString stringWithFormat:@"%.2f MB", size/(1024*1024.0)];
+            }else
+                sizeString = [NSString stringWithFormat:@"%.2f KB", size/(1024.0)];
+            
         }else
-            uploadedDataSizeString = [NSString stringWithFormat:@"%.2lld B", uploadedDataSize];
+            sizeString = [NSString stringWithFormat:@"%.2lld B", size];
     }else
-        uploadedDataSizeString = @"0 byte";
-    return uploadedDataSizeString;
+        sizeString = @"0 byte";
+    return sizeString;
 }
 
 - (void)showMessageView
@@ -191,7 +240,8 @@
 {
     NSDictionary *checkresult = [[FHWeiBoAPI sharedWeiBoAPI] checkVersion];
     if (checkresult) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本可用" message:[checkresult objectForKey:@"changelog"] delegate:self cancelButtonTitle:@"稍后更新" otherButtonTitles:@"前往更新", nil];
+        NSString *message = [[[checkresult objectForKey:@"changelog"] componentsSeparatedByString:@"|"] objectAtIndex:0];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本可用" message:message delegate:self cancelButtonTitle:@"稍后更新" otherButtonTitles:@"前往更新", nil];
         update_url = [checkresult objectForKey:@"update_url"];
         [alert show];
     }

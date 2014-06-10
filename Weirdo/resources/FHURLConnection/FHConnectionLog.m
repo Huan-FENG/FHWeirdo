@@ -8,7 +8,8 @@
 
 #import "FHConnectionLog.h"
 #import "FHConnectionParse.h"
-#import <CommonCrypto/CommonDigest.h>
+#include <CommonCrypto/CommonDigest.h>
+#include <CommonCrypto/CommonHMAC.h>
 
 #define KEY_UPLOAD_ACCESS_ID @"KKHq1zh79ZQvnk2F"
 #define KEY_UPLOAD_ACCESS_KEY @"ESh0HLSJvgWlRQqe837m0S20jIEAgE"
@@ -41,6 +42,35 @@
     return [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOG_UPLOADED_SIZE] longLongValue];
 }
 
+- (long long)getToUploadSize
+{
+    long long size = 0;
+    if ([defaultFileManager fileExistsAtPath:cachePath]) {
+        size = size + [[[defaultFileManager attributesOfItemAtPath:cachePath error:NULL] objectForKey:NSFileSize] longLongValue];
+    }
+    if ([defaultFileManager fileExistsAtPath:waitToUploadRoot]) {
+        NSArray *waitLogs = [defaultFileManager contentsOfDirectoryAtPath:waitToUploadRoot error:NULL];
+        for (NSString *name in waitLogs) {
+            if ([name hasPrefix:@"."]) {
+                [defaultFileManager removeItemAtPath:[waitToUploadRoot stringByAppendingPathComponent:name] error:nil];
+                continue;
+            }
+            size = size + [[[defaultFileManager attributesOfItemAtPath:[waitToUploadRoot stringByAppendingPathComponent:name] error:NULL] objectForKey:NSFileSize] longLongValue];
+        }
+    }
+    return size;
+}
+
+- (void)sycUploadDataSizeToNotfication:(NSString *)name
+{
+    NSError *error;
+    long long size = [self ossGetObjectsSize:&error];
+    if (error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:error];
+    }else
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:[NSNumber numberWithLongLong:size]];
+}
+
 - (NSString *)URLEncodedString:(NSString *)string
 {
     NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(nil,
@@ -52,15 +82,13 @@
 
 - (id)init
 {
+    isUploading = NO;
     isFinishWritingFile = YES;
     cacheQueue = [[NSOperationQueue alloc] init];
     [cacheQueue setMaxConcurrentOperationCount:1];
     [self setCachePath];
-    [NSTimer scheduledTimerWithTimeInterval:24*60*60.0 target:self selector:@selector(uploadLog) userInfo:nil repeats:YES];
-    [NSTimer scheduledTimerWithTimeInterval:60*60.0 target:self selector:@selector(checkLogSizeForUpload) userInfo:nil repeats:YES];
+    [self setUploadLogPath];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundUpload) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    logUploadClient = [[OSSClient alloc] initWithEndPoint:KEY_UPLOAD_ENDPOINT AccessId:KEY_UPLOAD_ACCESS_ID andAccessKey:KEY_UPLOAD_ACCESS_KEY];
-    logUploadClient.delegate = self;
     return self;
 }
 
@@ -106,6 +134,21 @@
     }
 }
 
+- (BOOL)setUploadLogPath
+{
+    BOOL isDir;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    waitToUploadRoot = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"UploadingLog"];
+    defaultFileManager = [NSFileManager defaultManager];
+    if (![defaultFileManager fileExistsAtPath:waitToUploadRoot isDirectory:&isDir] || !isDir) {
+        if (![defaultFileManager createDirectoryAtPath:waitToUploadRoot withIntermediateDirectories:YES attributes:nil error:nil]) {
+            NSLog(@"ERROR! Create upload dir failed: [%@]", waitToUploadRoot);
+            return NO;
+        }
+    }
+    return YES;
+}
+
 - (BOOL)setCachePath
 {
     BOOL isDir;
@@ -140,7 +183,7 @@
 - (void)writeSingleLog:(NSString *)log
 {
     
-    if (!cachePath && ![self setCachePath]){
+    if (![self setCachePath]){
         NSLog(@"ERROR! CacheConnectionLog failed! Log: [%@]", log);
         return;
     }
@@ -164,16 +207,19 @@
 
 - (void)checkLogSizeForUpload
 {
-    if ([defaultFileManager fileExistsAtPath:[[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"]]) {
+    NSArray *waitLogs = [defaultFileManager contentsOfDirectoryAtPath:waitToUploadRoot error:NULL];
+    for (NSString *name in waitLogs) {
+        if ([name hasPrefix:@"."]) {
+            continue;
+        }
         [self uploadLog];
-    }else{
-    
-        NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
-        if (logAttr) {
-            long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
-            if (size > upload_size_threshold) {
-                [self uploadLog];
-            }
+        return;
+    }
+    NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
+    if (logAttr) {
+        long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
+        if (size > upload_size_threshold) {
+            [self uploadLog];
         }
     }
 }
@@ -184,12 +230,25 @@
         return;
     }
     
-    NSString *uploadLogPath = [[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"];
-    if (![self checkLogExistence:uploadLogPath]) {
+    NSString *uploadLogPath;
+    NSArray *waitLogs = [defaultFileManager contentsOfDirectoryAtPath:waitToUploadRoot error:NULL];
+    for (NSString *name in waitLogs) {
+        if ([name hasPrefix:@"."]) {
+            continue;
+        }
+        uploadLogPath = [waitToUploadRoot stringByAppendingPathComponent:name];
+    }
+    
+    if (!uploadLogPath) {
         [cacheQueue setSuspended:YES];
         while (!isFinishWritingFile) {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH-mm-ss"];
+        NSString *date = [formatter stringFromDate:[NSDate date]];
+        NSString *path = [NSString stringWithFormat:@"%@.txt", date];
+        uploadLogPath = [waitToUploadRoot stringByAppendingPathComponent:path];
         [defaultFileManager moveItemAtPath:cachePath toPath:uploadLogPath error:nil];
         [cacheQueue setSuspended:NO];
     }
@@ -198,33 +257,152 @@
 
 - (void)uploadLogToCloud:(NSString *)logFilePath
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH-mm-ss"];
-    NSString *date = [formatter stringFromDate:[NSDate date]];
-    NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [FHConnectionLog logIdentifer], date];
+    if (isUploading) {
+        return;
+    }
+    isUploading = YES;
     NSData *data = [NSData dataWithContentsOfFile:logFilePath];
-    ObjectMetadata * objMetadata = [[ObjectMetadata alloc] init];
-    [logUploadClient putObject:KEY_UPLOAD_BUCKET key:path data:data objectMetadata:objMetadata];
+    [self ossPutObjectAtPath:[[FHConnectionLog logIdentifer] stringByAppendingString:[logFilePath substringFromIndex:waitToUploadRoot.length]] data:data];
+}
+
+-(void)uploadCompleted
+{
+    NSString *uploadLogPath;
+    NSArray *waitLogs = [defaultFileManager contentsOfDirectoryAtPath:waitToUploadRoot error:NULL];
+    
+    for (NSString *name in waitLogs) {
+        if ([name hasPrefix:@"."]) {
+            [defaultFileManager removeItemAtPath:[waitToUploadRoot stringByAppendingPathComponent:name] error:nil];
+        }else{
+            uploadLogPath = [waitToUploadRoot stringByAppendingPathComponent:name];
+            long long previousUploadedSize = [FHConnectionLog getUploadedSize];
+            long long uploadedSize = [[[defaultFileManager attributesOfItemAtPath:uploadLogPath error:NULL] objectForKey:NSFileSize] longLongValue] + previousUploadedSize;
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:uploadedSize] forKey:KEY_LOG_UPLOADED_SIZE];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [defaultFileManager removeItemAtPath:uploadLogPath error:nil];
+            
+            NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
+            if (logAttr) {
+                long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
+                if (size > upload_size_threshold) {
+                    [self uploadLog];
+                }
+            }
+            
+        }
+    }
+
 }
 
 #pragma mark
-#pragma mark - OSSClientDelegate
+#pragma mark - OSS
 
-- (void)OSSObjectPutObjectFinish:(OSSClient*) client result:(PutObjectResult*) result
+- (long long)ossGetObjectsSize:(NSError **)error
 {
-    NSString *uploadLogPath = [[cachePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"waitToUploadLog"];
-    long long previousUploadedSize = [FHConnectionLog getUploadedSize];
-    long long uploadedSize = [[[defaultFileManager attributesOfItemAtPath:uploadLogPath error:NULL] objectForKey:NSFileSize] longLongValue] + previousUploadedSize;
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:uploadedSize] forKey:KEY_LOG_UPLOADED_SIZE];
-    [defaultFileManager removeItemAtPath:uploadLogPath error:nil];
+    long long size = 0;
+    NSString *url = [NSString stringWithFormat:@"%@/?prefix=%@&delimiter=%@", KEY_UPLOAD_ENDPOINT, [[FHConnectionLog logIdentifer] stringByAppendingString:@"%2F"], [self URLEncodedString:@"/"]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    [request setTimeoutInterval:50.0];
+    [request setHTTPMethod:@"GET"];
+    NSDate *date = [NSDate date];
+    [request addValue:[self setAuthorizationString:request.HTTPMethod resourcePath:nil date:date] forHTTPHeaderField:@"Authorization"];
+    [request addValue:[[FHConnectionLog Rfc822DateFomatter] stringFromDate:date] forHTTPHeaderField:@"Date"];
+    [request addValue:[NSString stringWithFormat:@"%@.%@", KEY_UPLOAD_BUCKET, [KEY_UPLOAD_ENDPOINT stringByReplacingOccurrencesOfString:@"http://" withString:@""]] forHTTPHeaderField:@"Host"];
+//    DLog(@"requestHeaders: %@", request.allHTTPHeaderFields);
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    NSError *e;
+    NSData *rdata = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&e];
+    if (e && error) {
+        *error = e;
+        return size;
+    }
     
-    NSDictionary *logAttr = [defaultFileManager attributesOfItemAtPath:cachePath error:nil];
-    if (logAttr) {
-        long long size = [[logAttr objectForKey:NSFileSize] longLongValue];
-        if (size > upload_size_threshold) {
-            [self uploadLog];
+    NSMutableString *rsting = [[NSMutableString alloc] initWithData:rdata encoding:NSUTF8StringEncoding];
+//    DLog(@"%@", rsting);
+    if (response && response.statusCode == 200) {
+        while (true) {
+            NSRange srange = [rsting rangeOfString:@"<Size>"];
+            if (srange.location == NSNotFound) {
+                break;
+            }
+            [rsting deleteCharactersInRange:NSMakeRange(0, srange.location+srange.length)];
+            NSRange erange = [rsting rangeOfString:@"</Size>"];
+            size = [[rsting substringToIndex:erange.location] longLongValue] + size;
+            [rsting deleteCharactersInRange:NSMakeRange(0, erange.location+erange.length)];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:size] forKey:KEY_LOG_UPLOADED_SIZE];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }else{
+        if (error) {
+            *error = [NSError errorWithDomain:@"AliyunDomain" code:response.statusCode userInfo:@{NSLocalizedDescriptionKey: @"系统错误"}];
         }
     }
+    return size;
+}
+
+- (void)ossPutObjectAtPath:(NSString *)path data:(NSData *)data
+{
+    NSString *url = [NSString stringWithFormat:@"%@/%@", KEY_UPLOAD_ENDPOINT, [self URLEncodedString:path]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:50];
+    [request setHTTPMethod:@"PUT"];
+    [request setHTTPBody:data];
+    NSDate *date = [NSDate date];
+    [request addValue:[self setAuthorizationString:request.HTTPMethod resourcePath:path date:date] forHTTPHeaderField:@"Authorization"];
+    [request addValue:[[FHConnectionLog Rfc822DateFomatter] stringFromDate:date] forHTTPHeaderField:@"Date"];
+    [request addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:[NSString stringWithFormat:@"%d", data.length] forHTTPHeaderField:@"Content-Length"];
+    [request addValue:[NSString stringWithFormat:@"%@.%@", KEY_UPLOAD_BUCKET, [KEY_UPLOAD_ENDPOINT stringByReplacingOccurrencesOfString:@"http://" withString:@""]] forHTTPHeaderField:@"Host"];
+//    DLog(@"requestHeaders: %@", request.allHTTPHeaderFields);
+    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:NULL];
+    isUploading = NO;
+    if (response && response.statusCode == 200) {
+//        DLog(@"上传成功");
+        [self uploadCompleted];
+    }
+}
+
+-(NSString*) setAuthorizationString:(NSString *)httpMethod resourcePath:(NSString*)resourcePath date:(NSDate *)date
+{
+    NSMutableString *content = [[NSMutableString alloc] initWithFormat:@"%@\n\n", httpMethod];
+    if ([httpMethod isEqualToString:@"PUT"]) {
+        [content appendString:@"application/octet-stream\n"];
+    }else{
+        [content appendString:@"\n"];
+    }
+    [content appendString:[[FHConnectionLog Rfc822DateFomatter] stringFromDate:date]];
+    [content appendString:@"\n"];
+    [content appendString:[NSString stringWithFormat:@"/%@/", KEY_UPLOAD_BUCKET]];
+    if (resourcePath) {
+        [content appendString:[NSString stringWithFormat:@"%@", resourcePath]];
+    }
+    NSString *signitureSuffix = [self hmac:content withKey:KEY_UPLOAD_ACCESS_KEY];
+    NSString *authorize = [NSString stringWithFormat:@"OSS %@:%@", KEY_UPLOAD_ACCESS_ID, signitureSuffix];
+    return authorize;
+}
+
+-(NSString *)hmac:(NSString *)plaintext withKey:(NSString *)key
+{
+    const char *cKey  = [key cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [plaintext cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    uint8_t cHMAC[CC_SHA1_DIGEST_LENGTH];
+    
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *Hash1 = [HMAC base64Encoding];
+    return Hash1;
+}
+
++(NSDateFormatter*) Rfc822DateFomatter
+{
+    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+    [inputFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [inputFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss z"];
+    NSTimeZone *tz = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    [inputFormatter setTimeZone:tz];
+    return inputFormatter ;
 }
 
 @end
