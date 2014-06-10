@@ -35,6 +35,8 @@
     if (self) {
         category = timelineCategory;
         posts = [[NSMutableArray alloc] init];
+        if (category == TimelineCategoryPublic) {
+        }
     }
     return self;
 }
@@ -184,6 +186,11 @@
             if ([reportedIDs containsObject:post.ID]) {
                 continue;
             }
+            if (category == TimelineCategoryPublic) {
+                if ([self isADPost:post]) {
+                    continue;
+                }
+            }
             [freshPosts insertObject:post atIndex:0];
         }
         posts = freshPosts;
@@ -206,6 +213,11 @@
             if ([reportedIDs containsObject:post.ID]) {
                 continue;
             }
+            if (category == TimelineCategoryPublic) {
+                if ([self isADPost:post]) {
+                    continue;
+                }
+            }
             [freshPosts addObject:post];
         }
         posts = freshPosts;
@@ -222,6 +234,18 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"出错啦" message:error.localizedDescription delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles:nil, nil];
     alert.tag = error.code;
     [alert show];
+}
+
+
+- (BOOL)isADPost:(FHPost *)post
+{
+    NSArray *ADPostKeys = @[@"促销", @"疯抢", @"鞋", @"衣", @"裤", @"出售", @"售完", @"特价", @"优惠", @"代购", @"包", @"衬衫", @"女装", @"男装", @"童装"];
+    for (NSString *adkey in ADPostKeys) {
+        if ([post.text rangeOfString:adkey].location != NSNotFound) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark

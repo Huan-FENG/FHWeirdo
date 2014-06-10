@@ -269,7 +269,7 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (void)fetchPublicPostsWithInteractionProperty:(FHConnectionInterationProperty *)property
 {
-    NSString *paramString = [NSString stringWithFormat:@"access_token=%@&feature=1", token];
+    NSString *paramString = [NSString stringWithFormat:@"access_token=%@&feature=1&count=50", token];
     NSString *URLString = [NSString stringWithFormat:@"%@/2/statuses/public_timeline.json?%@", APIServer, paramString];
     [self getURL:URLString withConnectionInteractionProperty:property error:nil];
 }

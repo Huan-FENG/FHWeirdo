@@ -58,12 +58,13 @@
         [userNameLB setContentMode:UIViewContentModeBottom];
         [userNameLB setBackgroundColor: [UIColor clearColor]];
         
-        UILabel *reportLB = [[UILabel alloc] initWithFrame:CGRectMake(320 - PADDING_HORIZON - 60, userNameLB.frame.origin.y, 60, 45)];
+        UILabel *reportLB = [[UILabel alloc] initWithFrame:CGRectMake(320 - PADDING_HORIZON - 60, userNameLB.frame.origin.y, 60, 20)];
         UITapGestureRecognizer *reportTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportStatus:)];
         [reportLB addGestureRecognizer:reportTap];
         [reportLB setUserInteractionEnabled:YES];
         reportLB.text = @"举报";
-        reportLB.textColor = [UIColor redColor];
+        reportLB.textColor = [UIColor colorWithRed:230.0/255.0 green:35.0/255.0 blue:0.0 alpha:1.0];
+        reportLB.shadowColor = [UIColor clearColor];
         reportLB.font = [UIFont systemFontOfSize:9];
         reportLB.textAlignment = NSTextAlignmentRight;
         [reportLB setContentMode:UIViewContentModeTop];

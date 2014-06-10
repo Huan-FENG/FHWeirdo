@@ -170,14 +170,21 @@
 
 - (void)showMailView
 {
-    MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
-    mailPicker.mailComposeDelegate = self;
-    [mailPicker setSubject:@"意见反馈"];
-    [mailPicker setToRecipients: @[@"fenghuan517@gmail.com"]];
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
+        mailPicker.mailComposeDelegate = self;
+        [mailPicker setSubject:@"意见反馈"];
+        [mailPicker setToRecipients: @[@"fenghuan517@gmail.com"]];
+        
+        NSString *emailBody = [NSString stringWithFormat:@"用户:%@\n", [FHConnectionLog logIdentifer] ];
+        [mailPicker setMessageBody:emailBody isHTML:NO];
+        [self presentViewController:mailPicker animated:YES completion:NULL];
+        
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"无法发送邮件" message:@"设备未设置邮件功能" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
+    }
     
-    NSString *emailBody = [NSString stringWithFormat:@"用户:%@\n", [FHConnectionLog logIdentifer] ];
-    [mailPicker setMessageBody:emailBody isHTML:NO];
-    [self presentViewController:mailPicker animated:YES completion:NULL];
 }
 
 - (void)checkVersion

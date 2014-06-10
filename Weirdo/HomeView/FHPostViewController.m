@@ -56,6 +56,12 @@
     [backBarBtn setImage:[UIImage imageNamed:@"navigationbar_backItem.png"] forState:UIControlStateNormal];
     [backBarBtn addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:backBarBtn]];
+    
+    UIButton *opBarBT = [UIButton buttonWithType:UIButtonTypeCustom];
+    [opBarBT setFrame:CGRectMake(0, 0, (isIOS7?14:14+IOS6_BAR_BUTTOM_PADDING), 14)];
+    [opBarBT setImage:[UIImage imageNamed:@"navigationbar_sendItem.png"] forState:UIControlStateNormal];
+    [opBarBT addTarget:self action:@selector(operationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:opBarBT]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -131,6 +137,32 @@
     [loadMoreActivity stopAnimating];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
+}
+
+#pragma mark
+#pragma mark - Action
+
+- (void) operationButtonClicked:(UIButton *)sender
+{
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转发", @"评论", nil];
+    [sheet showInView:self.view];
+}
+
+#pragma mark
+#pragma mark - Action Sheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        FHOPViewController *opVC = [[FHOPViewController alloc] init];
+        if (buttonIndex == 0) {
+            [opVC setupWithPost:post operation:StatusOperationRetweet];
+        }
+        if (buttonIndex == 1) {
+            [opVC setupWithPost:post operation:StatusOperationComment];
+        }
+        [self presentViewController:opVC animated:YES completion:NULL];
+    }
 }
 
 #pragma mark
