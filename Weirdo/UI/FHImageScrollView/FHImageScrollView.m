@@ -128,8 +128,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int x = scrollView.contentOffset.x;
-    
-    DLog(@"%d",x);
+//    DLog(@"%d",x);
     int index = (x+scrollView.frame.size.width/2)/scrollView.frame.size.width;
     [self loadImageViewForIndex:index];
     

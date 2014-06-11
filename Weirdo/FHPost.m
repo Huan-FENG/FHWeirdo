@@ -17,6 +17,7 @@
 
 - (id)initWithPostDic:(NSDictionary *)original
 {
+    self = [super init];
     if (self) {
         favorited = [original objectForKey:@"favorited"]? [[original objectForKey:@"favorited"] boolValue]: NO;
         createdTime = [original objectForKey:@"created_at"]? [NSString stringWithFormat:@"%@", [original objectForKey:@"created_at"]] : @"从前";
@@ -81,6 +82,7 @@
             break;
         case 2:
             formatCreatedTime = @"前天";
+            break;
         default:
             if (showHours) {
                 formatter.dateFormat = @"M月d日 H:mm";

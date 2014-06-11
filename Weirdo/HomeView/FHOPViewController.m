@@ -136,9 +136,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSString *text;
     if (operation == StatusOperationRetweet) {
-        text = [NSString stringWithFormat:@"//@%@:%@", opStatus.username, opStatus.text];
         statusTextView.text = [NSString stringWithFormat:@"//@%@:%@", opStatus.username, opStatus.text];
     }else
         [self showTextViewPlaceholder];

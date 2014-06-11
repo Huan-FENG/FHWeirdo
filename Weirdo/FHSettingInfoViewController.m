@@ -240,7 +240,7 @@ static NSString *notificationName = @"SycUploadedDataSizeNoti";
 {
     NSDictionary *checkresult = [[FHWeiBoAPI sharedWeiBoAPI] checkVersion];
     if (checkresult) {
-        NSString *message = [[[checkresult objectForKey:@"changelog"] componentsSeparatedByString:@"|"] objectAtIndex:0];
+        NSString *message = [[[checkresult objectForKey:@"changelog"] componentsSeparatedByString:@"｜"] objectAtIndex:0];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本可用" message:message delegate:self cancelButtonTitle:@"稍后更新" otherButtonTitles:@"前往更新", nil];
         update_url = [checkresult objectForKey:@"update_url"];
         [alert show];

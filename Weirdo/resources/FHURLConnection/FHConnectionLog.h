@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface FHConnectionLog : NSObject
-//<OSSClientDelegate>
 {
-    //OSSClient *logUploadClient;
     NSOperationQueue *cacheQueue;
     NSString *waitToUploadRoot;
     NSString *cachePath;

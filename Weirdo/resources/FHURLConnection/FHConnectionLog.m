@@ -65,10 +65,15 @@
 {
     NSError *error;
     long long size = [self ossGetObjectsSize:&error];
+    id postObj;
     if (error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:name object:error];
+        postObj = error;
     }else
-        [[NSNotificationCenter defaultCenter] postNotificationName:name object:[NSNumber numberWithLongLong:size]];
+        postObj = [NSNumber numberWithLongLong:size];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:postObj];
+        
+    });
 }
 
 - (NSString *)URLEncodedString:(NSString *)string
@@ -82,13 +87,16 @@
 
 - (id)init
 {
-    isUploading = NO;
-    isFinishWritingFile = YES;
-    cacheQueue = [[NSOperationQueue alloc] init];
-    [cacheQueue setMaxConcurrentOperationCount:1];
-    [self setCachePath];
-    [self setUploadLogPath];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundUpload) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    self = [super init];
+    if (self) {
+        isUploading = NO;
+        isFinishWritingFile = YES;
+        cacheQueue = [[NSOperationQueue alloc] init];
+        [cacheQueue setMaxConcurrentOperationCount:1];
+        [self setCachePath];
+        [self setUploadLogPath];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundUpload) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    }
     return self;
 }
 
@@ -350,7 +358,7 @@
     [request addValue:[self setAuthorizationString:request.HTTPMethod resourcePath:path date:date] forHTTPHeaderField:@"Authorization"];
     [request addValue:[[FHConnectionLog Rfc822DateFomatter] stringFromDate:date] forHTTPHeaderField:@"Date"];
     [request addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:[NSString stringWithFormat:@"%d", data.length] forHTTPHeaderField:@"Content-Length"];
+    [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)data.length] forHTTPHeaderField:@"Content-Length"];
     [request addValue:[NSString stringWithFormat:@"%@.%@", KEY_UPLOAD_BUCKET, [KEY_UPLOAD_ENDPOINT stringByReplacingOccurrencesOfString:@"http://" withString:@""]] forHTTPHeaderField:@"Host"];
 //    DLog(@"requestHeaders: %@", request.allHTTPHeaderFields);
     NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] init];

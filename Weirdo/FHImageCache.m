@@ -22,6 +22,7 @@
 
 - (id)init
 {
+    self = [super init];
     if (self) {
         images = [[NSMutableDictionary alloc] init];
         imageURLs = [[NSMutableArray alloc] init];

@@ -23,6 +23,7 @@
 
 - (id)init
 {
+    self = [super init];
     if (self) {
         users = [[NSMutableDictionary alloc] init];
         fetchImageQueue = [[NSOperationQueue alloc] init];

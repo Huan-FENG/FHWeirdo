@@ -34,16 +34,20 @@ static NSString *APIRedirectURI = @"https://api.weibo.com/oauth2/default.html";
 
 - (id)init
 {
-    if (!appKey) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        appKey = [defaults objectForKey:@"appKey"]?:@"897481256";
-        appSecretKey = [defaults objectForKey:@"appSecretKey"]?:@"83a6102c1435001a6d52cdd254cc7cbc";
-        token = [defaults objectForKey:@"token"];
-        uid = [defaults objectForKey:@"uid"];
-        [self synchronize];
-    }
-    if (!connections) {
-        connections = [[NSMutableDictionary alloc] init];
+    self = [super init];
+    if (self) {
+        if (!appKey) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            appKey = [defaults objectForKey:@"appKey"]?:@"897481256";
+            appSecretKey = [defaults objectForKey:@"appSecretKey"]?:@"83a6102c1435001a6d52cdd254cc7cbc";
+            token = [defaults objectForKey:@"token"];
+            uid = [defaults objectForKey:@"uid"];
+            [self synchronize];
+        }
+        if (!connections) {
+            connections = [[NSMutableDictionary alloc] init];
+        }
+
     }
     return self;
 }
